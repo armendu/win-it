@@ -7,29 +7,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{D8C86C98-B7E8-4B68-B9A1-7F8819D69C3C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{B9A17F3A-E096-4A84-A40E-8D728A0D7B25}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{B9A17F3A-E096-4A84-A40E-8D728A0D7B25}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{022C10A3-EDF2-4A56-97AD-7B1BEB394A01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessComponents", "Business\BusinessComponents\BusinessComponents.csproj", "{3E89386B-8505-4050-83DD-0A575FC77721}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7EE5BE7B-5A0B-4424-AE9B-8C8145C64133} = {7EE5BE7B-5A0B-4424-AE9B-8C8145C64133}
-		{747C097D-8660-47FE-935F-AF4E0F3518B3} = {747C097D-8660-47FE-935F-AF4E0F3518B3}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "Business\BusinessLogic\BusinessLogic.csproj", "{3E89386B-8505-4050-83DD-0A575FC77721}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "Data\DataAccess\DataAccess.csproj", "{747C097D-8660-47FE-935F-AF4E0F3518B3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7EE5BE7B-5A0B-4424-AE9B-8C8145C64133} = {7EE5BE7B-5A0B-4424-AE9B-8C8145C64133}
-		{A22418FC-FAD0-445A-93B3-6B76E9B20D1A} = {A22418FC-FAD0-445A-93B3-6B76E9B20D1A}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Shared\Entities\Entities.csproj", "{7EE5BE7B-5A0B-4424-AE9B-8C8145C64133}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonComponents", "Shared\CommonComponents\CommonComponents.csproj", "{A22418FC-FAD0-445A-93B3-6B76E9B20D1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Shared\Common\Common.csproj", "{A22418FC-FAD0-445A-93B3-6B76E9B20D1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{00CBBDD3-0223-442A-834B-B993A6DF7D31}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{EB448F2B-AA18-4EAE-96C9-80A5264C8A10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentation\Presentation\Presentation.csproj", "{00CBBDD3-0223-442A-834B-B993A6DF7D31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

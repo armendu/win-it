@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataAccess
+namespace BusinessLogic
 {
     public class Class1
     {

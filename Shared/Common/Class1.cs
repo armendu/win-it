@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataAccess
+namespace Common
 {
     public class Class1
     {
