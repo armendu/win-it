@@ -1,14 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using Common.Helpers;
+using DataAccess.Mapping;
 using Entities.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Database
 {
-    public class EntityContext: DbContext
+    public class EntityContext : DbContext
     {
         public DbSet<Address> Addresses { get; set; }
         public DbSet<City> Cities { get; set; }
@@ -21,12 +19,12 @@ namespace DataAccess.Database
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-//            builder.Entity<DataEventRecord>().HasKey(m => m.DataEventRecordId);
-//            builder.Entity<SourceInfo>().HasKey(m => m.SourceInfoId);
-//
-//            // shadow properties
-//            builder.Entity<DataEventRecord>().Property<DateTime>("UpdatedTimestamp");
-//            builder.Entity<SourceInfo>().Property<DateTime>("UpdatedTimestamp");
+            // Do the mapping here
+            builder.ApplyConfiguration(new AddressMapping());
+            
+            //            // shadow properties
+            //            builder.Entity<DataEventRecord>().Property<DateTime>("UpdatedTimestamp");
+            //            builder.Entity<SourceInfo>().Property<DateTime>("UpdatedTimestamp");
 
             base.OnModelCreating(builder);
         }
