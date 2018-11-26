@@ -3,19 +3,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Entities
 {
-    public class Role
+    public class Rule
     {
-        public int RoleID { get; set; }
+        [Required]
+        public string RuleID { get; set; }
 
         [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
-
-        [StringLength(250)]
+        [StringLength(150)]
         public string Description { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }
+
+        [Required]
+        public bool IsActive { get; set; }
 
         [Required]
         public DateTime UpdatedTimestamp { get; set; }

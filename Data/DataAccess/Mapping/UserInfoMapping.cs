@@ -30,7 +30,7 @@ namespace DataAccess.Mapping
 
             entity.Property(t => t.Birthdate)
                 .HasColumnType("date")
-                .IsRequired(false);
+                .IsRequired(true);
 
             entity.Property(t => t.UpdatedTimestamp)
                 .HasColumnType("datetime")

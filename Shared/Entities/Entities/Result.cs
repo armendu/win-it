@@ -3,21 +3,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Entities
 {
-    public class Role
+    public class Result
     {
-        public int RoleID { get; set; }
+        public int ResultID { get; set; }
 
         [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
+        public int GameID { get; set; }
 
-        [StringLength(250)]
-        public string Description { get; set; }
-
+        public int? LottoNumbers { get; set; }
+        
         [Required]
         public DateTime CreatedAt { get; set; }
 
         [Required]
         public DateTime UpdatedTimestamp { get; set; }
+
+        public virtual Game Game { get; set; }
     }
 }

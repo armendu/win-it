@@ -3,16 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Entities
 {
-    public class Role
+    public class Report
     {
-        public int RoleID { get; set; }
+        public int ReportID { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
+        public int NumberOfGames { get; set; }
 
-        [StringLength(250)]
-        public string Description { get; set; }
+        public int NumberOfPlayers { get; set; }
+
+        public int NumberOfWinners { get; set; }
 
         [Required]
         public DateTime CreatedAt { get; set; }

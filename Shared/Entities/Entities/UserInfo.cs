@@ -18,10 +18,12 @@ namespace Entities.Entities
         [StringLength(20)]
         public string Phone { get; set; }
 
+        [Required]
         [StringLength(150)]
         public string Email { get; set; }
 
-        public DateTime? Birthdate { get; set; }
+        [Required]
+        public DateTime Birthdate { get; set; }
 
         [Required]
         [StringLength(120)]
@@ -33,6 +35,7 @@ namespace Entities.Entities
         public virtual Address Address { get; set; }
         public virtual User User { get; set; }
 
+        [Required]
         public DateTime UpdatedTimestamp { get; set; }
     }
 }
