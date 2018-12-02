@@ -2,12 +2,12 @@
 
 namespace Common.Interfaces
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
-        T GetById<T>(int id);
-        List<T> List<T>();
-        T Add<T>(T entity);
-        void Update<T>(T entity);
-        void Delete<T>(T entity);
+        T GetById(int id);
+        List<T> List();
+        T Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
     }
 }
