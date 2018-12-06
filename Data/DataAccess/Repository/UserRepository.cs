@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
-using Common.Interfaces;
+using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Entities;
 using Entities.ViewModels;
-using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repository
 {
-    public class UserRepository: IRepository<UserDetailsViewModel>
+    public class UserRepository : IUserRepository
     {
         private readonly EntityContext _entityContext;
 

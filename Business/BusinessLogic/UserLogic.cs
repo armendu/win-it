@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Common.Helpers.Exceptions;
-using DataAccess.Repository;
+using Common.LogicInterfaces;
+using Common.RepositoryInterfaces;
 using Entities.ViewModels;
 
 namespace BusinessLogic
 {
-    public class UserLogic
+    public class UserLogic: IUserLogic
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserLogic(UserRepository userRepository)
+        public UserLogic(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
@@ -35,7 +36,7 @@ namespace BusinessLogic
             }
         }
 
-        public List<UserDetailsViewModel> GetUsersList(bool status)
+        public List<UserDetailsViewModel> GetUsersList()
         {
             try
             {

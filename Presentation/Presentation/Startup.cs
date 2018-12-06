@@ -1,4 +1,8 @@
-﻿using DataAccess.Database;
+﻿using BusinessLogic;
+using Common.LogicInterfaces;
+using Common.RepositoryInterfaces;
+using DataAccess.Database;
+using DataAccess.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +27,9 @@ namespace Presentation
         {
             services.AddDbContext<EntityContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("WinItConnectionString")).UseLazyLoadingProxies());
+
+            services.AddTransient<IUserLogic, UserLogic>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
