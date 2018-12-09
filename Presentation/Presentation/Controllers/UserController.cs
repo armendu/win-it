@@ -20,5 +20,13 @@ namespace Presentation.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Register(string userId)
+        {
+            _userLogic.RegisterUser();
+
+            return View();
+        }
     }
 }

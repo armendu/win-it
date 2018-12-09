@@ -5,8 +5,10 @@ namespace Common.LogicInterfaces
 {
     public interface IUserLogic
     {
-        UserDetailsViewModel GetUserByID(int profileID);
+        UserDetailsViewModel GetUserById(int profileID);
 
         List<UserDetailsViewModel> GetUsersList();
+
+        void RegisterUser();
     }
 }

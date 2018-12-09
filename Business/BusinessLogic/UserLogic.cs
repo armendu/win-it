@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
+using Entities.Models;
 using Entities.ViewModels;
 
 namespace BusinessLogic
@@ -17,23 +18,24 @@ namespace BusinessLogic
             _userRepository = userRepository;
         }
 
-        public UserDetailsViewModel GetUserByID(int profileID)
+        public UserDetailsViewModel GetUserById(int profileID)
         {
-            try
-            {
-                UserDetailsViewModel user = _userRepository.GetById(profileID);
-
-                return user;
-            }
-            catch (NullReferenceException)
-            {
-                throw
-                    new NotFoundException("User was not found");
-            }
-            catch (SqlException)
-            {
-                throw new ConnectionException();
-            }
+//            try
+//            {
+//                UserDetailsViewModel user = _userRepository.GetById(profileID);
+//
+//                return user;
+//            }
+//            catch (NullReferenceException)
+//            {
+//                throw
+//                    new NotFoundException("User was not found");
+//            }
+//            catch (SqlException)
+//            {
+//                throw new ConnectionException();
+//            }
+            throw new NotImplementedException();
         }
 
         public List<UserDetailsViewModel> GetUsersList()
@@ -50,34 +52,18 @@ namespace BusinessLogic
             }
         }
 
-//
-//        public void RegisterUser(RegisterUser model)
-//        {
-//            bool availability = default(bool);
-//
-//            try
-//            {
-//                availability = _userRepository.CheckIdAvailability(model.UserID);
-//            }
-//            catch (SqlException)
-//            {
-//                throw new ConnectionException();
-//            }
-//
-//            if (availability)
-//                throw new DuplicateException("User with this ID is already registred in the application");
-//            else
-//            {
-//                try
-//                {
-//                    _userRepository.RegisterUser(model);
-//                }
-//                catch (Exception)
-//                {
-//                    throw new OperationException("An error occurred while registering User");
-//                }
-//            }
-//        }
+        public void RegisterUser()
+        {
+            try
+            {
+                UserDetailsViewModel model = new UserDetailsViewModel();
+                _userRepository.Add(model);
+            }
+            catch (SqlException)
+            {
+                throw new ConnectionException();
+            }
+        }
 //
 //        public void EditUser(EditUser model)
 //        {

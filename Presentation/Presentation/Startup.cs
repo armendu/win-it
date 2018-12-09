@@ -6,6 +6,7 @@ using DataAccess.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,8 +26,12 @@ namespace Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<EntityContext>(options => options.UseSqlServer(
+            services.AddDbContext<EntityContext>(options => options.UseMySql(
                 Configuration.GetConnectionString("WinItConnectionString")).UseLazyLoadingProxies());
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<EntityContext>()
+                .AddDefaultTokenProviders();
 
             services.AddTransient<IUserLogic, UserLogic>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -60,6 +65,7 @@ namespace Presentation
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

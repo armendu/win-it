@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Internal;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
-using Entities.Entities;
+using Entities.Models;
 using Entities.ViewModels;
 
 namespace DataAccess.Repository
@@ -18,54 +17,25 @@ namespace DataAccess.Repository
             _entityContext = entityContext;
         }
 
-        public UserDetailsViewModel GetById(int id)
+        public User GetById(string id)
         {
-            UserInfo profile = _entityContext.UserInfos.FirstOrDefault(u => u.UserInfoID.Equals(id));
+            User profile = _entityContext.Users.FirstOrDefault(u => u.UserId == id);
 
             if (profile == null)
             {
                 throw new NullReferenceException();
             }
 
-            Address address = profile.Address;
-            AddressViewModel addressModel = new AddressViewModel()
-            {
-                Street = address.Street,
-                ZipCode = address.Street
-            };
-
-            UserDetailsViewModel userModel = new UserDetailsViewModel()
-            {
-                ProfileID = profile.UserInfoID,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                Birthdate = profile.Birthdate,
-                LoginEmail = profile.User.Email,
-                Address = addressModel,
-                Phone = profile.Phone,
-                DateRegistered = profile.User.CreatedAt,
-                Role = profile.User.Role.Name
-            };
-
-            return userModel;
+            return profile;
         }
 
         public List<UserDetailsViewModel> List()
         {
             try
             {
-                List<UserDetailsViewModel> allUsers = _entityContext.UserInfos.Where(u => u.User.IsActive)
-                    .Select(t => new UserDetailsViewModel()
-                    {
-                        FirstName = t.FirstName,
-                        LastName = t.LastName,
-                        ProfileID = t.UserInfoID,
-                    })
-                    .OrderBy(t => t.FirstName)
-                    .ThenBy(t => t.LastName)
-                    .ToList();
+                List<UserDetailsViewModel> allUsers = new List<UserDetailsViewModel>();
 
-                if (allUsers.IsNullOrEmpty())
+                if (allUsers.Count == 0)
                 {
                     throw new NullReferenceException();
                 }
@@ -78,9 +48,29 @@ namespace DataAccess.Repository
             }
         }
 
-        public UserDetailsViewModel Add(UserDetailsViewModel entity)
+        public void Add(UserDetailsViewModel entity)
         {
-            throw new NotImplementedException();
+            using (var transaction = _entityContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    User user = new User()
+                    {
+                        Email = "test@email.com",
+                        Username = "username"
+                    };
+                    
+                    _entityContext.Add(user);
+                    _entityContext.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         public void Update(UserDetailsViewModel entity)

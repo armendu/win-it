@@ -1,4 +1,4 @@
-﻿using Entities.Entities;
+﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,39 +8,32 @@ namespace DataAccess.Mapping
     {
         public void Configure(EntityTypeBuilder<UserInfo> entity)
         {
-            entity.ToTable("USER_INFO");
+            entity.ToTable("userinfo");
 
-            entity.HasKey(t => t.UserInfoID);
+            entity.HasIndex(e => e.AddressId)
+                .HasName("AddressId");
 
-            entity.Property(t => t.FirstName)
-                .HasColumnType("varchar(60)")
-                .IsRequired(true);
+            entity.Property(e => e.UserInfoId).HasColumnType("int(11)");
 
-            entity.Property(t => t.LastName)
-                .HasColumnType("varchar(60)")
-                .IsRequired(true);
+            entity.Property(e => e.AddressId).HasColumnType("int(11)");
 
-            entity.Property(t => t.Phone)
-                .HasColumnType("varchar(20)")
-                .IsRequired(false);
+            entity.Property(e => e.Birthdate).HasColumnType("date");
 
-            entity.Property(t => t.Email)
-                .HasColumnType("varchar(150)")
-                .IsRequired(false);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
-            entity.Property(t => t.Birthdate)
-                .HasColumnType("date")
-                .IsRequired(true);
+            entity.Property(e => e.FirstName).HasColumnType("varchar(50)");
 
-            entity.Property(t => t.UpdatedTimestamp)
-                .HasColumnType("datetime")
-                .IsRequired(true);
+            entity.Property(e => e.LastName).HasColumnType("varchar(50)");
 
-            entity.HasOne(t => t.User)
-                .WithOne(t => t.Profile)
-                .HasForeignKey<UserInfo>(t => t.UserID)
-                .IsRequired(true)
-                .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(e => e.Phone).HasColumnType("varchar(25)");
+
+            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Address)
+                .WithMany(p => p.UserInfo)
+                .HasForeignKey(d => d.AddressId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("userinfo_ibfk_1");
         }
     }
 }
