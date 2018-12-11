@@ -11,14 +11,14 @@ namespace DataAccess.Database
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
-        public virtual DbSet<GameBet> Gamebets { get; set; }
-        public virtual DbSet<GameInfo> Gameinfo { get; set; }
+        public virtual DbSet<GameBet> GameBets { get; set; }
+        public virtual DbSet<GameInfo> GameInfo { get; set; }
         public virtual DbSet<Game> Games { get; set; }
-        public virtual DbSet<GameWinner> Gamewinners { get; set; }
+        public virtual DbSet<GameWinner> GameWinners { get; set; }
         public virtual DbSet<Player> Players { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
-        public virtual DbSet<UserInfo> Userinfo { get; set; }
+        public virtual DbSet<UserInfo> UserInfo { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         public EntityContext(DbContextOptions<EntityContext> options)
@@ -42,9 +42,9 @@ namespace DataAccess.Database
             modelBuilder.ApplyConfiguration(new UserInfoMapping());
             modelBuilder.ApplyConfiguration(new UsersMapping());
             
-            //            // shadow properties
-            //            modelBuilder.Entity<UserInfo>().Property<DateTime>("UpdatedAt");
-            //            modelBuilder.Entity<Rule>().Property<DateTime>("UpdatedAt");
+            // shadow properties
+//            modelBuilder.Entity<Role>().Property<DateTime>("CreateAt");
+//            modelBuilder.Entity<Role>().Property<DateTime>("UpdatedAt");
 
             base.OnModelCreating(modelBuilder);
         }
@@ -52,10 +52,8 @@ namespace DataAccess.Database
         public override int SaveChanges()
         {
             ChangeTracker.DetectChanges();
-
-//            UpdateUpdatedProperty<UserInfo>();
+            
 //            UpdateUpdatedProperty<Role>();
-//            DefineCreatedTimeForProperty<UserInfo>();
 //            DefineCreatedTimeForProperty<Role>();
             
             return base.SaveChanges();

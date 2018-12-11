@@ -7,7 +7,7 @@ namespace Entities.Models
     {
         public City()
         {
-            Addresses = new HashSet<Addresses>();
+            Addresses = new HashSet<Address>();
         }
 
         public int CityId { get; set; }
@@ -17,6 +17,6 @@ namespace Entities.Models
         public int? CountryId { get; set; }
 
         public virtual Country Country { get; set; }
-        public virtual ICollection<Addresses> Addresses { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
     }
 }

@@ -7,8 +7,8 @@ namespace Entities.Models
     {
         public Game()
         {
-            Gamebets = new HashSet<GameBet>();
-            Gamewinners = new HashSet<GameWinner>();
+            GameBets = new HashSet<GameBet>();
+            GameWinners = new HashSet<GameWinner>();
             Transactions = new HashSet<Transaction>();
         }
 
@@ -18,8 +18,8 @@ namespace Entities.Models
         public int? GameInfoId { get; set; }
 
         public virtual GameInfo GameInfo { get; set; }
-        public virtual ICollection<GameBet> Gamebets { get; set; }
-        public virtual ICollection<GameWinner> Gamewinners { get; set; }
+        public virtual ICollection<GameBet> GameBets { get; set; }
+        public virtual ICollection<GameWinner> GameWinners { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

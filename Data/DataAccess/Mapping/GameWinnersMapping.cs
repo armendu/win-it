@@ -28,7 +28,7 @@ namespace DataAccess.Mapping
             entity.Property(e => e.UpdateAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Game)
-                .WithMany(p => p.Gamewinners)
+                .WithMany(p => p.GameWinners)
                 .HasForeignKey(d => d.GameId)
                 .HasConstraintName("gamewinners_ibfk_1");
 

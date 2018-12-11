@@ -1,0 +1,35 @@
+@model Entities.Models.Game
+@{
+    ViewData["Title"] = "Create";
+}
+
+<section class="content-header">
+    <h1>
+        Game
+    </h1>
+</section>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-pencil-square-o"></i>Create new Game</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="form-horizontal">
+                        <div class="col-md-4">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-sm btn-default btn-flat custom-btn" /> &nbsp;
+                                    <a asp-action="Index" class="btn btn-sm btn-default btn-flat custom-btn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>&nbsp; Back to List</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+﻿@model Entities.ViewModels.Role.RoleViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<section class="content-header">
+    <h1>
+        Roles
+    </h1>
+</section>
+<div class="content">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-pencil-square-o"></i>Create new role</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="form-horizontal">
+                        <div class="col-md-4">
+                            <form asp-action="Create">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input asp-for="Name" id="name" type="text" class="form-control"/>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input asp-for="Description" id="description" type="text" class="form-control"/>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-flat" style="width: 48%;">
+                                        <i class="fa fa-plus-circle"></i>&nbsp; Create
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

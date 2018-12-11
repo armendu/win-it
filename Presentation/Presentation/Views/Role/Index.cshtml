@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Entities.Models.Role>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="col-md-12">
+    <h3>Roles</h3>
+</div>
+<div class="col-md-12">
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <a class="btn btn-default btn-flat" asp-controller="Role" asp-action="Create"><i class="fa fa-plus-circle"></i>&nbsp; Create new Role</a>
+        </div>
+        <div class="box-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th width="20%">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreatedAt)
+                    </th>
+                    <th style="text-align: center">
+                        @Html.DisplayName("Actions")
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedAt)
+                        </td>
+                        <td class="text-right">
+                            <a class="btn btn-sm btn-default btn-flat custom-btn"
+                               asp-action="Edit"
+                               asp-route-id="@item.RoleId">
+                                <i class="fa fa-pencil"></i>&nbsp; Edit
+                            </a>
+                            <a class="btn btn-sm btn-default btn-flat custom-btn"
+                               asp-action="Details"
+                               asp-route-id="@item.RoleId">
+                                <i class="fa fa-eye"></i>&nbsp; Details
+                            </a>
+                            @* <a class="btn btn-sm btn-default btn-flat delete custom-btn btn-delete" *@
+                            @*    data-id="@item.RoleId" *@
+                            @*    data-controller="Branch" *@
+                            @*    data-action="Delete" *@
+                            @*    data-object="@JsonConvert.SerializeObject(item)"> *@
+                            @*     <i class="fa fa-trash" style="color: firebrick;"></i>&nbsp; Delete *@
+                            @* </a> *@
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer clearfix">
+            <ul class="pagination pagination-sm no-margin pull-right">
+                <li>
+                    <a href="#">«</a>
+                </li>
+                <li>
+                    <a href="#">1</a>
+                </li>
+                <li>
+                    <a href="#">2</a>
+                </li>
+                <li>
+                    <a href="#">3</a>
+                </li>
+                <li>
+                    <a href="#">»</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

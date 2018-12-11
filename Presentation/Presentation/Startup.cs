@@ -33,8 +33,13 @@ namespace Presentation
                 .AddEntityFrameworkStores<EntityContext>()
                 .AddDefaultTokenProviders();
 
+            // Do the dependency injection here
             services.AddTransient<IUserLogic, UserLogic>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IGameLogic, GameLogic>();
+            services.AddTransient<IGameRepository, GameRepository>();
+            services.AddTransient<IRoleLogic, RoleLogic>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
