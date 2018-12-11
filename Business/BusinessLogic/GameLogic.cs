@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
@@ -21,9 +22,16 @@ namespace BusinessLogic
             throw new System.NotImplementedException();
         }
 
-        public List<Game> GetGames()
+        public List<Game> GetGamesList()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return _gameRepository.List();
+            }
+            catch (Exception)
+            {
+                throw new ConnectionException();
+            }
         }
 
         public void CreateGame()

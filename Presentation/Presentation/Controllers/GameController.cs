@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Common.LogicInterfaces;
 using Entities.Models;
+using Entities.ViewModels;
+using Entities.ViewModels.Game;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -8,18 +11,33 @@ namespace Presentation.Controllers
     public class GameController : Controller
     {
         private readonly IGameLogic _gameLogic;
+        private const int PageSize = 4;
 
         public GameController(IGameLogic gameLogic)
         {
             _gameLogic = gameLogic;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            return View();
+            IndexGameViewModel model = new IndexGameViewModel
+            {
+                GamesList = _gameLogic.GetGamesList()
+                    .OrderBy(g => g.GameId)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = _gameLogic.GetGamesList().Count
+                }
+            };
+
+            return View(model);
         }
 
-        // GET: DayOff/Create
+        // GET: Game/Create
         public ActionResult Create()
         {
             try
@@ -34,7 +52,7 @@ namespace Presentation.Controllers
             }
         }
 
-        // POST: DayOff/Create
+        // POST: Game/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Game model)

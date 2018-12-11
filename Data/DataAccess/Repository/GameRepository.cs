@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
@@ -22,7 +24,61 @@ namespace DataAccess.Repository
 
         public List<Game> List()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                List<Game> someGames = new List<Game>
+                {
+                    new Game
+                    {
+                        GameId = 1,
+                        StartTime = DateTime.UtcNow,
+                        EndTime =  DateTime.UtcNow
+                    },
+                    new Game
+                    {
+                        GameId = 2,
+                        StartTime = DateTime.UtcNow,
+                        EndTime =  DateTime.UtcNow
+                    },
+                    new Game
+                    {
+                        GameId = 3,
+                        StartTime = DateTime.UtcNow,
+                        EndTime =  DateTime.UtcNow
+                    },
+                    new Game
+                    {
+                        GameId = 4,
+                        StartTime = DateTime.UtcNow,
+                        EndTime =  DateTime.UtcNow
+                    },
+                    new Game
+                    {
+                        GameId = 5,
+                        StartTime = DateTime.UtcNow,
+                        EndTime =  DateTime.UtcNow
+                    },
+                    new Game
+                    {
+                        GameId = 6,
+                        StartTime = DateTime.UtcNow,
+                        EndTime =  DateTime.UtcNow
+                    },
+                    new Game
+                    {
+                        GameId = 7,
+                        StartTime = DateTime.UtcNow,
+                        EndTime =  DateTime.UtcNow
+                    }
+                };
+                List<Game> games = _entityContext.Games.ToList();
+                return someGames;
+                //return games;
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
         }
 
         public Game Create(Game entity)
