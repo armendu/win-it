@@ -8,7 +8,6 @@ namespace Common.Helpers.Exceptions
 
         public NotFoundException(): base(_message)
         {
-            
         }
 
         public NotFoundException(string message) : base(message)
