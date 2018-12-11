@@ -1,8 +1,13 @@
 # win-it
 
-Useful commands:
+<h2>Useful commands</h2>
 
-dotnet ef migrations add initial --startup-project ..\..\Presentation\Presentation\Presentation.csproj
-dotnet ef database update --startup-project ..\..\Presentation\Presentation\Presentation.csproj
+<h3>For database migrations</h3> </br>
 
-Scaffold-DbContext "server=localhost;userid=root;password=root;database=winit" Pomelo.EntityFrameworkCore.MySql -OutputDir Models
+`dotnet ef migrations add initial --startup-project ..\..\Presentation\Presentation\Presentation.csproj`
+`dotnet ef database update --startup-project ..\..\Presentation\Presentation\Presentation.csproj`</br>
+
+
+<h3>For Database scaffolding</h3>
+
+`Scaffold-DbContext "server=localhost;userid=root;password=root;database=winit" Pomelo.EntityFrameworkCore.MySql -OutputDir Models`
