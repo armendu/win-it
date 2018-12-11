@@ -9,6 +9,7 @@ namespace Common.LogicInterfaces
         Role GetRoleById(int roleId);
 
         List<Role> List();
+        IEnumerable<Role> List2();
 
         Role Create(RoleViewModel role);
     }

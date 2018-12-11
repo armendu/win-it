@@ -8,6 +8,7 @@ namespace Common.RepositoryInterfaces
     {
         Role GetById(int id);
         List<Role> List();
+        IEnumerable<Role> List2();
         Role Create(RoleViewModel entity);
         void Update(Role entity);
         void Delete(Role entity);

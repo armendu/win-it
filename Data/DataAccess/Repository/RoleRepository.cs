@@ -54,6 +54,20 @@ namespace DataAccess.Repository
             }
         }
 
+        public IEnumerable<Role> List2()
+        {
+            try
+            {
+                IEnumerable<Role> roles = _entityContext.Roles.AsEnumerable();
+
+                return roles;
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
         public Role Create(RoleViewModel entity)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())

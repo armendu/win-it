@@ -34,6 +34,18 @@ namespace BusinessLogic
             }
         }
 
+        public IEnumerable<Role> List2()
+        {
+            try
+            {
+                return _roleRepository.List2();
+            }
+            catch (Exception)
+            {
+                throw new ConnectionException();
+            }
+        }
+
         public Role Create(RoleViewModel role)
         {
             try

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Common.LogicInterfaces;
 using Entities.Models;
+using Entities.ViewModels;
 using Entities.ViewModels.Role;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +12,7 @@ namespace Presentation.Controllers
     public class RoleController : Controller
     {
         private readonly IRoleLogic _roleLogic;
+        private int PageSize = 2;
 
         public RoleController(IRoleLogic roleLogic)
         {
@@ -32,6 +35,25 @@ namespace Presentation.Controllers
                 return
                     View("Index");
             }
+        }
+
+        public ViewResult List(int page = 1)
+        {
+            IndexRoleViewModel model = new IndexRoleViewModel
+            {
+                RolesList = _roleLogic.List2()
+                    .OrderBy(r => r.RoleId)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = _roleLogic.List().Count
+                }
+            };
+
+            return View(model);
         }
 
         // GET: Role/Create
