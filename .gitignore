@@ -25,7 +25,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 Data/DataAccess/Migrations/
-# Presentation/Presentation/appsettings.json
+Presentation/Presentation/appsettings.json
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
