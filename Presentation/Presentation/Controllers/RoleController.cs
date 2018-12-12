@@ -12,7 +12,7 @@ namespace Presentation.Controllers
     public class RoleController : Controller
     {
         private readonly IRoleLogic _roleLogic;
-        private int PageSize = 2;
+        private const int PageSize = 2;
 
         public RoleController(IRoleLogic roleLogic)
         {
@@ -37,7 +37,7 @@ namespace Presentation.Controllers
             }
         }
 
-        public ViewResult List(int page = 1)
+        public IActionResult List(int page = 1)
         {
             IndexRoleViewModel model = new IndexRoleViewModel
             {

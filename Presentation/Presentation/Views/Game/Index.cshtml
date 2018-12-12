@@ -1,8 +1,7 @@
 ﻿@model Entities.ViewModels.Game.IndexGameViewModel
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "- Games";
 }
-
 <div class="col-md-12">
     <h3>Games</h3>
 </div>
@@ -42,11 +41,11 @@
                                asp-route-id="@item.GameId">
                                 <i class="fa fa-pencil"></i>&nbsp; Edit
                             </a>
-                            <a class="btn btn-sm btn-default btn-flat custom-btn"
-                               asp-action="Details"
-                               asp-route-id="@item.GameId">
+                            <button class="btn btn-sm btn-default btn-flat custom-btn"
+                                    data-toggle="modal" data-target="#exampleModalCenter"
+                                    data-url="@Url.Action("Details")">
                                 <i class="fa fa-eye"></i>&nbsp; Details
-                            </a>
+                            </button>
 
                         </td>
                     </tr>
@@ -57,7 +56,9 @@
                  page-class="btn" page-class-normal="btn-default"
                  page-class-selected="btn-primary" class="btn-group pull-right m-1 pagination">
             </div>
-        </div>
 
+            <!-- Modal placeholder -->
+            <div id="modal-placeholder"></div>
+        </div>
     </div>
 </div>

@@ -38,7 +38,7 @@ namespace Presentation.Controllers
         }
 
         // GET: Game/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Presentation.Controllers
         // POST: Game/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Game model)
+        public IActionResult Create(Game model)
         {
             if (!ModelState.IsValid)
             {
@@ -77,6 +77,12 @@ namespace Presentation.Controllers
                 return
                     View("CreateView", model);
             }
+        }
+
+        public IActionResult Details()
+        {
+            var model = new IndexGameViewModel();
+            return PartialView("_PartialDetails", model);
         }
     }
 }
