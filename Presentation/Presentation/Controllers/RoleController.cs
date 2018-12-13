@@ -29,8 +29,7 @@ namespace Presentation.Controllers
             {
                 List<Role> daysOff = _roleLogic.List();
 
-                return
-                    View("Index", daysOff);
+                return View("Index", daysOff);
             }
             catch (Exception ex)
             {
@@ -69,6 +68,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
                 return View("Create");
@@ -84,21 +84,19 @@ namespace Presentation.Controllers
             {
                 ViewBag.Message = "Model State is not valid";
 
-                return
-                    View("Create");
+                return View("Create");
             }
 
             try
             {
                 _roleLogic.Create(model);
-                return
-                    RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
-                return
-                    View("Create", model);
+                return View("Create", model);
             }
         }
     }

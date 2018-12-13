@@ -17,11 +17,20 @@ namespace DataAccess.Repository
             _entityContext = entityContext;
         }
 
+        /// <summary>
+        /// Get game by Id.
+        /// </summary>
+        /// <param name="id">The id of the game.</param>
+        /// <returns>The retrieved game.</returns>
         public Game GetById(string id)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Gets all the games from the database.
+        /// </summary>
+        /// <returns>The retrieved games as a list.</returns>
         public List<Game> List()
         {
             try
@@ -81,6 +90,11 @@ namespace DataAccess.Repository
             }
         }
 
+        /// <summary>
+        /// Persist a new game to the database.
+        /// </summary>
+        /// <param name="entity">The object to be persisted.</param>
+        /// <returns>The persisted object.</returns>
         public Game Create(Game entity)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())

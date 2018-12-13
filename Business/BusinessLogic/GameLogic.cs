@@ -17,11 +17,20 @@ namespace BusinessLogic
             _gameRepository = gameRepository;
         }
 
+        /// <summary>
+        /// Get a game from the repository.
+        /// </summary>
+        /// <param name="gameId">The Id of the game to be retrieved.</param>
+        /// <returns>The retrieved game.</returns>
         public Game GetGameById(int gameId)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Get games from the repository.
+        /// </summary>
+        /// <returns>The retrieved games as a list.</returns>
         public List<Game> GetGamesList()
         {
             try

@@ -59,6 +59,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
                 return View("CreateView");
@@ -74,8 +75,7 @@ namespace Presentation.Controllers
             {
                 ViewBag.Message = "Model State is not valid";
 
-                return
-                    View("CreateView");
+                return View("CreateView");
             }
 
             try
@@ -86,9 +86,10 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
-                return
-                    View("CreateView", model);
+
+                return View("CreateView", model);
             }
         }
 

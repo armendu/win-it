@@ -18,6 +18,10 @@ namespace DataAccess.Repository
             _entityContext = entityContext;
         }
 
+        /// <summary>
+        /// Get role by Id.
+        /// </summary>
+        /// <returns>The retrieved role.</returns>
         public Role GetById(int id)
         {
             try
@@ -40,6 +44,10 @@ namespace DataAccess.Repository
             }
         }
 
+        /// <summary>
+        /// Gets all the roles from the database.
+        /// </summary>
+        /// <returns>The retrieved roles as a list.</returns>
         public List<Role> List()
         {
             try
@@ -68,6 +76,11 @@ namespace DataAccess.Repository
             }
         }
 
+        /// <summary>
+        /// Persist a new role to the database.
+        /// </summary>
+        /// <param name="entity">The object to be persisted.</param>
+        /// <returns>The persisted object.</returns>
         public Role Create(RoleViewModel entity)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())

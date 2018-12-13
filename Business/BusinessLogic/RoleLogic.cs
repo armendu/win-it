@@ -17,11 +17,20 @@ namespace BusinessLogic
             _roleRepository = roleRepository;
         }
 
+        /// <summary>
+        /// Get a role from the repository.
+        /// </summary>
+        /// <param name="roleId">The Id of the role to be retrieved.</param>
+        /// <returns>The retrieved role.</returns>
         public Role GetRoleById(int roleId)
         {
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Get roles from the repository.
+        /// </summary>
+        /// <returns>The retrieved roles as a list.</returns>
         public List<Role> List()
         {
             try
