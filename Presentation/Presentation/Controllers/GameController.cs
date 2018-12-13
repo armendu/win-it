@@ -5,36 +5,49 @@ using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.Game;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
 {
     public class GameController : Controller
     {
         private readonly IGameLogic _gameLogic;
+        private readonly ILogger _logger;
         private const int PageSize = 4;
 
-        public GameController(IGameLogic gameLogic)
+        public GameController(IGameLogic gameLogic, ILogger<GameController> logger)
         {
             _gameLogic = gameLogic;
+            _logger = logger;
         }
 
         public IActionResult Index(int page = 1)
         {
-            IndexGameViewModel model = new IndexGameViewModel
+            try
             {
-                GamesList = _gameLogic.GetGamesList()
-                    .OrderBy(g => g.GameId)
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
-                PagingInfo = new PagingInfo
+                IndexGameViewModel model = new IndexGameViewModel
                 {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = _gameLogic.GetGamesList().Count
-                }
-            };
+                    GamesList = _gameLogic.GetGamesList()
+                        .OrderBy(g => g.GameId)
+                        .Skip((page - 1) * PageSize)
+                        .Take(PageSize),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = _gameLogic.GetGamesList().Count
+                    }
+                };
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return View("Index");
+            }
         }
 
         // GET: Game/Create

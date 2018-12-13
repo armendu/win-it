@@ -6,17 +6,20 @@ using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.Role;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
 {
     public class RoleController : Controller
     {
         private readonly IRoleLogic _roleLogic;
-        private const int PageSize = 2;
+        private readonly ILogger _logger;
+        private const int PageSize = 4;
 
-        public RoleController(IRoleLogic roleLogic)
+        public RoleController(IRoleLogic roleLogic, ILogger<RoleController> logger)
         {
             _roleLogic = roleLogic;
+            _logger = logger;
         }
 
         // GET: Role/Index
@@ -31,9 +34,10 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
-                return
-                    View("Index");
+
+                return View("Index");
             }
         }
 
