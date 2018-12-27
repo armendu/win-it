@@ -8,7 +8,8 @@ namespace Common.RepositoryInterfaces
     {
         User GetById(string id);
         List<UserDetailsViewModel> List();
-        void Add(UserDetailsViewModel entity);
+        bool Login();
+        void Create(UserDetailsViewModel entity);
         void Update(UserDetailsViewModel entity);
         void Delete(UserDetailsViewModel entity);
     }

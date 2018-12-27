@@ -48,7 +48,7 @@ namespace DataAccess.Repository
             }
         }
 
-        public void Add(UserDetailsViewModel entity)
+        public void Create(UserDetailsViewModel entity)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())
             {
@@ -71,6 +71,23 @@ namespace DataAccess.Repository
                     throw;
                 }
             }
+        }
+
+        public bool Login()
+        {
+            using (var transaction = _entityContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    _entityContext.Users.Find();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+            return true;
         }
 
         public void Update(UserDetailsViewModel entity)

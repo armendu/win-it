@@ -12,7 +12,7 @@ namespace BusinessLogic
     public class UserLogic: IUserLogic
     {
         private readonly IUserRepository _userRepository;
-
+        
         public UserLogic(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -38,7 +38,7 @@ namespace BusinessLogic
             throw new NotImplementedException();
         }
 
-        public List<UserDetailsViewModel> GetUsersList()
+        public List<UserDetailsViewModel> List()
         {
             try
             {
@@ -52,17 +52,22 @@ namespace BusinessLogic
             }
         }
 
-        public void RegisterUser()
+        public void Create()
         {
             try
             {
                 UserDetailsViewModel model = new UserDetailsViewModel();
-                _userRepository.Add(model);
+                _userRepository.Create(model);
             }
             catch (SqlException)
             {
                 throw new ConnectionException();
             }
+        }
+
+        public bool Login()
+        {
+            return false;
         }
 //
 //        public void EditUser(EditUser model)

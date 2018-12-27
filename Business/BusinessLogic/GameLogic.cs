@@ -31,7 +31,7 @@ namespace BusinessLogic
         /// Get games from the repository.
         /// </summary>
         /// <returns>The retrieved games as a list.</returns>
-        public List<Game> GetGamesList()
+        public List<Game> List()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace BusinessLogic
             }
         }
 
-        public void CreateGame()
+        public void Create()
         {
             try
             {

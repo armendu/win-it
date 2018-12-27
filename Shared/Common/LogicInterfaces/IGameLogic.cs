@@ -7,8 +7,8 @@ namespace Common.LogicInterfaces
     {
         Game GetGameById(int gameId);
 
-        List<Game> GetGamesList();
+        List<Game> List();
 
-        void CreateGame();
+        void Create();
     }
 }

@@ -7,8 +7,10 @@ namespace Common.LogicInterfaces
     {
         UserDetailsViewModel GetUserById(int profileID);
 
-        List<UserDetailsViewModel> GetUsersList();
+        List<UserDetailsViewModel> List();
 
-        void RegisterUser();
+        void Create();
+
+        bool Login();
     }
 }

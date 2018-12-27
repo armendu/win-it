@@ -27,7 +27,7 @@ namespace Presentation.Controllers
             {
                 IndexGameViewModel model = new IndexGameViewModel
                 {
-                    GamesList = _gameLogic.GetGamesList()
+                    GamesList = _gameLogic.List()
                         .OrderBy(g => g.GameId)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
@@ -35,7 +35,7 @@ namespace Presentation.Controllers
                     {
                         CurrentPage = page,
                         ItemsPerPage = PageSize,
-                        TotalItems = _gameLogic.GetGamesList().Count
+                        TotalItems = _gameLogic.List().Count
                     }
                 };
 
@@ -55,14 +55,14 @@ namespace Presentation.Controllers
         {
             try
             {
-                return View("CreateView");
+                return View("Create");
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return View("CreateView");
+                return View("Create");
             }
         }
 
@@ -75,7 +75,7 @@ namespace Presentation.Controllers
             {
                 ViewBag.Message = "Model State is not valid";
 
-                return View("CreateView");
+                return View("Create");
             }
 
             try
@@ -89,7 +89,7 @@ namespace Presentation.Controllers
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return View("CreateView", model);
+                return View("Create", model);
             }
         }
 
