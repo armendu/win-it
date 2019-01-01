@@ -25,12 +25,10 @@ namespace Entities.ViewModels.User
         [Required]
         public string LastName { get; set; }
 
-
         public string Phone { get; set; }
 
-        [Required]
-        public DateTime Birthdate { get; set; }
-
+//        public DateTime Birthdate { get; set; }
+        
         public string ReturnUrl { get; set; } = "/";
     }
 }

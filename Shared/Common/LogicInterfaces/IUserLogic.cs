@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entities.ViewModels;
+using Entities.ViewModels.User;
 
 namespace Common.LogicInterfaces
 {
@@ -9,7 +10,7 @@ namespace Common.LogicInterfaces
 
         List<UserDetailsViewModel> List();
 
-        void Create();
+        void Create(RegisterViewModel registerModel);
 
         bool Login();
     }

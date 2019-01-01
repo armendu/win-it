@@ -5,6 +5,7 @@ using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
 using Entities.ViewModels;
+using Entities.ViewModels.User;
 
 namespace DataAccess.Repository
 {
@@ -48,18 +49,74 @@ namespace DataAccess.Repository
             }
         }
 
-        public void Create(UserDetailsViewModel entity)
+        public void Create(RegisterViewModel entity)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())
             {
                 try
                 {
-                    User user = new User()
+                    Country country = new Country
                     {
-                        Email = "test@email.com",
-                        Username = "username"
+                        Name = "Kosova",
+                        UpdateAt = DateTime.UtcNow,
+                        CreatedAt = DateTime.UtcNow
                     };
-                    
+
+                    City city = new City
+                    {
+                        Name = "Prishtina",
+                        Country = country,
+                        UpdateAt = DateTime.UtcNow,
+                        CreatedAt = DateTime.UtcNow
+                    };
+
+                    Address address = new Address
+                    {
+                        City = city,
+                        Street = "Test street",
+                        ZipCode = "10000",
+                        UpdateAt = DateTime.UtcNow,
+                        CreatedAt = DateTime.UtcNow
+                    };
+
+                    UserInfo userInfo = new UserInfo
+                    {
+                        Address = address,
+                        UpdateAt = DateTime.UtcNow,
+                        CreatedAt = DateTime.UtcNow,
+                        FirstName = entity.FirstName,
+                        LastName = entity.LastName,
+                        Phone = entity.Phone,
+//                        Birthdate = entity.Birthdate
+                    };
+
+                    Player player = new Player
+                    {
+                        Balance = 0,
+                        NumberOfGamesPlayed = 0,
+                        NumberOfGamesWon = 0,
+                        TotalSpent = 0,
+                        UpdateAt = DateTime.UtcNow,
+                        CreatedAt = DateTime.UtcNow,
+                    };
+
+                    Role role = new Role
+                    {
+                        Name = "Initial role",
+                        Description = "Entry role",
+                        UpdateAt = DateTime.UtcNow,
+                        CreatedAt = DateTime.UtcNow
+                    };
+
+                    User user = new User
+                    {
+                        Username = entity.Username,
+                        UserInfo = userInfo,
+                        Email = entity.Email,
+                        Player = player,
+                        Role = role
+                    };
+
                     _entityContext.Add(user);
                     _entityContext.SaveChanges();
 
@@ -87,6 +144,7 @@ namespace DataAccess.Repository
                     throw;
                 }
             }
+
             return true;
         }
 

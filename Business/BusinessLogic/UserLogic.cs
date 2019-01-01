@@ -4,8 +4,8 @@ using System.Data.SqlClient;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
-using Entities.Models;
 using Entities.ViewModels;
+using Entities.ViewModels.User;
 
 namespace BusinessLogic
 {
@@ -52,11 +52,10 @@ namespace BusinessLogic
             }
         }
 
-        public void Create()
+        public void Create(RegisterViewModel model)
         {
             try
             {
-                UserDetailsViewModel model = new UserDetailsViewModel();
                 _userRepository.Create(model);
             }
             catch (SqlException)

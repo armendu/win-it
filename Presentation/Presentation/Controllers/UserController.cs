@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common.LogicInterfaces;
 using Entities.ViewModels;
@@ -6,6 +7,7 @@ using Entities.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
 {
@@ -14,13 +16,15 @@ namespace Presentation.Controllers
         private readonly IUserLogic _userLogic;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _singInManager;
+        private readonly ILogger _logger;
 
         public UserController(IUserLogic userLogic, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> singInManager)
+            SignInManager<IdentityUser> singInManager, ILogger<UserController> logger)
         {
             _userLogic = userLogic;
             _userManager = userManager;
             _singInManager = singInManager;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -28,14 +32,6 @@ namespace Presentation.Controllers
             List<UserDetailsViewModel> model = _userLogic.List();
 
             return View(model);
-        }
-
-        [HttpGet]
-        public IActionResult Register(string userId)
-        {
-            _userLogic.Create();
-
-            return View();
         }
 
         [AllowAnonymous]
@@ -69,6 +65,35 @@ namespace Presentation.Controllers
 
             ModelState.AddModelError("", "Invalid name or password");
             return View(loginModel);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult Create(RegisterViewModel registerModel)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _userLogic.Create(registerModel);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                    ViewBag.ErrorMessage = ex.Message;
+
+                    return View("Create");
+                }
+            }
+
+            ViewBag.ErrorMessage = "Model state is not valid";
+            return View("Create");
         }
 
         public async Task<RedirectResult> Logout(string returnUrl = "/")
