@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Models
 {
-    public class Role
+    public class Role : IdentityRole
     {
-        public Role()
+        public Role() : base()
         {
-            Users = new HashSet<User>();
         }
 
-        public int RoleId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdateAt { get; set; }
+        public Role(string name, string description): base(name)
+        {
+            Description = description;
+        }
 
-        public virtual ICollection<User> Users { get; set; }
+        public string Description { get; set; }
     }
 }

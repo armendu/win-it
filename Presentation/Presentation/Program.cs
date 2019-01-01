@@ -15,11 +15,15 @@ namespace Presentation
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureLogging((hostingContext, logging) =>
                 {
+                    // Enable logging
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     logging.AddConsole();
                     logging.AddDebug();
                     logging.AddEventSourceLogger();
                 })
-                .UseStartup<Startup>();
+                .UseDefaultServiceProvider(
+                    // Disable the dependency injection scope validation feature
+                    options => options.ValidateScopes = false
+                ).UseStartup<Startup>();
     }
 }

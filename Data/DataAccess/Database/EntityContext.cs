@@ -1,8 +1,11 @@
 ﻿using System;
-using System.Linq;
+using System.Threading.Tasks;
 using DataAccess.Mapping;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DataAccess.Database
 {
@@ -16,10 +19,10 @@ namespace DataAccess.Database
         public virtual DbSet<Game> Games { get; set; }
         public virtual DbSet<GameWinner> GameWinners { get; set; }
         public virtual DbSet<Player> Players { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<UserInfo> UserInfo { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
 
         public EntityContext(DbContextOptions<EntityContext> options)
             : base(options)
@@ -41,7 +44,7 @@ namespace DataAccess.Database
             modelBuilder.ApplyConfiguration(new TransactionsMapping());
             modelBuilder.ApplyConfiguration(new UserInfoMapping());
             modelBuilder.ApplyConfiguration(new UsersMapping());
-            
+
             // shadow properties
 //            modelBuilder.Entity<Role>().Property<DateTime>("CreateAt");
 //            modelBuilder.Entity<Role>().Property<DateTime>("UpdatedAt");
@@ -49,37 +52,44 @@ namespace DataAccess.Database
             base.OnModelCreating(modelBuilder);
         }
 
-        public override int SaveChanges()
+        /// <summary>
+        /// Creates a default admin user during the first build.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="configuration">The configuration to be used.</param>
+        /// <returns></returns>
+        public static async Task CreateAdminAccount(IServiceProvider serviceProvider,
+            IConfiguration configuration)
         {
-            ChangeTracker.DetectChanges();
-            
-//            UpdateUpdatedProperty<Role>();
-//            DefineCreatedTimeForProperty<Role>();
-            
-            return base.SaveChanges();
-        }
+            UserManager<User> userManager =
+                serviceProvider.GetRequiredService<UserManager<User>>();
+            RoleManager<Role> roleManager =
+                serviceProvider.GetRequiredService<RoleManager<Role>>();
+            string username = configuration["AdminUser:UserName"];
+            string email = configuration["AdminUser:Email"];
+            string password = configuration["AdminUser:Password"];
+            string role = configuration["AdminUser:Role"];
+            string description = configuration["AdminUser:Description"];
 
-        private void UpdateUpdatedProperty<T>() where T : class
-        {
-            var modifiedSourceInfo =
-                ChangeTracker.Entries<T>()
-                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
-
-            foreach (var entry in modifiedSourceInfo)
+            if (await userManager.FindByNameAsync(username) == null)
             {
-                entry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
-            }
-        }
+                if (await roleManager.FindByNameAsync(role) == null)
+                {
+                    await roleManager.CreateAsync(new Role(role, description));
+                }
 
-        private void DefineCreatedTimeForProperty<T>() where T : class
-        {
-            var modifiedSourceInfo =
-                ChangeTracker.Entries<T>()
-                    .Where(e => e.State == EntityState.Added);
+                User user = new User
+                {
+                    UserName = username,
+                    Email = email
+                };
 
-            foreach (var entry in modifiedSourceInfo)
-            {
-                entry.Property("CreatedAt").CurrentValue = DateTime.UtcNow;
+                IdentityResult result = await userManager
+                    .CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, role);
+                }
             }
         }
     }

@@ -18,11 +18,11 @@
         <form asp-action="Login" asp-controller="User" method="post" class="form-signin">
             <input type="hidden" asp-for="ReturnUrl"/>
             <span id="reauth-email" class="reauth-email"></span>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+            <input asp-for="UserName" type="text" class="form-control" placeholder="UserName" required autofocus>
             <div>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Password" required>
             <div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>

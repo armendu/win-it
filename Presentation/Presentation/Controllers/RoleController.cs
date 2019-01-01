@@ -45,9 +45,10 @@ namespace Presentation.Controllers
             IndexRoleViewModel model = new IndexRoleViewModel
             {
                 RolesList = _roleLogic.List2()
-                    .OrderBy(r => r.RoleId)
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
+//                    .OrderBy(r => r.RoleId)
+//                    .Skip((page - 1) * PageSize)
+//                    .Take(PageSize)
+                ,
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = page,

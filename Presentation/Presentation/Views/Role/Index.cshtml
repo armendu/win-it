@@ -21,9 +21,6 @@
                     <th width="20%">
                         @Html.DisplayNameFor(model => model.Description)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CreatedAt)
-                    </th>
                     <th style="text-align: center">
                         @Html.DisplayName("Actions")
                     </th>
@@ -39,18 +36,15 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CreatedAt)
-                        </td>
                         <td class="text-right">
                             <a class="btn btn-sm btn-default btn-flat custom-btn"
                                asp-action="Edit"
-                               asp-route-id="@item.RoleId">
+                               asp-route-id="@item.Id">
                                 <i class="fa fa-pencil"></i>&nbsp; Edit
                             </a>
                             <a class="btn btn-sm btn-default btn-flat custom-btn"
                                asp-action="Details"
-                               asp-route-id="@item.RoleId">
+                               asp-route-id="@item.Name">
                                 <i class="fa fa-eye"></i>&nbsp; Details
                             </a>
                             @* <a class="btn btn-sm btn-default btn-flat delete custom-btn btn-delete" *@

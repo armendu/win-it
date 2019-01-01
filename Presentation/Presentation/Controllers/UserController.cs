@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common.LogicInterfaces;
+using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
@@ -14,12 +15,12 @@ namespace Presentation.Controllers
     public class UserController : Controller
     {
         private readonly IUserLogic _userLogic;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _singInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _singInManager;
         private readonly ILogger _logger;
 
-        public UserController(IUserLogic userLogic, UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> singInManager, ILogger<UserController> logger)
+        public UserController(IUserLogic userLogic, UserManager<User> userManager,
+            SignInManager<User> singInManager, ILogger<UserController> logger)
         {
             _userLogic = userLogic;
             _userManager = userManager;
@@ -50,7 +51,7 @@ namespace Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user =
+                User user =
                     await _userManager.FindByNameAsync(loginModel.UserName);
                 if (user != null)
                 {
@@ -75,13 +76,30 @@ namespace Presentation.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Create(RegisterViewModel registerModel)
+        public async Task<IActionResult> Create(RegisterViewModel registerModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _userLogic.Create(registerModel);
+                    User user = new User
+                    {
+                        UserName = registerModel.FirstName,
+                        Email = registerModel.Email
+                    };
+                    IdentityResult result
+                        = await _userManager.CreateAsync(user, registerModel.Password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        foreach (IdentityError error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -92,8 +110,7 @@ namespace Presentation.Controllers
                 }
             }
 
-            ViewBag.ErrorMessage = "Model state is not valid";
-            return View("Create");
+            return View(registerModel);
         }
 
         public async Task<RedirectResult> Logout(string returnUrl = "/")

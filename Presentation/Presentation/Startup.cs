@@ -1,8 +1,10 @@
-﻿using BusinessLogic;
+﻿using System;
+using BusinessLogic;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using DataAccess.Repository;
+using Entities.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,9 +31,17 @@ namespace Presentation
             services.AddDbContext<EntityContext>(options => options.UseMySql(
                 Configuration.GetConnectionString("WinItConnectionString")).UseLazyLoadingProxies());
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<EntityContext>()
-                .AddDefaultTokenProviders();
+            // UserIdentity configuration
+            services.AddIdentity<User, Role>(options =>
+            {
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            })
+            .AddEntityFrameworkStores<EntityContext>()
+            .AddDefaultTokenProviders();
 
             // Do the dependency injection here
             services.AddTransient<IUserLogic, UserLogic>();
@@ -70,7 +80,12 @@ namespace Presentation
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+
+            // Enable Authentication
             app.UseAuthentication();
+
+            // Create default admin account
+//            EntityContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
 
             app.UseMvc(routes =>
             {

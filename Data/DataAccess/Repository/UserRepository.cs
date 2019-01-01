@@ -103,9 +103,7 @@ namespace DataAccess.Repository
                     Role role = new Role
                     {
                         Name = "Initial role",
-                        Description = "Entry role",
-                        UpdateAt = DateTime.UtcNow,
-                        CreatedAt = DateTime.UtcNow
+                        Description = "Entry role"
                     };
 
                     User user = new User

@@ -26,12 +26,12 @@ namespace DataAccess.Repository
         {
             try
             {
-                Role role = _entityContext.Roles.FirstOrDefault(r => r.RoleId == id);
-
-                if (role != null)
-                {
-                    return role;
-                }
+//                Role role = _entityContext.Roles.FirstOrDefault(r => r.RoleId == id);
+//
+//                if (role != null)
+//                {
+//                    return role;
+//                }
                 throw new NullReferenceException();
             }
             catch (NullReferenceException)
@@ -52,9 +52,9 @@ namespace DataAccess.Repository
         {
             try
             {
-                List<Role> roles = _entityContext.Roles.ToList();
+                //List<Role> roles = _entityContext.Roles.ToList();
 
-                return roles;
+                return new List<Role>();
             }
             catch (SqlException)
             {
@@ -66,9 +66,10 @@ namespace DataAccess.Repository
         {
             try
             {
-                IEnumerable<Role> roles = _entityContext.Roles.AsEnumerable();
-
-                return roles;
+//                IEnumerable<Role> roles = _entityContext.Roles.AsEnumerable();
+//
+//                return roles;
+                throw new Exception();
             }
             catch (SqlException)
             {
@@ -90,9 +91,7 @@ namespace DataAccess.Repository
                     Role role = new Role
                     {
                         Name = entity.Name,
-                        Description =  entity.Description,
-                        CreatedAt = DateTime.UtcNow,
-                        UpdateAt = DateTime.UtcNow
+                        Description =  entity.Description
                     };
 
                     _entityContext.Add(role);
