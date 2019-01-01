@@ -20,7 +20,7 @@ namespace DataAccess.Repository
 
         public User GetById(string id)
         {
-            User profile = _entityContext.Users.FirstOrDefault(u => u.UserId == id);
+            User profile = _entityContext.Users.FirstOrDefault(u => u.Id == id);
 
             if (profile == null)
             {
@@ -110,11 +110,10 @@ namespace DataAccess.Repository
 
                     User user = new User
                     {
-                        Username = entity.Username,
+                        UserName = entity.Username,
                         UserInfo = userInfo,
                         Email = entity.Email,
-                        Player = player,
-                        Role = role
+                        Player = player
                     };
 
                     _entityContext.Add(user);
