@@ -20,7 +20,7 @@ namespace DataAccess.Repository
 
         public User GetById(string id)
         {
-            User profile = _entityContext.Users.FirstOrDefault(u => u.Id == id);
+            User profile = _entityContext.Users.FirstOrDefault(u => u.Id.ToString() == id);
 
             if (profile == null)
             {

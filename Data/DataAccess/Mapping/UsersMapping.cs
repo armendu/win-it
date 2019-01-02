@@ -14,12 +14,6 @@ namespace DataAccess.Mapping
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("users_ibfk_3");
 
-//            entity.HasOne(d => d.Role)
-//                .WithMany(p => p.Users)
-//                .HasForeignKey(d => d.RoleId)
-//                .OnDelete(DeleteBehavior.Cascade)
-//                .HasConstraintName("users_ibfk_1");
-
             entity.HasOne(d => d.UserInfo)
                 .WithMany(p => p.Users)
                 .HasForeignKey(d => d.UserInfoId)

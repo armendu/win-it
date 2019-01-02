@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Models
 {
-    public class User: IdentityUser
+    public class User: IdentityUser<Guid>
     {
         public int? UserInfoId { get; set; }
         public int? PlayerId { get; set; }

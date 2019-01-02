@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace Entities.Models
 {
-    public class Role : IdentityRole
+    public class Role : IdentityRole<Guid>
     {
         public Role() : base()
         {
