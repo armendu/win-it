@@ -24,7 +24,7 @@ namespace DataAccess.Database
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<IdentityUserRole<Guid>> UserRoles { get; set; }
-        public virtual DbSet<IdentityUserClaim<Guid>> UserClaims {get; set; }
+        public virtual DbSet<IdentityUserClaim<Guid>> UserClaims { get; set; }
 
         public EntityContext(DbContextOptions<EntityContext> options)
             : base(options)
@@ -47,7 +47,7 @@ namespace DataAccess.Database
             modelBuilder.ApplyConfiguration(new UserInfoMapping());
             modelBuilder.ApplyConfiguration(new UsersMapping());
             modelBuilder.ApplyConfiguration(new IdentityUserRoleMapping());
-            
+
             // shadow properties
 //            modelBuilder.Entity<Role>().Property<DateTime>("CreateAt");
 //            modelBuilder.Entity<Role>().Property<DateTime>("UpdatedAt");

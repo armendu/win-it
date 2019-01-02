@@ -1,6 +1,6 @@
 ﻿@model Entities.ViewModels.Role.RoleViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "- Create roles";
 }
 
 <section class="content-header">
@@ -24,19 +24,22 @@
 
                                 <div class="form-group">
                                     <label>Name</label>
-                                    <input asp-for="Name" id="name" type="text" class="form-control"/>
+                                    <input asp-for="Name" id="name" type="text" class="form-control" />
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Description</label>
-                                    <input asp-for="Description" id="description" type="text" class="form-control"/>
+                                    <input asp-for="Description" id="description" type="text" class="form-control" />
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-flat" style="width: 48%;">
+                                    <button type="submit" class="btn btn-primary btn-flat" style="width: 48%;margin-right:2%">
                                         <i class="fa fa-plus-circle"></i>&nbsp; Create
+                                    </button>
+                                    <button asp-action="Index" class="btn btn-default btn-flat" style="width: 48%;">
+                                        <i class="fa fa-plus-circle"></i> Cancel
                                     </button>
                                 </div>
                             </form>

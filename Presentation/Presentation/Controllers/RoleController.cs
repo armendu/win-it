@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Common.LogicInterfaces;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Entities.Models;
-using Entities.ViewModels;
-using Entities.ViewModels.Role;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,24 +11,23 @@ namespace Presentation.Controllers
 {
     public class RoleController : Controller
     {
-        private readonly IRoleLogic _roleLogic;
         private readonly ILogger _logger;
-        private const int PageSize = 4;
+        private RoleManager<Role> _roleManager;
 
-        public RoleController(IRoleLogic roleLogic, ILogger<RoleController> logger)
+        public RoleController(ILogger<RoleController> logger, RoleManager<Role> roleManager)
         {
-            _roleLogic = roleLogic;
             _logger = logger;
+            _roleManager = roleManager;
         }
 
         // GET: Role/Index
-        public IActionResult Index()
+        public ViewResult Index()
         {
             try
             {
-                List<Role> daysOff = _roleLogic.List();
+                IEnumerable<Role> roles = _roleManager.Roles;
 
-                return View("Index", daysOff);
+                return View(roles);
             }
             catch (Exception ex)
             {
@@ -38,26 +36,6 @@ namespace Presentation.Controllers
 
                 return View("Index");
             }
-        }
-
-        public IActionResult List(int page = 1)
-        {
-            IndexRoleViewModel model = new IndexRoleViewModel
-            {
-                RolesList = _roleLogic.List2()
-//                    .OrderBy(r => r.RoleId)
-//                    .Skip((page - 1) * PageSize)
-//                    .Take(PageSize)
-                ,
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = _roleLogic.List().Count
-                }
-            };
-
-            return View(model);
         }
 
         // GET: Role/Create
@@ -78,26 +56,55 @@ namespace Presentation.Controllers
 
         // POST: Role/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(RoleViewModel model)
+        public async Task<IActionResult> Create([Required] string name, string description)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                ViewBag.Message = "Model State is not valid";
-
-                return View("Create");
+                IdentityResult result
+                    = await _roleManager.CreateAsync(new Role(name, description));
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    AddErrorsFromResult(result);
+                }
             }
 
-            try
+            return View(name);
+        }
+
+        // POST: Role/Delete/id
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            Role role = await _roleManager.FindByIdAsync(id);
+            if (role != null)
             {
-                _roleLogic.Create(model);
-                return RedirectToAction("Index");
+                IdentityResult result = await _roleManager.DeleteAsync(role);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    AddErrorsFromResult(result);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
-                ViewBag.ErrorMessage = ex.Message;
-                return View("Create", model);
+                ModelState.AddModelError("", "No role found");
+            }
+
+            return View("Index", _roleManager.Roles);
+        }
+
+        private void AddErrorsFromResult(IdentityResult result)
+        {
+            foreach (IdentityError error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
             }
         }
     }

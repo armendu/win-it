@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Entities.Models.Role>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "- Roles";
 }
 
 <div class="col-md-12">
@@ -14,29 +14,33 @@
         <div class="box-body">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th width="20%">
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th width="20%">
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th style="text-align: center">
-                        @Html.DisplayName("Actions")
-                    </th>
-                </tr>
+                    <tr>
+                        <th width="20%">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("Members")
+                        </th>
+                        <th width="40%" style="text-align: center">
+                            @Html.DisplayName("Actions")
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
+                        <td width="20%">
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
-                        <td>
+                        <td width="20%">
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
-                        <td class="text-right">
+                        <td width="20%" identity-role="@item.Id"></td>
+                        <td width="40%" style="text-align: center">
                             <a class="btn btn-sm btn-default btn-flat custom-btn"
                                asp-action="Edit"
                                asp-route-id="@item.Id">
@@ -44,40 +48,19 @@
                             </a>
                             <a class="btn btn-sm btn-default btn-flat custom-btn"
                                asp-action="Details"
-                               asp-route-id="@item.Name">
+                               asp-route-id="@item.Id">
                                 <i class="fa fa-eye"></i>&nbsp; Details
                             </a>
-                            @* <a class="btn btn-sm btn-default btn-flat delete custom-btn btn-delete" *@
-                            @*    data-id="@item.RoleId" *@
-                            @*    data-controller="Branch" *@
-                            @*    data-action="Delete" *@
-                            @*    data-object="@JsonConvert.SerializeObject(item)"> *@
-                            @*     <i class="fa fa-trash" style="color: firebrick;"></i>&nbsp; Delete *@
-                            @* </a> *@
+                            <a class="btn btn-sm btn-default btn-flat delete custom-btn btn-delete"
+                               asp-action="Delete"
+                               asp-route-id="@item.Id">
+                                <i class="fa fa-trash" style="color: firebrick;"></i>&nbsp; Delete
+                            </a>
                         </td>
                     </tr>
                 }
                 </tbody>
             </table>
-        </div>
-        <div class="box-footer clearfix">
-            <ul class="pagination pagination-sm no-margin pull-right">
-                <li>
-                    <a href="#">«</a>
-                </li>
-                <li>
-                    <a href="#">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">»</a>
-                </li>
-            </ul>
         </div>
     </div>
 </div>

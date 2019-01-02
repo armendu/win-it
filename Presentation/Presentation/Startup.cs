@@ -1,5 +1,4 @@
-﻿using System;
-using BusinessLogic;
+﻿using BusinessLogic;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
@@ -48,8 +47,6 @@ namespace Presentation
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IGameLogic, GameLogic>();
             services.AddTransient<IGameRepository, GameRepository>();
-            services.AddTransient<IRoleLogic, RoleLogic>();
-            services.AddTransient<IRoleRepository, RoleRepository>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -85,7 +82,7 @@ namespace Presentation
             app.UseAuthentication();
 
             // Create default admin account
-//            EntityContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
+            EntityContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
 
             app.UseMvc(routes =>
             {
