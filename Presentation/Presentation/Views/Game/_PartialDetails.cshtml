@@ -1,4 +1,4 @@
-﻿@model Entities.ViewModels.Game.IndexGameViewModel
+﻿@model Entities.Models.Game
 
 <link rel="stylesheet" href="~/plugins/bootstrap-4.0.0/js/dist/popover.js">
 
@@ -7,7 +7,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Game Details</h5>
+                <h3 class="modal-title" id="exampleModalLongTitle">Game Details</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,7 +15,10 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label asp-for="PagingInfo.CurrentPage"></label>
+                        <label asp-for="GameId"></label><span> @Model.GameId</span><br/>
+                        <label asp-for="StartTime"></label><span> @Model.StartTime</span><br />
+                        <label asp-for="EndTime"></label><span> @Model.EndTime</span><br />
+                        <label asp-for="GameBets"></label><span> @Model.GameBets</span><br />
                     </div>
                 </form>
             </div>

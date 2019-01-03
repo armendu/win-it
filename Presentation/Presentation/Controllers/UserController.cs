@@ -82,6 +82,7 @@ namespace Presentation.Controllers
             {
                 try
                 {
+                    
                     User user = new User
                     {
                         UserName = registerModel.FirstName,

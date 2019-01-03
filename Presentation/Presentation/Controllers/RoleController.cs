@@ -12,7 +12,7 @@ namespace Presentation.Controllers
     public class RoleController : Controller
     {
         private readonly ILogger _logger;
-        private RoleManager<Role> _roleManager;
+        private readonly RoleManager<Role> _roleManager;
 
         public RoleController(ILogger<RoleController> logger, RoleManager<Role> roleManager)
         {

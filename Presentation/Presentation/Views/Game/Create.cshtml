@@ -1,6 +1,6 @@
 @model Entities.Models.Game
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "- Create new Game";
 }
 
 <section class="content-header">
@@ -22,7 +22,7 @@
                             <form asp-action="Create">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="form-group">
-                                    <input type="submit" value="Create" class="btn btn-sm btn-default btn-flat custom-btn" /> &nbsp;
+                                    <input type="submit" value="Create" class="btn btn-sm btn-default btn-flat custom-btn"/> &nbsp;
                                     <a asp-action="Index" class="btn btn-sm btn-default btn-flat custom-btn"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>&nbsp; Back to List</a>
                                 </div>
                             </form>

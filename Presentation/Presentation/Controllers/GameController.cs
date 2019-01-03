@@ -93,9 +93,8 @@ namespace Presentation.Controllers
             }
         }
 
-        public IActionResult Details()
+        public IActionResult Details(Game model)
         {
-            var model = new IndexGameViewModel();
             return PartialView("_PartialDetails", model);
         }
     }

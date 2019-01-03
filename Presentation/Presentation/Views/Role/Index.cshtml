@@ -14,20 +14,20 @@
         <div class="box-body">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th width="20%">
-                            @Html.DisplayNameFor(model => model.Name)
-                        </th>
-                        <th width="20%">
-                            @Html.DisplayNameFor(model => model.Description)
-                        </th>
-                        <th width="20%">
-                            @Html.DisplayName("Members")
-                        </th>
-                        <th width="40%" style="text-align: center">
-                            @Html.DisplayName("Actions")
-                        </th>
-                    </tr>
+                <tr>
+                    <th width="20%">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Members")
+                    </th>
+                    <th width="40%" style="text-align: center">
+                        @Html.DisplayName("Actions")
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
                 @foreach (var item in Model)
