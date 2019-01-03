@@ -13,10 +13,9 @@
 <body>
 <div class="container">
     <div class="card card-container">
-        <h3 style="align-self: center">WinIt</h3>
-        <p id="profile-name" class="profile-name-card"></p>
+        <h1 id="profile-name" class="profile-name-card">WinIt</h1>
         <form asp-action="Login" asp-controller="User" method="post" class="form-signin">
-            <input type="hidden" asp-for="ReturnUrl"/>
+            <input type="hidden" asp-for="ReturnUrl" />
             <span id="reauth-email" class="reauth-email"></span>
             <input asp-for="UserName" type="text" class="form-control" placeholder="UserName" required autofocus>
             <div>
@@ -33,9 +32,15 @@
             </div>
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
         </form>
-        <a href="#" class="forgot-password">
-            Forgot your password?
+        <a asp-action="Create" class="forgot-password form-control">
+            Don't have an account? Sign up
         </a>
+        <a href="~/" class="forgot-password form-control">
+            Go back to home page
+        </a>
+        @* <a href="#" class="forgot-password"> *@
+        @*     Forgot your password? *@
+        @* </a> *@
     </div><!-- /card-container -->
 </div>
 </body>

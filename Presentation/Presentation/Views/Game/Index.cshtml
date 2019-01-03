@@ -15,10 +15,10 @@
                 <thead>
                 <tr>
                     <th width="20%">
-                        @Html.DisplayName("UserName")
+                        @Html.DisplayName("Start time")
                     </th>
                     <th width="20%">
-                        @Html.DisplayName("Description")
+                        @Html.DisplayName("End time")
                     </th>
                     <th style="text-align: center">
                         @Html.DisplayName("Actions")
@@ -43,7 +43,7 @@
                             </a>
                             <button class="btn btn-sm btn-default btn-flat custom-btn"
                                     data-toggle="modal" data-target="#exampleModalCenter"
-                                    data-url="@Url.Action("Details")">
+                                    data-url="@Url.Action("Details", item)">
                                 <i class="fa fa-eye"></i>&nbsp; Details
                             </button>
 

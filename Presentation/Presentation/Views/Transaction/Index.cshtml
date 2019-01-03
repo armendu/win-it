@@ -1,0 +1,64 @@
+﻿@model Entities.ViewModels.Transaction.IndexTransactionViewModel
+@{
+    ViewData["Title"] = "- Transactions";
+}
+<div class="col-md-12">
+    <h3>Transactions</h3>
+</div>
+<div class="col-md-12">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <a class="btn btn-default btn-flat" asp-controller="Transaction" asp-action="Create"><i class="fa fa-plus-circle"></i>&nbsp; Create new Game</a>
+        </div>
+@*         <div class="box-body"> *@
+@*             <table class="table table-striped"> *@
+@*                 <thead> *@
+@*                     <tr> *@
+@*                         <th width="20%"> *@
+@*                             @Html.DisplayName("Start time") *@
+@*                         </th> *@
+@*                         <th width="20%"> *@
+@*                             @Html.DisplayName("End time") *@
+@*                         </th> *@
+@*                         <th style="text-align: center"> *@
+@*                             @Html.DisplayName("Actions") *@
+@*                         </th> *@
+@*                     </tr> *@
+@*                 </thead> *@
+@*                 <tbody> *@
+@*                     @foreach (var item in Model.GamesList) *@
+@*                     { *@
+@*                         <tr> *@
+@*                             <td> *@
+@*                                 @Html.DisplayFor(modelItem => item.StartTime) *@
+@*                             </td> *@
+@*                             <td> *@
+@*                                 @Html.DisplayFor(modelItem => item.EndTime) *@
+@*                             </td> *@
+@*                             <td style="text-align: center"> *@
+@*                                 <a class="btn btn-sm btn-default btn-flat custom-btn" *@
+@*                                    asp-action="Edit" *@
+@*                                    asp-route-id="@item.GameId"> *@
+@*                                     <i class="fa fa-pencil"></i>&nbsp; Edit *@
+@*                                 </a> *@
+@*                                 <button class="btn btn-sm btn-default btn-flat custom-btn" *@
+@*                                         data-toggle="modal" data-target="#exampleModalCenter" *@
+@*                                         data-url="@Url.Action("Details", item)"> *@
+@*                                     <i class="fa fa-eye"></i>&nbsp; Details *@
+@*                                 </button> *@
+@* *@
+@*                             </td> *@
+@*                         </tr> *@
+@*                     } *@
+@*                 </tbody> *@
+@*             </table> *@
+            @* <div page-model="@Model.PagingInfo" page-action="" page-classes-enabled="true" *@
+            @*      page-class="btn" page-class-normal="btn-default" *@
+            @*      page-class-selected="btn-primary" class="btn-group pull-right m-1 pagination"> *@
+            @* </div> *@
+
+            <!-- Modal placeholder -->
+            <div id="modal-placeholder"></div>
+        @* </div> *@
+    </div>
+</div>
