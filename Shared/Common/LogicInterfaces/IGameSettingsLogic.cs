@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entities.Models;
+using Entities.ViewModels.GameSettings;
 
 namespace Common.LogicInterfaces
 {
@@ -9,6 +10,10 @@ namespace Common.LogicInterfaces
 
         List<GameSettings> List();
 
-        void Create();
+        void Create(CreateGameSetting entity);
+
+        void Update(UpdateGameSetting entity);
+
+        void Delete(GameSettings entity);
     }
 }

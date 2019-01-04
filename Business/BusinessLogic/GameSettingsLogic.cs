@@ -1,24 +1,82 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using Common.LogicInterfaces;
+using Common.RepositoryInterfaces;
 using Entities.Models;
+using Entities.ViewModels.GameSettings;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace BusinessLogic
 {
-    public class GameSettingsLogic: IGameSettingsLogic
+    public class GameSettingsLogic : IGameSettingsLogic
     {
+        private readonly IGameSettingsRepository _gameSettingsRepository;
+
+        public GameSettingsLogic(IGameSettingsRepository gameSettingsRepository)
+        {
+            _gameSettingsRepository = gameSettingsRepository;
+        }
+
         public GameSettings GetSettingsById(int settingId)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return _gameSettingsRepository.GetById(settingId);
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
         }
 
         public List<GameSettings> List()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                List<GameSettings> gameSettings = _gameSettingsRepository.List();
+                return gameSettings;
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
         }
 
-        public void Create()
+        public void Create(CreateGameSetting entity)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                _gameSettingsRepository.Create(entity);
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured during creating project!");
+            }
+        }
+
+        public void Update(UpdateGameSetting entity)
+        {
+            try
+            {
+                _gameSettingsRepository.Update(entity);
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured during creating project!");
+            }
+        }
+
+        public void Delete(GameSettings entity)
+        {
+            try
+            {
+                _gameSettingsRepository.Delete(entity);
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured during creating project!");
+            }
         }
     }
 }

@@ -1,42 +1,40 @@
 ﻿using System;
 using System.Linq;
 using Common.LogicInterfaces;
-using Entities.Models;
 using Entities.ViewModels;
-using Entities.ViewModels.Game;
+using Entities.ViewModels.GameSettings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
 {
-    public class GameController : Controller
+    public class GameSettingsController : Controller
     {
-        private readonly IGameLogic _gameLogic;
+        private readonly IGameSettingsLogic _gameSettingsLogic;
         private readonly ILogger _logger;
         private const int PageSize = 5;
 
-        public GameController(IGameLogic gameLogic, ILogger<GameController> logger)
+        public GameSettingsController(IGameSettingsLogic gameSettingsLogic, ILogger<GameSettingsController> logger)
         {
-            _gameLogic = gameLogic;
+            _gameSettingsLogic = gameSettingsLogic;
             _logger = logger;
         }
 
-        // GET: Game/
         public IActionResult Index(int page = 1)
         {
             try
             {
-                IndexGameViewModel model = new IndexGameViewModel
+                IndexGameSettingsViewModel model = new IndexGameSettingsViewModel
                 {
-                    GamesList = _gameLogic.List()
-                        .OrderBy(g => g.GameId)
+                    GamesSettings = _gameSettingsLogic.List()
+                        .OrderBy(g => g.GameSettingId)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
                     PagingInfo = new PagingInfo
                     {
                         CurrentPage = page,
                         ItemsPerPage = PageSize,
-                        TotalItems = _gameLogic.List().Count
+                        TotalItems = _gameSettingsLogic.List().Count
                     }
                 };
 
@@ -51,7 +49,6 @@ namespace Presentation.Controllers
             }
         }
 
-        // GET: Game/Create
         public IActionResult Create()
         {
             try
@@ -70,7 +67,7 @@ namespace Presentation.Controllers
         // POST: Game/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Game model)
+        public IActionResult Create(CreateGameSetting gameSetting)
         {
             if (!ModelState.IsValid)
             {
@@ -81,22 +78,16 @@ namespace Presentation.Controllers
 
             try
             {
-
-                return
-                    RedirectToAction("Index");
+                _gameSettingsLogic.Create(gameSetting);
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return View("Create", model);
+                return View("Create", gameSetting);
             }
-        }
-
-        public IActionResult Details(Game model)
-        {
-            return PartialView("_PartialDetails", model);
         }
     }
 }
