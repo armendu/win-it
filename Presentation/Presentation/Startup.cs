@@ -1,6 +1,7 @@
 ﻿using BusinessLogic;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
+using Common.Services;
 using DataAccess.Database;
 using DataAccess.Repository;
 using Entities.Models;
@@ -49,7 +50,10 @@ namespace Presentation
             services.AddTransient<IGameRepository, GameRepository>();
             services.AddTransient<ITransactionLogic, TransactionLogic>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
-
+            services.AddTransient<IGameSettingsLogic, GameSettingsLogic>();
+            services.AddTransient<IGameRepository, GameRepository>();
+            services.AddHostedService<TimedHostedService>();
+            
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
