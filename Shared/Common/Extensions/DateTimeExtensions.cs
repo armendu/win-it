@@ -26,5 +26,15 @@ namespace Common.Extensions
 
             return result;
         }
+
+        /// <summary>
+        /// Return date to a readable format (universal format).
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns>The datetime represented in a universal format.</returns>
+        public static string ToReadableDate(this DateTime? dateTime)
+        {
+            return dateTime?.ToString("U");
+        }
     }
 }

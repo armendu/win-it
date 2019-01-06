@@ -1,0 +1,62 @@
+﻿@model Entities.Models.GameSettings
+
+<div class="col-md-12">
+    <h3>Projects</h3>
+</div>
+<div class="col-md-12">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-pencil"></i>&nbsp; Edit</h3>
+        </div>
+        <div class="box-body">
+            @if (Model != null)
+            {
+@*                 <form method="post" asp-controller="Project" asp-action="Edit"> *@
+@*                     <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+@*                     <div class="col-md-5"> *@
+@*                         <div class="form-group"> *@
+@*                             <label for="title">Project Title</label> *@
+@*                             <input asp-for="Name" type="text" class="form-control" value="@Model.Name" id="title" /> *@
+@*                             <span asp-validation-for="Name" class="text-danger"></span> *@
+@*                         </div> *@
+@*                         <div class="form-group"> *@
+@*                             <label for="description">Description</label> *@
+@*                             <textarea asp-for="Description" class="form-control" rows="5" id="description">@Model.Description</textarea> *@
+@*                             <span asp-validation-for="Description" class="text-danger"></span> *@
+@*                         </div> *@
+@*                         <div class="form-group"> *@
+@*                             <label for="status">Status</label> *@
+@*                             <select asp-for="Status" asp-items="Html.GetEnumSelectList<Domain.Helpers.Enumerations.ProjectStatusEnum>()" value="@Model.Status" selected class="form-control" id="status"></select> *@
+@*                         </div> *@
+@*                         <div class="form-group"> *@
+@*                             <label for="start">Start date</label> *@
+@*                             @Html.TextBoxFor(model => model.Start, Model.Start.ToString("dd-MMM-yyyy"), new { @class = "form-control" }) *@
+@*                         </div> *@
+@*                         <div class="form-group"> *@
+@*                             <label for="end">End date</label> *@
+@*                             @Html.TextBoxFor(model => model.End, Model.End.ToString("dd-MMM-yyyy"), new { @class = "form-control" }) *@
+@*                         </div> *@
+@*                         <div class="form-group"> *@
+@*                             <label for="client">Client</label> *@
+@*                             <select asp-for="ClientID" *@
+@*                                     asp-items="@ViewBag.Clients" class="form-control" id="client"></select> *@
+@*                         </div> *@
+@*                         <input type="hidden" value="@Model.ProjectID" asp-for="ProjectID" /> *@
+@*                         <input type="hidden" value="@Model.BranchID" asp-for="BranchID" /> *@
+@*                         <input type="hidden" value="@Model.CreatorID" asp-for="CreatorID" /> *@
+@*                         <div class="form-group"> *@
+@*                             <button type="submit" class="btn btn-primary btn-flat" style="width:48%;"> *@
+@*                                 <i class="fa fa-pencil"></i>&nbsp; Save *@
+@*                             </button> *@
+@*                             <a class="btn btn-default btn-flat" style="width:48%; float:right;" asp-controller="Project" asp-action="Index"><i class="fa fa-arrow-left"></i>&nbsp; Back to List</a> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                 </form> *@
+            }
+            else
+            {
+                <lable class="label-danger">Game Settings not found!</lable>
+            }
+        </div>
+    </div>
+</div>

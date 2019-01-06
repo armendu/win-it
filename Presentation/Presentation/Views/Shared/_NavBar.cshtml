@@ -52,6 +52,7 @@
                     </span>
                 </a>
             </li>
+
             <li class="header"> Administration Menu</li>
             <li class="@(Html.IsMenuActive("/Users") ? "active" : "")">
                 <a href="~/User">
@@ -96,6 +97,9 @@
                     </li>
                     <li class="@(Html.IsMenuActive("/Settings/History") ? "active" : "")">
                         <a href="~/Settings/History"><i class="fa fa-history"></i> History</a>
+                    </li>
+                    <li class="@(Html.IsMenuActive("/GameSettings") ? "active" : "")">
+                        <a href="~/GameSettings"><i class="fas fa-ruler"></i> Game Settings</a>
                     </li>
                 </ul>
             </li>

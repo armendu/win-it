@@ -87,8 +87,9 @@ namespace Presentation
             // Enable Authentication
             app.UseAuthentication();
 
-            // Create default admin account
+            // Create default admin account and make sure to seed the right data.
             EntityContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
+            SeedData.EnsurePopulated(app, Configuration);
 
             app.UseMvc(routes =>
             {

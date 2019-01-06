@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Common.LogicInterfaces;
+using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.GameSettings;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace Presentation.Controllers
             _logger = logger;
         }
 
+        // GET: GameSettings/
         public IActionResult Index(int page = 1)
         {
             try
@@ -49,6 +51,7 @@ namespace Presentation.Controllers
             }
         }
 
+        // GET: GameSettings/Create
         public IActionResult Create()
         {
             try
@@ -60,11 +63,11 @@ namespace Presentation.Controllers
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return View("Create");
+                return View("Index");
             }
         }
 
-        // POST: Game/Create
+        // POST: GameSettings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(CreateGameSetting gameSetting)
@@ -87,6 +90,29 @@ namespace Presentation.Controllers
                 ViewBag.ErrorMessage = ex.Message;
 
                 return View("Create", gameSetting);
+            }
+        }
+
+        public IActionResult Details(GameSettings model)
+        {
+            return PartialView("_PartialDetails", model);
+        }
+
+        // GET: GameSettings/Edit/{id}
+        public IActionResult Edit(int id)
+        {
+            try
+            {
+                // EditProject model = ProjectLogic.GetEditProject(id);
+                
+                return View("Edit");
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return View("Index");
             }
         }
     }
