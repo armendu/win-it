@@ -1,5 +1,4 @@
-﻿@using Entities.ViewModels
-@model List<Entities.ViewModels.UserDetailsViewModel>
+﻿@model List<Entities.Models.User>
 <div class="container">
     <h2>Clients</h2>
     <div>
@@ -19,58 +18,61 @@
         <tbody>
         @if (Model.Count > 0)
         {
-            foreach (UserDetailsViewModel client in Model)
+            foreach (var user in Model)
              {
                  <tr>
-                     <td>@client.ProfileID</td>
-@*                      <td>@client.CreatedAt.ToString("dd-MMM-yyyy")</td> *@
-@*                      <td> *@
-@*                          <div class="form-check"> *@
-@*                              <input class="form-check-input position-static" type="checkbox" disabled checked="@client.IsActive" aria-label="..."> *@
-@*                          </div> *@
-@*                      </td> *@
-@*                      <td>@client.Address</td> *@
-@*                      <td> *@
-@*                          <a asp-controller="Client" *@
-@*                             asp-action="Edit" *@
-@*                             asp-route-id="@client.ClientID"> *@
-@*                              Edit *@
-@*                          </a> *@
-@*                          <a asp-controller="Client" *@
-@*                             asp-action="Details" *@
-@*                             asp-route-id="@client.ClientID"> *@
-@*                              Details *@
-@*                          </a> *@
-@*                          @if (client.IsActive) *@
-@*                          { *@
-@*                              <a asp-controller="Client" *@
-@*                                 asp-action="Deactivate" *@
-@*                                 asp-route-id="@client.ClientID"> *@
-@*                                  Deactivate *@
-@*                              </a> *@
-@*                          } *@
-@*                          else *@
-@*                          { *@
-@*                              <a asp-controller="Client" *@
-@*                                 asp-action="Activate" *@
-@*                                 asp-route-id="@client.ClientID"> *@
-@*                                  Activate *@
-@*                              </a> *@
-@*                          } *@
-@*                          <a asp-controller="Client" *@
-@*                             asp-action="Delete" *@
-@*                             asp-route-id="@client.ClientID"> *@
-@*                              Delete *@
-@*                          </a> *@
-@*                      </td> *@
+                     <td>@user.Id</td>
                  </tr>
+@*                  <tr> *@
+@*                      <td>@user.Id</td> *@
+@*                       <td>@user.CreatedAt.ToString("dd-MMM-yyyy")</td> *@
+@*                       <td> *@
+@*                           <div class="form-check"> *@
+@*                               <input class="form-check-input position-static" type="checkbox" disabled checked="@user.IsActive" aria-label="..."> *@
+@*                           </div> *@
+@*                       </td> *@
+@*                       <td>@user.Address</td> *@
+@*                       <td> *@
+@*                           <a asp-controller="user" *@
+@*                              asp-action="Edit" *@
+@*                              asp-route-id="@user.userID"> *@
+@*                               Edit *@
+@*                           </a> *@
+@*                           <a asp-controller="user" *@
+@*                              asp-action="Details" *@
+@*                              asp-route-id="@user.userID"> *@
+@*                               Details *@
+@*                           </a> *@
+@*                           @if (user.IsActive) *@
+@*                           { *@
+@*                               <a asp-controller="user" *@
+@*                                  asp-action="Deactivate" *@
+@*                                  asp-route-id="@user.userID"> *@
+@*                                   Deactivate *@
+@*                               </a> *@
+@*                           } *@
+@*                           else *@
+@*                           { *@
+@*                               <a asp-controller="user" *@
+@*                                  asp-action="Activate" *@
+@*                                  asp-route-id="@user.userID"> *@
+@*                                   Activate *@
+@*                               </a> *@
+@*                           } *@
+@*                           <a asp-controller="user" *@
+@*                              asp-action="Delete" *@
+@*                              asp-route-id="@user.ClientID"> *@
+@*                               Delete *@
+@*                           </a> *@
+@*                       </td> *@
+@*                  </tr> *@
              }
         }
         else
         {
             <tr>
                 <td colspan="5" align="center" style="padding: 35px">
-                    <em>No clients to display</em>
+                    <em>No users to display</em>
                 </td>
             </tr>
         }

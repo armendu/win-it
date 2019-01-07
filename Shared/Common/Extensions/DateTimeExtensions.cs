@@ -32,9 +32,9 @@ namespace Common.Extensions
         /// </summary>
         /// <param name="dateTime"></param>
         /// <returns>The datetime represented in a universal format.</returns>
-        public static string ToReadableDate(this DateTime? dateTime)
+        public static string ToReadableDate(this DateTime dateTime)
         {
-            return dateTime?.ToString("U");
+            return dateTime.ToString("U");
         }
     }
 }

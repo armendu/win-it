@@ -1,8 +1,11 @@
-﻿namespace Entities.ViewModels.GameSettings
+﻿using System;
+
+namespace Entities.ViewModels.GameSettings
 {
     public class UpdateGameSetting
     {
         public int GameSettingId { get; set; }
         public int GameLength { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

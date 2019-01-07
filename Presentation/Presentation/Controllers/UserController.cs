@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Common.LogicInterfaces;
 using Entities.Models;
@@ -30,7 +31,7 @@ namespace Presentation.Controllers
 
         public IActionResult Index()
         {
-            List<UserDetailsViewModel> model = _userLogic.List();
+            List<User> model = _userManager.Users.ToList();
 
             return View(model);
         }

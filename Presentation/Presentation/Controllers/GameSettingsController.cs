@@ -52,6 +52,7 @@ namespace Presentation.Controllers
         }
 
         // GET: GameSettings/Create
+        [HttpGet]
         public IActionResult Create()
         {
             try
@@ -99,13 +100,21 @@ namespace Presentation.Controllers
         }
 
         // GET: GameSettings/Edit/{id}
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             try
             {
-                // EditProject model = ProjectLogic.GetEditProject(id);
-                
-                return View("Edit");
+                GameSettings gameSettings = _gameSettingsLogic.GetSettingsById(id);
+
+                UpdateGameSetting updateGameSetting = new UpdateGameSetting
+                {
+                    GameSettingId = gameSettings.GameSettingId,
+                    GameLength = gameSettings.GameLength,
+                    UpdatedAt = gameSettings.UpdateAt
+                };
+
+                return View("Edit", updateGameSetting);
             }
             catch (Exception ex)
             {
@@ -114,6 +123,42 @@ namespace Presentation.Controllers
 
                 return View("Index");
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(UpdateGameSetting entity)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _gameSettingsLogic.Update(entity);
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception exception)
+                {
+                    View(exception.Message);
+                }
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+//                ProjectLogic.DeleteProject(id);
+            }
+            catch (Exception ex)
+            {
+                //return Json(new JsonContent(false, ex.Message));
+            }
+
+            return View();
         }
     }
 }
