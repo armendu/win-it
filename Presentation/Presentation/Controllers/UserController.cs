@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.LogicInterfaces;
@@ -19,7 +18,15 @@ namespace Presentation.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _singInManager;
         private readonly ILogger _logger;
+        private const int PageSize = 5;
 
+        /// <summary>
+        /// Creates a new instance of the UserController and injects the userLogic, userManager, singInManager, and logger.
+        /// </summary>
+        /// <param name="userLogic">The logic to be injected.</param>
+        /// <param name="userManager">The user manager to be injected.</param>
+        /// <param name="singInManager">The sign in to be injected.</param>
+        /// <param name="logger">The logger to be injected.</param>
         public UserController(IUserLogic userLogic, UserManager<User> userManager,
             SignInManager<User> singInManager, ILogger<UserController> logger)
         {
@@ -29,13 +36,27 @@ namespace Presentation.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        // GET: User/Index
+        public IActionResult Index(int page = 1)
         {
-            List<User> model = _userManager.Users.ToList();
+            IndexUserViewModel model = new IndexUserViewModel
+            {
+                Users = _userManager.Users
+                    .OrderBy(g => g.Id)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = _userManager.Users.Count()
+                }
+            };
 
             return View(model);
         }
 
+        // GET: User/Login
         [AllowAnonymous]
         public ViewResult Login(string returnUrl)
         {
@@ -45,6 +66,7 @@ namespace Presentation.Controllers
             });
         }
 
+        // POST: User/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -69,12 +91,14 @@ namespace Presentation.Controllers
             return View(loginModel);
         }
 
+        // GET: User/Create
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        // POST: User/Create
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Create(RegisterViewModel registerModel)
@@ -83,11 +107,11 @@ namespace Presentation.Controllers
             {
                 try
                 {
-                    
                     User user = new User
                     {
                         UserName = registerModel.FirstName,
-                        Email = registerModel.Email
+                        Email = registerModel.Email,
+                        IsActive = true
                     };
                     IdentityResult result
                         = await _userManager.CreateAsync(user, registerModel.Password);
@@ -115,6 +139,13 @@ namespace Presentation.Controllers
             return View(registerModel);
         }
 
+        public IActionResult Details(User model)
+        {
+            User user = _userManager.Users.FirstOrDefault(u => u.Id == model.Id);
+            return PartialView("_PartialDetails", user);
+        }
+
+        // POST: User/Logout
         public async Task<RedirectResult> Logout(string returnUrl = "/")
         {
             await _singInManager.SignOutAsync();

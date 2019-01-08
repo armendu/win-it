@@ -15,8 +15,8 @@ namespace Entities.Models
         public string LastName { get; set; }
         public string Phone { get; set; }
         public DateTime? Birthdate { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdateAt { get; set; }
         public int? AddressId { get; set; }
 
         public virtual Address Address { get; set; }

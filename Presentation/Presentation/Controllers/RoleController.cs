@@ -14,7 +14,12 @@ namespace Presentation.Controllers
         private readonly ILogger _logger;
         private readonly RoleManager<Role> _roleManager;
 
-        public RoleController(ILogger<RoleController> logger, RoleManager<Role> roleManager)
+        /// <summary>
+        /// Creates a new instance of the RoleController and injects the roleManager, and logger.
+        /// </summary>
+        /// <param name="roleManager">The role manager to be injected.</param>
+        /// <param name="logger">The logger to be injected.</param>
+        public RoleController(RoleManager<Role> roleManager, ILogger<RoleController> logger)
         {
             _logger = logger;
             _roleManager = roleManager;

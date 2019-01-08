@@ -94,6 +94,7 @@ namespace Presentation.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Details(Game model)
         {
             return PartialView("_PartialDetails", model);

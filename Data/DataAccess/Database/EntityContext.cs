@@ -83,10 +83,21 @@ namespace DataAccess.Database
                     await roleManager.CreateAsync(new Role(role, description));
                 }
 
+                UserInfo userInfo = new UserInfo
+                {
+                    FirstName = "Admin",
+                    LastName = "User",
+                    Phone = string.Empty,
+                    UpdateAt = DateTime.UtcNow,
+                    CreatedAt = DateTime.UtcNow,
+                };
+
                 User user = new User
                 {
                     UserName = username,
-                    Email = email
+                    Email = email,
+                    IsActive = true,
+                    UserInfo = userInfo
                 };
 
                 IdentityResult result = await userManager

@@ -1,6 +1,4 @@
-﻿@model Entities.Models.GameSettings
-@using Common.Extensions
-
+﻿@model Entities.Models.User
 <link rel="stylesheet" href="~/plugins/bootstrap-4.0.0/js/dist/popover.js">
 
 <!-- Modal -->
@@ -16,10 +14,13 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <span>Id: </span><label> @Model.GameSettingId</label><br/>
-                        <span>Game length (in minutes): </span> <label> @Model.GameLength</label><br/>
-                        <span>Created at: </span> <label> @Model.CreatedAt.ToReadableDate()</label><br/>
-                        <span>Updated at: </span> <label> @Model.UpdateAt.ToReadableDate()</label><br/>
+                        <span>Id: </span><label> @Model.Id</label><br/>
+                        <span>PlayerId: </span> <label> @Model.PlayerId</label><br/>
+                        <span>UserInfoId: </span> <label> @Model.UserInfoId</label><br/>
+                        <span>Firstname: </span> <label> @Model.UserInfo?.FirstName</label><br/>
+                        <span>Lastname: </span> <label> @Model.UserInfo?.LastName</label><br/>
+                        <span>Registered: </span> <label> @Model.UserInfo?.CreatedAt</label><br/>
+                        <span>Birthdate: </span> <label> @Model.UserInfo?.Birthdate</label><br/>
                     </div>
                 </form>
             </div>

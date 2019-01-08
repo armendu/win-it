@@ -15,6 +15,11 @@ namespace Presentation.Controllers
         private readonly ILogger _logger;
         private const int PageSize = 5;
 
+        /// <summary>
+        /// Creates a new instance of the GameSettingsController and injects the gameSettingsLogic and logger.
+        /// </summary>
+        /// <param name="gameSettingsLogic">The logic to be injected.</param>
+        /// <param name="logger">The logger to be injected.</param>
         public GameSettingsController(IGameSettingsLogic gameSettingsLogic, ILogger<GameSettingsController> logger)
         {
             _gameSettingsLogic = gameSettingsLogic;
@@ -125,6 +130,7 @@ namespace Presentation.Controllers
             }
         }
 
+        // POST: GameSettings/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(UpdateGameSetting entity)

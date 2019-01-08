@@ -1,81 +1,81 @@
-﻿@model List<Entities.Models.User>
-<div class="container">
-    <h2>Clients</h2>
-    <div>
-        @* <a asp-controller="User" *@
-        @*    asp-action="Create">Create new</a> *@
+﻿@model Entities.ViewModels.User.IndexUserViewModel
+@using Common.Extensions
+@{
+    ViewData["Title"] = "- Users";
+}
+<div class="col-md-12">
+    <h3>Users</h3>
+</div>
+<div class="col-md-12">
+    <div class="box box-primary">
+        <div class="box-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th width="20%">
+                        @Html.DisplayName("Username")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Email")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Date registered")
+                    </th>
+                    <th style="text-align: center">
+                        @Html.DisplayName("Actions")
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Users)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserInfo.CreatedAt)
+                            </td>
+                            <td style="text-align: center">
+                                <a class="btn btn-sm btn-default btn-flat custom-btn"
+                                   asp-action="Edit"
+                                   asp-route-id="@item.Id">
+                                    <i class="fa fa-pencil"></i>&nbsp; Edit
+                                </a>
+                                <button class="btn btn-sm btn-default btn-flat custom-btn"
+                                        data-toggle="modal" data-target="#exampleModalCenter"
+                                        data-url="@Url.Action("Details", item)">
+                                    <i class="fa fa-eye"></i>&nbsp; Details
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" align="center" style="padding: 35px">
+                            <em>No users to display</em>
+                        </td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+            @if (Model != null && Model.Users.Any())
+            {
+                <div page-model="@Model.PagingInfo" page-action="" page-classes-enabled="true"
+                     page-class="btn" page-class-normal="btn-default"
+                     page-class-selected="btn-primary" class="btn-group pull-right m-1 pagination">
+                </div>
+            }
+            <!-- Modal placeholder -->
+            <div id="modal-placeholder"></div>
+        </div>
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>CreatedAt</th>
-            <th>IsActive</th>
-            <th>Address</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        @if (Model.Count > 0)
-        {
-            foreach (var user in Model)
-             {
-                 <tr>
-                     <td>@user.Id</td>
-                 </tr>
-@*                  <tr> *@
-@*                      <td>@user.Id</td> *@
-@*                       <td>@user.CreatedAt.ToString("dd-MMM-yyyy")</td> *@
-@*                       <td> *@
-@*                           <div class="form-check"> *@
-@*                               <input class="form-check-input position-static" type="checkbox" disabled checked="@user.IsActive" aria-label="..."> *@
-@*                           </div> *@
-@*                       </td> *@
-@*                       <td>@user.Address</td> *@
-@*                       <td> *@
-@*                           <a asp-controller="user" *@
-@*                              asp-action="Edit" *@
-@*                              asp-route-id="@user.userID"> *@
-@*                               Edit *@
-@*                           </a> *@
-@*                           <a asp-controller="user" *@
-@*                              asp-action="Details" *@
-@*                              asp-route-id="@user.userID"> *@
-@*                               Details *@
-@*                           </a> *@
-@*                           @if (user.IsActive) *@
-@*                           { *@
-@*                               <a asp-controller="user" *@
-@*                                  asp-action="Deactivate" *@
-@*                                  asp-route-id="@user.userID"> *@
-@*                                   Deactivate *@
-@*                               </a> *@
-@*                           } *@
-@*                           else *@
-@*                           { *@
-@*                               <a asp-controller="user" *@
-@*                                  asp-action="Activate" *@
-@*                                  asp-route-id="@user.userID"> *@
-@*                                   Activate *@
-@*                               </a> *@
-@*                           } *@
-@*                           <a asp-controller="user" *@
-@*                              asp-action="Delete" *@
-@*                              asp-route-id="@user.ClientID"> *@
-@*                               Delete *@
-@*                           </a> *@
-@*                       </td> *@
-@*                  </tr> *@
-             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="5" align="center" style="padding: 35px">
-                    <em>No users to display</em>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
 </div>
