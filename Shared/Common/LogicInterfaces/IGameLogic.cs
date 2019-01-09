@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Entities.Models;
 
 namespace Common.LogicInterfaces
@@ -9,6 +10,6 @@ namespace Common.LogicInterfaces
 
         List<Game> List();
 
-        void Create();
+        void Create(int gameLength, string winningNumbers);
     }
 }

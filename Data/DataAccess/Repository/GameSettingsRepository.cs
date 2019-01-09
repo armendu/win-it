@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
+using Common.Helpers.Exceptions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
 using Entities.ViewModels.GameSettings;
+using MySql.Data.MySqlClient;
 
 namespace DataAccess.Repository
 {
@@ -24,9 +25,12 @@ namespace DataAccess.Repository
             {
                 GameSettings gameSetting = _entityContext.GameSettings.FirstOrDefault(g => g.GameSettingId == id);
 
+                if (gameSetting == null)
+                    throw new NotFoundException($"GameSetting with Id: {id} was not found!");
+
                 return gameSetting;
             }
-            catch (SqlException)
+            catch (MySqlException)
             {
                 throw;
             }
@@ -38,16 +42,12 @@ namespace DataAccess.Repository
             {
                 List<GameSettings> gameSettings = _entityContext.GameSettings.ToList();
 
-                if (gameSettings.Count > 0)
-                    return gameSettings;
+                if (gameSettings.Count == 0)
+                    throw new NotFoundException("There are no Game Settings to be shown!");
 
-                throw new NullReferenceException();
+                return gameSettings;
             }
-            catch (NullReferenceException)
-            {
-                throw;
-            }
-            catch (SqlException)
+            catch (MySqlException)
             {
                 throw;
             }
@@ -113,12 +113,12 @@ namespace DataAccess.Repository
             {
                 try
                 {
-                    GameSettings project =
+                    GameSettings gameSettings =
                         _entityContext.GameSettings.FirstOrDefault(x => x.GameSettingId == entity.GameSettingId);
 
-                    if (project != null)
+                    if (gameSettings != null)
                     {
-                        _entityContext.Remove(project);
+                        _entityContext.Remove(gameSettings);
                         _entityContext.SaveChanges();
                         transaction.Commit();
                     }

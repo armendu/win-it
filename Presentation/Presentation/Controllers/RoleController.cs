@@ -26,6 +26,7 @@ namespace Presentation.Controllers
         }
 
         // GET: Role/Index
+        [HttpGet]
         public ViewResult Index()
         {
             try
@@ -44,6 +45,7 @@ namespace Presentation.Controllers
         }
 
         // GET: Role/Create
+        [HttpGet]
         public IActionResult Create()
         {
             try
@@ -55,7 +57,7 @@ namespace Presentation.Controllers
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return View("Create");
+                return View("Index");
             }
         }
 

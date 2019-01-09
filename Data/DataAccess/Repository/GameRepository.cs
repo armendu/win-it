@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
+using Common.Helpers.Exceptions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
+using MySql.Data.MySqlClient;
 
 namespace DataAccess.Repository
 {
-    public class GameRepository: IGameRepository
+    public class GameRepository : IGameRepository
     {
         private readonly EntityContext _entityContext;
 
@@ -22,9 +23,21 @@ namespace DataAccess.Repository
         /// </summary>
         /// <param name="id">The id of the game.</param>
         /// <returns>The retrieved game.</returns>
-        public Game GetById(string id)
+        public Game GetById(int id)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                Game game = _entityContext.Games.FirstOrDefault(g => g.GameId == id);
+
+                if (game == null)
+                    throw new NotFoundException("No game found");
+
+                return game;
+            }
+            catch (MySqlException)
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -35,82 +48,49 @@ namespace DataAccess.Repository
         {
             try
             {
-                List<Game> someGames = new List<Game>
-                {
-                    new Game
-                    {
-                        GameId = 1,
-                        StartTime = DateTime.UtcNow,
-                        EndTime =  DateTime.UtcNow
-                    },
-                    new Game
-                    {
-                        GameId = 2,
-                        StartTime = DateTime.UtcNow,
-                        EndTime =  DateTime.UtcNow
-                    },
-                    new Game
-                    {
-                        GameId = 3,
-                        StartTime = DateTime.UtcNow,
-                        EndTime =  DateTime.UtcNow
-                    },
-                    new Game
-                    {
-                        GameId = 4,
-                        StartTime = DateTime.UtcNow,
-                        EndTime =  DateTime.UtcNow
-                    },
-                    new Game
-                    {
-                        GameId = 5,
-                        StartTime = DateTime.UtcNow,
-                        EndTime =  DateTime.UtcNow
-                    },
-                    new Game
-                    {
-                        GameId = 6,
-                        StartTime = DateTime.UtcNow,
-                        EndTime =  DateTime.UtcNow
-                    },
-                    new Game
-                    {
-                        GameId = 7,
-                        StartTime = DateTime.UtcNow,
-                        EndTime =  DateTime.UtcNow
-                    }
-                };
                 List<Game> games = _entityContext.Games.ToList();
-                return someGames;
-                //return games;
+
+                if (!games.Any())
+                    throw new NotFoundException();
+
+                return games;
             }
-            catch (SqlException)
+            catch (MySqlException)
             {
                 throw;
             }
         }
 
         /// <summary>
-        /// Persist a new game to the database.
+        /// Persists a new game to the database.
         /// </summary>
-        /// <param name="entity">The object to be persisted.</param>
+        /// <param name="gameLength">The length of the game; determines the endTime of the game.</param>
+        /// <param name="winningNumbers">The winning numbers of the game generated randomly.</param>
         /// <returns>The persisted object.</returns>
-        public Game Create(Game entity)
+        public void Create(int gameLength, string winningNumbers)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())
             {
                 try
                 {
+                    GameInfo gameInfo = new GameInfo
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        UpdateAt = DateTime.UtcNow,
+                        WinningNumbers = winningNumbers // TODO: Get numbers from hosted service
+                    };
+
                     Game game = new Game
                     {
-                        StartTime = DateTime.UtcNow
+                        StartTime = DateTime.UtcNow,
+                        EndTime = DateTime.UtcNow.AddMinutes(gameLength),
+                        GameInfo = gameInfo
                     };
 
                     _entityContext.Add(game);
                     _entityContext.SaveChanges();
 
                     transaction.Commit();
-                    return game;
                 }
                 catch (Exception)
                 {

@@ -22,6 +22,7 @@ namespace Presentation.Controllers
         }
 
         // GET: Game/
+        [HttpGet]
         public IActionResult Index(int page = 1)
         {
             try
@@ -52,6 +53,7 @@ namespace Presentation.Controllers
         }
 
         // GET: Game/Create
+        [HttpGet]
         public IActionResult Create()
         {
             try

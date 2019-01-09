@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.Models;
+using MySql.Data.MySqlClient;
 
 namespace BusinessLogic
 {
@@ -43,14 +43,18 @@ namespace BusinessLogic
             }
         }
 
-        public void Create()
+        /// <summary>
+        /// Call the repository to create a new game.
+        /// </summary>
+        /// <param name="gameLength">The length of the game.</param>
+        /// <param name="winningNumbers">The winning numbers of the game.</param>
+        public void Create(int gameLength, string winningNumbers)
         {
             try
             {
-                Game model = new Game();
-                _gameRepository.Create(model);
+                _gameRepository.Create(gameLength, winningNumbers);
             }
-            catch (SqlException)
+            catch (MySqlException)
             {
                 throw new ConnectionException();
             }

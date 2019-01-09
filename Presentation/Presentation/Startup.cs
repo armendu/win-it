@@ -52,7 +52,7 @@ namespace Presentation
             services.AddTransient<ITransactionRepository, TransactionRepository>();
             services.AddTransient<IGameSettingsLogic, GameSettingsLogic>();
             services.AddTransient<IGameSettingsRepository, GameSettingsRepository>();
-            services.AddHostedService<TimedHostedService>();
+            services.AddHostedService<GameCreationService>();
             
             services.Configure<CookiePolicyOptions>(options =>
             {

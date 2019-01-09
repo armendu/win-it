@@ -27,6 +27,7 @@ namespace Presentation.Controllers
         }
 
         // GET: GameSettings/
+        [HttpGet]
         public IActionResult Index(int page = 1)
         {
             try

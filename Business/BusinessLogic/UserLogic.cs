@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.ViewModels;
 using Entities.ViewModels.User;
+using MySql.Data.MySqlClient;
 
 namespace BusinessLogic
 {
@@ -31,7 +31,7 @@ namespace BusinessLogic
 //                throw
 //                    new NotFoundException("User was not found");
 //            }
-//            catch (SqlException)
+//            catch (MySqlException)
 //            {
 //                throw new ConnectionException();
 //            }
@@ -46,7 +46,7 @@ namespace BusinessLogic
 
                 return list;
             }
-            catch (SqlException)
+            catch (MySqlException)
             {
                 throw new ConnectionException();
             }
@@ -58,7 +58,7 @@ namespace BusinessLogic
             {
                 _userRepository.Create(model);
             }
-            catch (SqlException)
+            catch (MySqlException)
             {
                 throw new ConnectionException();
             }
@@ -113,7 +113,7 @@ namespace BusinessLogic
 //                int profileID = _userRepository.GetProfileID(userID);
 //                return profileID;
 //            }
-//            catch (SqlException)
+//            catch (MySqlException)
 //            {
 //                throw new ConnectionException();
 //            }

@@ -13,9 +13,9 @@ namespace Entities.Models
         }
 
         public int GameId { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
-        public int? GameInfoId { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public int GameInfoId { get; set; }
 
         public virtual GameInfo GameInfo { get; set; }
         public virtual ICollection<GameBet> GameBets { get; set; }

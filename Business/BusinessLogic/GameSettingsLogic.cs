@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.Models;
 using Entities.ViewModels.GameSettings;
 using Microsoft.EntityFrameworkCore.Design;
+using MySql.Data.MySqlClient;
 
 namespace BusinessLogic
 {
@@ -24,7 +24,7 @@ namespace BusinessLogic
             {
                 return _gameSettingsRepository.GetById(settingId);
             }
-            catch (SqlException)
+            catch (MySqlException)
             {
                 throw;
             }
@@ -37,7 +37,7 @@ namespace BusinessLogic
                 List<GameSettings> gameSettings = _gameSettingsRepository.List();
                 return gameSettings;
             }
-            catch (SqlException)
+            catch (MySqlException)
             {
                 throw;
             }

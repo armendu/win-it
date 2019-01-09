@@ -24,13 +24,16 @@ namespace DataAccess.Database
             {
                 bool correctGameLength =
                     int.TryParse(configuration["InitialGameSettings:GameLength"], out int gameLength);
+                bool correctWinningPot =
+                    int.TryParse(configuration["InitialGameSettings:WinningPot"], out int winningPot);
 
                 context.GameSettings.Add(new GameSettings
                 {
                     GameSettingId = 1,
                     CreatedAt = DateTime.UtcNow,
                     UpdateAt = DateTime.UtcNow,
-                    GameLength = correctGameLength ? gameLength : 60
+                    GameLength = correctGameLength ? gameLength : 60,
+                    WinningPot = correctWinningPot ? winningPot : 10
                 });
             }
 

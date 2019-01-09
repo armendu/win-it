@@ -25,7 +25,7 @@ namespace Presentation.Controllers
         /// </summary>
         /// <param name="userLogic">The logic to be injected.</param>
         /// <param name="userManager">The user manager to be injected.</param>
-        /// <param name="singInManager">The sign in to be injected.</param>
+        /// <param name="singInManager">The sign in manager to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
         public UserController(IUserLogic userLogic, UserManager<User> userManager,
             SignInManager<User> singInManager, ILogger<UserController> logger)
@@ -37,6 +37,7 @@ namespace Presentation.Controllers
         }
 
         // GET: User/Index
+        [HttpGet]
         public IActionResult Index(int page = 1)
         {
             IndexUserViewModel model = new IndexUserViewModel
@@ -95,7 +96,17 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return View("Index");
+            }
         }
 
         // POST: User/Create
@@ -132,7 +143,7 @@ namespace Presentation.Controllers
                     _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                     ViewBag.ErrorMessage = ex.Message;
 
-                    return View("Create");
+                    return View("Index");
                 }
             }
 
@@ -141,8 +152,22 @@ namespace Presentation.Controllers
 
         public IActionResult Details(User model)
         {
-            User user = _userManager.Users.FirstOrDefault(u => u.Id == model.Id);
-            return PartialView("_PartialDetails", user);
+            try
+            {
+                User user = _userManager.Users.FirstOrDefault(u => u.Id == model.Id);
+
+                if (user != null)
+                    return PartialView("_PartialDetails", user);
+                else
+                    throw new Exception("User not found!");
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return View("Index");
+            }
         }
 
         // POST: User/Logout

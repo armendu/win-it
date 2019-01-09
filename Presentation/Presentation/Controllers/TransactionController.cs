@@ -14,12 +14,19 @@ namespace Presentation.Controllers
         private readonly ILogger _logger;
         private const int PageSize = 5;
 
+        /// <summary>
+        /// Creates a new instance of the TransactionController and injects the transactionLogic, and logger.
+        /// </summary>
+        /// <param name="transactionLogic">The logic to be injected.</param>
+        /// <param name="logger">The logger to be injected.</param>
         public TransactionController(ITransactionLogic transactionLogic, ILogger<GameController> logger)
         {
             _transactionLogic = transactionLogic;
             _logger = logger;
         }
 
+        // GET: Transaction/
+        [HttpGet]
         public IActionResult Index(int page = 1)
         {
             try

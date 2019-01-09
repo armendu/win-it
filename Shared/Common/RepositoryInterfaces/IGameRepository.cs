@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Entities.Models;
 
 namespace Common.RepositoryInterfaces
 {
     public interface IGameRepository
     {
-        Game GetById(string id);
+        Game GetById(int id);
         List<Game> List();
-        Game Create(Game entity);
+        void Create(int gameLength, string winningNumbers);
         void Update(Game entity);
         void Delete(Game entity);
     }

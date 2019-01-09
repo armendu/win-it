@@ -18,7 +18,10 @@
                         @Html.DisplayName("Length")
                     </th>
                     <th width="20%">
-                        @Html.DisplayName("Updated at:")
+                        @Html.DisplayName("Winning pot")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Updated at")
                     </th>
                     <th style="text-align: center">
                         @Html.DisplayName("Actions")
@@ -31,6 +34,9 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.GameLength)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WinningPot)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.UpdateAt)
@@ -52,10 +58,6 @@
                 }
                 </tbody>
             </table>
-            <div page-model="@Model.PagingInfo" page-action="" page-classes-enabled="true"
-                 page-class="btn" page-class-normal="btn-default"
-                 page-class-selected="btn-primary" class="btn-group pull-right m-1 pagination">
-            </div>
 
             <!-- Modal placeholder -->
             <div id="modal-placeholder"></div>
