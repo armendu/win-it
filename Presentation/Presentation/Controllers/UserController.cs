@@ -83,7 +83,7 @@ namespace Presentation.Controllers
                     if ((await _singInManager.PasswordSignInAsync(user,
                         loginModel.Password, false, false)).Succeeded)
                     {
-                        return Redirect(loginModel?.ReturnUrl ?? "/Index");
+                        return Redirect(loginModel?.ReturnUrl ?? "/");
                     }
                 }
             }

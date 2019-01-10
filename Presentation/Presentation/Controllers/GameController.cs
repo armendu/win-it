@@ -99,7 +99,17 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult Details(Game model)
         {
-            return PartialView("_PartialDetails", model);
+            try
+            {
+                return PartialView("_PartialDetails", model);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return RedirectToAction("Index");
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model Entities.ViewModels.Role.RoleViewModel
+﻿@model Entities.ViewModels.Role.CreateRoleViewModel
 @{
     ViewData["Title"] = "- Create roles";
 }
@@ -38,9 +38,9 @@
                                     <button type="submit" class="btn btn-primary btn-flat" style="width: 48%; margin-right: 2%">
                                         <i class="fa fa-plus-circle"></i>&nbsp; Create
                                     </button>
-                                    <button asp-action="Index" class="btn btn-default btn-flat" style="width: 48%;">
-                                        <i class="fa fa-plus-circle"></i> Cancel
-                                    </button>
+                                    <a asp-controller="Role" asp-action="Index" class="btn btn-default btn-flat" style="width: 48%;">
+                                        <i class="fa fa-arrow-left"></i> Cancel
+                                    </a>
                                 </div>
                             </form>
                         </div>

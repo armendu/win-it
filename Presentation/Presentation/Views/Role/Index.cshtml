@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Entities.Models.Role>
+﻿@using Common.Extensions
+@model IEnumerable<Entities.Models.Role>
 @{
     ViewData["Title"] = "- Roles";
 }
@@ -7,60 +8,69 @@
     <h3>Roles</h3>
 </div>
 <div class="col-md-12">
-    <div class="box box-success">
+    <div class="box box-primary">
         <div class="box-header with-border">
             <a class="btn btn-default btn-flat" asp-controller="Role" asp-action="Create"><i class="fa fa-plus-circle"></i>&nbsp; Create new Role</a>
         </div>
         <div class="box-body">
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th width="20%">
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th width="20%">
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th width="20%">
-                        @Html.DisplayName("Members")
-                    </th>
-                    <th width="40%" style="text-align: center">
-                        @Html.DisplayName("Actions")
-                    </th>
-                </tr>
+                    <tr>
+                        <th width="20%">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("Created at")
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("Members")
+                        </th>
+                        <th width="20%" style="text-align: center">
+                            @Html.DisplayName("Actions")
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td width="20%">
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td width="20%">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td width="20%" identity-role="@item.Id"></td>
-                        <td width="40%" style="text-align: center">
-                            <a class="btn btn-sm btn-default btn-flat custom-btn"
-                               asp-action="Edit"
-                               asp-route-id="@item.Id">
-                                <i class="fa fa-pencil"></i>&nbsp; Edit
-                            </a>
-                            <a class="btn btn-sm btn-default btn-flat custom-btn"
-                               asp-action="Details"
-                               asp-route-id="@item.Id">
-                                <i class="fa fa-eye"></i>&nbsp; Details
-                            </a>
-                            <a class="btn btn-sm btn-default btn-flat delete custom-btn btn-delete"
-                               asp-action="Delete"
-                               asp-route-id="@item.Id">
-                                <i class="fa fa-trash" style="color: firebrick;"></i>&nbsp; Delete
-                            </a>
-                        </td>
-                    </tr>
-                }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td width="20%">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td width="20%">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td width="20%">
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td width="20%" identity-role="@item.Id"></td>
+                            <td width="20%" style="text-align: center">
+                                <a class="btn btn-sm btn-default btn-flat custom-btn"
+                                   asp-action="Edit"
+                                   asp-route-id="@item.Id">
+                                    <i class="fa fa-pencil"></i>&nbsp; Edit
+                                </a>
+                                <button class="btn btn-sm btn-default btn-flat custom-btn"
+                                        data-toggle="modal" data-target="#exampleModalCenter"
+                                        data-url="@Url.Action("Details", item)">
+                                    <i class="fa fa-eye"></i>&nbsp; Details
+                                </button>
+                                <a class="btn btn-sm btn-default btn-flat delete custom-btn btn-delete"
+                                   asp-action="Delete"
+                                   asp-route-id="@item.Id">
+                                    <i class="fa fa-trash" style="color: firebrick;"></i>&nbsp; Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
+
+            <!-- Modal placeholder -->
+            <div id="modal-placeholder"></div>
         </div>
     </div>
 </div>

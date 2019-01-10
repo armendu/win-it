@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Entities.Models;
+using Entities.ViewModels.Role;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,18 +12,22 @@ namespace Presentation.Controllers
 {
     public class RoleController : Controller
     {
-        private readonly ILogger _logger;
+        private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new instance of the RoleController and injects the roleManager, and logger.
         /// </summary>
+        /// <param name="userManager">The user manager to be injected.</param>
         /// <param name="roleManager">The role manager to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
-        public RoleController(RoleManager<Role> roleManager, ILogger<RoleController> logger)
+        public RoleController(UserManager<User> userManager, RoleManager<Role> roleManager,
+            ILogger<RoleController> logger)
         {
-            _logger = logger;
+            _userManager = userManager;
             _roleManager = roleManager;
+            _logger = logger;
         }
 
         // GET: Role/Index
@@ -80,6 +85,103 @@ namespace Presentation.Controllers
             }
 
             return View(name);
+        }
+
+        // GET: Role/Edit
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            try
+            {
+                Role role = await _roleManager.FindByIdAsync(id);
+                List<User> members = new List<User>();
+                List<User> nonMembers = new List<User>();
+                foreach (User user in _userManager.Users)
+                {
+                    var list = await _userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
+                    list.Add(user);
+                }
+
+                return View(new EditRoleViewModel
+                {
+                    Role = role,
+                    Members = members,
+                    NonMembers = nonMembers
+                });
+            }
+            catch (FormatException ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return RedirectToAction("Index");
+            }
+        }
+
+        // POST: Role/Edit
+        [HttpPost]
+        public async Task<IActionResult> Edit(ModificationRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityResult result;
+                foreach (string userId in model.IdsToAdd ?? new string[] { })
+                {
+                    User user = await _userManager.FindByIdAsync(userId);
+                    if (user != null)
+                    {
+                        result = await _userManager.AddToRoleAsync(user,
+                            model.RoleName);
+                        if (!result.Succeeded)
+                        {
+                            AddErrorsFromResult(result);
+                        }
+                    }
+                }
+
+                foreach (string userId in model.IdsToDelete ?? new string[] { })
+                {
+                    User user = await _userManager.FindByIdAsync(userId);
+                    if (user != null)
+                    {
+                        result = await _userManager.RemoveFromRoleAsync(user,
+                            model.RoleName);
+                        if (!result.Succeeded)
+                        {
+                            AddErrorsFromResult(result);
+                        }
+                    }
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return await Edit(model.RoleId);
+        }
+
+        public IActionResult Details(Role model)
+        {
+            try
+            {
+                return PartialView("_PartialDetails", model);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return View("Index");
+            }
         }
 
         // POST: Role/Delete/id

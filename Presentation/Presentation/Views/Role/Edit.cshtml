@@ -1,0 +1,81 @@
+﻿@using Entities.Models
+@model Entities.ViewModels.Role.EditRoleViewModel
+
+<div class="col-md-12">
+    <h3></h3>
+</div>
+<div class="col-md-12">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title"><i class="fa fa-pencil"></i>&nbsp; Edit GameSettings</h3>
+        </div>
+        <div class="box-body">
+            @if (Model != null)
+            {
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" name="roleName" value="@Model.Role.Name" />
+                    <input type="hidden" name="roleId" value="@Model.Role.Id" />
+
+                    <div class="col-md-5">
+                        <label>Add To @Model.Role.Name: </label>
+                        <table class="table table-striped">
+                            @if (!Model.NonMembers.Any())
+                            {
+                                <tr>
+                                    <td colspan="2" class="label-danger">All Users Are Members</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (User user in Model.NonMembers)
+                                {
+                                    <tr>
+                                        <td>@user.UserName</td>
+                                        <td>
+                                            <input type="checkbox" name="IdsToAdd" value="@user.Id">
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+
+                        <label>Remove From @Model.Role.Name: </label>
+                        <table class="table table-striped">
+                            @if (!Model.Members.Any())
+                            {
+                                <tr>
+                                    <td colspan="2" class="label-danger">No Users Are Members</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (User user in Model.Members)
+                                {
+                                    <tr>
+                                        <td>@user.UserName</td>
+                                        <td>
+                                            <input type="checkbox" name="IdsToDelete" value="@user.Id">
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </table>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-flat" style="width: 48%;">
+                                <i class="fas fa-edit"></i>&nbsp; Save
+                            </button>
+                            <a asp-action="Index" class="btn btn-default btn-flat" style="width: 48%; float: right;">
+                                <i class="fa fa-arrow-left"></i>&nbsp; Cancel
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <label class="label-danger">Role not found!</label>
+            }
+        </div>
+    </div>
+</div>
