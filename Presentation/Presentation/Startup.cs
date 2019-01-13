@@ -64,6 +64,8 @@ namespace Presentation
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMemoryCache();
             services.AddSession();
+
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/User/Login");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

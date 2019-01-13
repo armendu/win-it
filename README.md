@@ -5,7 +5,7 @@
 <h3>For database migrations</h3>
 Open CLI inside the project and change the directory to the DataAccess project using:
 
-`cd cd .\Data\DataAccess\`
+`cd .\Data\DataAccess\`
 
 Then execute the two following commands:
 

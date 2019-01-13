@@ -42,12 +42,12 @@
                                 @Html.DisplayFor(modelItem => item.UserInfo.CreatedAt)
                             </td>
                             <td style="text-align: center">
-                                <a class="btn btn-sm btn-default btn-flat custom-btn"
+                                <a class="btn btn-sm btn-default btn-flat custom-btn" style="width: 25%"
                                    asp-action="Edit"
                                    asp-route-id="@item.Id">
-                                    <i class="fa fa-pencil"></i>&nbsp; Edit
+                                    <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
-                                <button class="btn btn-sm btn-default btn-flat custom-btn"
+                                <button class="btn btn-sm btn-default btn-flat custom-btn" style="width: 25%"
                                         data-toggle="modal" data-target="#exampleModalCenter"
                                         data-url="@Url.Action("Details", item)">
                                     <i class="fa fa-eye"></i>&nbsp; Details

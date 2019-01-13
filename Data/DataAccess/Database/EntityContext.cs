@@ -25,6 +25,7 @@ namespace DataAccess.Database
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<IdentityUserRole<Guid>> UserRoles { get; set; }
         public virtual DbSet<IdentityUserClaim<Guid>> UserClaims { get; set; }
+        public virtual DbSet<IdentityRoleClaim<Guid>> RoleClaims { get; set; }
         public virtual DbSet<GameSettings> GameSettings { get; set; }
 
         public EntityContext(DbContextOptions<EntityContext> options)

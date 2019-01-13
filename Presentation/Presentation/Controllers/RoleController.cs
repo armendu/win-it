@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using Entities.Models;
+using Entities.ViewModels;
 using Entities.ViewModels.Role;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +16,7 @@ namespace Presentation.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private const int PageSize = 10;
         private readonly ILogger _logger;
 
         /// <summary>
@@ -32,13 +35,25 @@ namespace Presentation.Controllers
 
         // GET: Role/Index
         [HttpGet]
-        public ViewResult Index()
+        public ViewResult Index(int page = 1)
         {
             try
             {
-                IEnumerable<Role> roles = _roleManager.Roles;
+                IndexRoleViewModel model = new IndexRoleViewModel
+                {
+                    RolesList = _roleManager.Roles
+                        .OrderBy(r => r.Id)
+                        .Skip((page - 1) * PageSize)
+                        .Take(PageSize),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = _roleManager.Roles.Count()
+                    }
+                };
 
-                return View(roles);
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -62,7 +77,7 @@ namespace Presentation.Controllers
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return View("Index");
+                return RedirectToAction("Index");
             }
         }
 
@@ -114,14 +129,14 @@ namespace Presentation.Controllers
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return RedirectToAction("Index");
+                return View(null);
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return RedirectToAction("Index");
+                return View(null);
             }
         }
 

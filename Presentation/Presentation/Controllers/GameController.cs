@@ -13,7 +13,7 @@ namespace Presentation.Controllers
     {
         private readonly IGameLogic _gameLogic;
         private readonly ILogger _logger;
-        private const int PageSize = 5;
+        private const int PageSize = 10;
 
         public GameController(IGameLogic gameLogic, ILogger<GameController> logger)
         {

@@ -77,7 +77,7 @@
                 </a>
             </li>
 
-            <li class="treeview @(Html.IsMenuActive("/Settings") ? "active" : "")">
+            <li class="treeview @((Html.IsMenuActive("/Settings") || Html.IsMenuActive("/GameSettings")) ? "active" : "")">
                 <a href="#">
                     <i class="fas fa-cogs"></i>
                     <span>Settings</span>

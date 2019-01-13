@@ -1,5 +1,5 @@
 ﻿@using Common.Extensions
-@model IEnumerable<Entities.Models.Role>
+@model Entities.ViewModels.Role.IndexRoleViewModel
 @{
     ViewData["Title"] = "- Roles";
 }
@@ -15,26 +15,28 @@
         <div class="box-body">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th width="20%">
-                            @Html.DisplayNameFor(model => model.Name)
-                        </th>
-                        <th width="20%">
-                            @Html.DisplayNameFor(model => model.Description)
-                        </th>
-                        <th width="20%">
-                            @Html.DisplayName("Created at")
-                        </th>
-                        <th width="20%">
-                            @Html.DisplayName("Members")
-                        </th>
-                        <th width="20%" style="text-align: center">
-                            @Html.DisplayName("Actions")
-                        </th>
-                    </tr>
+                <tr>
+                    <th width="20%">
+                        @Html.DisplayName("Name")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Description")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Created at")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Members")
+                    </th>
+                    <th width="20%" style="text-align: center">
+                        @Html.DisplayName("Actions")
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                @if (Model != null)
+                {
+                    foreach (var item in Model.RolesList)
                     {
                         <tr>
                             <td width="20%">
@@ -46,29 +48,39 @@
                             <td width="20%">
                                 @Html.DisplayFor(modelItem => item.CreatedAt)
                             </td>
-                            <td width="20%" identity-role="@item.Id"></td>
-                            <td width="20%" style="text-align: center">
-                                <a class="btn btn-sm btn-default btn-flat custom-btn"
+                            <td style="text-align: center">
+                                <a class="btn btn-sm btn-default btn-flat custom-btn" style="width: 25%"
                                    asp-action="Edit"
                                    asp-route-id="@item.Id">
-                                    <i class="fa fa-pencil"></i>&nbsp; Edit
+                                    <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
-                                <button class="btn btn-sm btn-default btn-flat custom-btn"
+                                <button class="btn btn-sm btn-default btn-flat custom-btn" style="width: 25%"
                                         data-toggle="modal" data-target="#exampleModalCenter"
                                         data-url="@Url.Action("Details", item)">
                                     <i class="fa fa-eye"></i>&nbsp; Details
                                 </button>
-                                <a class="btn btn-sm btn-default btn-flat delete custom-btn btn-delete"
-                                   asp-action="Delete"
-                                   asp-route-id="@item.Id">
-                                    <i class="fa fa-trash" style="color: firebrick;"></i>&nbsp; Delete
-                                </a>
                             </td>
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" align="center" style="padding: 35px">
+                            <em>No roles to display</em>
+                        </td>
+                    </tr>
+                }
+
                 </tbody>
             </table>
-
+            @if (Model != null && Model.RolesList.Any())
+            {
+                <div page-model="@Model.PagingInfo" page-action="" page-classes-enabled="true"
+                     page-class="btn" page-class-normal="btn-default"
+                     page-class-selected="btn-primary" class="btn-group pull-right m-1 pagination">
+                </div>
+            }
             <!-- Modal placeholder -->
             <div id="modal-placeholder"></div>
         </div>
