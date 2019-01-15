@@ -4,6 +4,7 @@ using Common.LogicInterfaces;
 using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.GameSettings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -28,6 +29,7 @@ namespace Presentation.Controllers
 
         // GET: GameSettings/
         [HttpGet]
+        [Authorize(Roles = "Admins")]
         public IActionResult Index(int page = 1)
         {
             try
@@ -148,21 +150,6 @@ namespace Presentation.Controllers
                 {
                     View(exception.Message);
                 }
-            }
-
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            try
-            {
-//                ProjectLogic.DeleteProject(id);
-            }
-            catch (Exception ex)
-            {
-                //return Json(new JsonContent(false, ex.Message));
             }
 
             return View();

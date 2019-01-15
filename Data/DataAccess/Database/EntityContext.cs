@@ -82,6 +82,11 @@ namespace DataAccess.Database
                 if (await roleManager.FindByNameAsync(role) == null)
                 {
                     await roleManager.CreateAsync(new Role(role, description));
+                    await roleManager.CreateAsync(new Role
+                    {
+                        Name = "Default",
+                        Description = "The default users of the application"
+                    });
                 }
 
                 UserInfo userInfo = new UserInfo

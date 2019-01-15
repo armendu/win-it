@@ -1,5 +1,4 @@
-﻿@using Common.Extensions
-@model Entities.ViewModels.Role.IndexRoleViewModel
+﻿@model Entities.ViewModels.Role.IndexRoleViewModel
 @{
     ViewData["Title"] = "- Roles";
 }
@@ -28,7 +27,7 @@
                     <th width="20%">
                         @Html.DisplayName("Members")
                     </th>
-                    <th width="20%" style="text-align: center">
+                    <th style="text-align: center">
                         @Html.DisplayName("Actions")
                     </th>
                 </tr>
@@ -48,13 +47,14 @@
                             <td width="20%">
                                 @Html.DisplayFor(modelItem => item.CreatedAt)
                             </td>
+                            <td width="20%" identity-role="@item.Id"></td>
                             <td style="text-align: center">
-                                <a class="btn btn-sm btn-default btn-flat custom-btn" style="width: 25%"
+                                <a class="btn btn-sm btn-default btn-flat custom-btn"
                                    asp-action="Edit"
                                    asp-route-id="@item.Id">
                                     <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
-                                <button class="btn btn-sm btn-default btn-flat custom-btn" style="width: 25%"
+                                <button class="btn btn-sm btn-default btn-flat custom-btn"
                                         data-toggle="modal" data-target="#exampleModalCenter"
                                         data-url="@Url.Action("Details", item)">
                                     <i class="fa fa-eye"></i>&nbsp; Details

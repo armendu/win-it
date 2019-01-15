@@ -6,24 +6,24 @@
 <head>
     <link href="~/plugins/bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="~/plugins/bootstrap-4.0.0/dist/js/bootstrap.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <link href="~/css/custom/login.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/bower_components/font-awesome/css/all.css">
 </head>
 
 <body>
 <div class="container">
     <div class="card card-container">
-        <h3 style="align-self: center"><a href="~/">WinIt</a></h3>
-        <p id="profile-name" class="profile-name-card"></p>
+        <h1 id="profile-name" class="profile-name-card">WinIt</h1>
         <form asp-action="Create" asp-controller="User" method="post" class="form-signin">
-            @* <input type="hidden" asp-for="ReturnUrl" /> *@
+            <input type="hidden" asp-for="ReturnUrl" />
             <span id="reauth-email" class="reauth-email"></span>
-
+            
             <input asp-for="Email" type="email" class="form-control" placeholder="Email" required autofocus>
             <div>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <input asp-for="Username" type="text" class="form-control" placeholder="Username" required autofocus>
+            <input asp-for="Username" type="text" class="form-control" placeholder="Username" required>
             <div>
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
@@ -48,20 +48,28 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
 
-            <input asp-for="Phone" type="tel" class="form-control" placeholder="Phone">
+            <input asp-for="Phone" type="text" class="form-control" placeholder="Phone">
             <div>
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
 
-            @* <input asp-for="Birthdate" type="text" id="inputBirthdate" class="form-control" placeholder="Birthdate"> *@
-            @* <div> *@
-            @*     <span asp-validation-for="Birthdate" class="text-danger"></span> *@
-            @* </div> *@
+            <input asp-for="Birthdate" type="date" data-date-format="yyyy-MM-dd" class="form-control" placeholder="Birthdate">
+            <div>
+                <span asp-validation-for="Birthdate" class="text-danger"></span>
+            </div>
+
+            <input type="text" class="form-control" placeholder="Address">
+            <div>
+                <span asp-validation-for="Birthdate" class="text-danger"></span>
+            </div>
 
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign up</button>
         </form>
         <a asp-action="Login" class="forgot-password form-control">
             Already have an account? Sign in
+        </a>
+        <a href="~/" class="forgot-password form-control">
+            <i class="fas fa-home"></i>&nbsp; Go back to home page
         </a>
     </div><!-- /card-container -->
 </div>

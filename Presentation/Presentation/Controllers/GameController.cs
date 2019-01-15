@@ -78,12 +78,11 @@ namespace Presentation.Controllers
             {
                 ViewBag.Message = "Model State is not valid";
 
-                return View("Create");
+                return RedirectToAction("Index");
             }
 
             try
             {
-
                 return
                     RedirectToAction("Index");
             }

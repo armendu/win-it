@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.LogicInterfaces;
 using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.User;
@@ -14,31 +13,28 @@ namespace Presentation.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserLogic _userLogic;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _singInManager;
-        private IUserValidator<User> _userValidator;
-        private IPasswordValidator<User> _passwordValidator;
-        private IPasswordHasher<User> _passwordHasher;
+        private readonly IUserValidator<User> _userValidator;
+        private readonly IPasswordValidator<User> _passwordValidator;
+        private readonly IPasswordHasher<User> _passwordHasher;
         private readonly ILogger _logger;
-        private const int PageSize = 5;
+        private const int PageSize = 10;
 
         /// <summary>
         /// Creates a new instance of the UserController and injects the userLogic, userManager, singInManager, and logger.
         /// </summary>
-        /// <param name="userLogic">The logic to be injected.</param>
         /// <param name="userManager">The user manager to be injected.</param>
         /// <param name="singInManager">The sign in manager to be injected.</param>
         /// <param name="userValidator">The userValidator to be injected.</param>
         /// <param name="passwordValidator">The passwordValidator to be injected.</param>
         /// <param name="passwordHasher">The passwordHasher to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
-        public UserController(IUserLogic userLogic, UserManager<User> userManager,
+        public UserController(UserManager<User> userManager,
             SignInManager<User> singInManager, IUserValidator<User> userValidator,
             IPasswordValidator<User> passwordValidator, IPasswordHasher<User> passwordHasher,
             ILogger<UserController> logger)
         {
-            _userLogic = userLogic;
             _userManager = userManager;
             _singInManager = singInManager;
             _userValidator = userValidator;
@@ -47,7 +43,7 @@ namespace Presentation.Controllers
             _logger = logger;
         }
 
-        // GET: User/Index
+        // GET: User/
         [HttpGet]
         public IActionResult Index(int page = 1)
         {
@@ -105,11 +101,14 @@ namespace Presentation.Controllers
 
         // GET: User/Create
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(string returnUrl)
         {
             try
             {
-                return View();
+                return View(new RegisterViewModel
+                {
+                    ReturnUrl = returnUrl
+                });
             }
             catch (Exception ex)
             {
@@ -120,6 +119,54 @@ namespace Presentation.Controllers
             }
         }
 
+        // POST: User/Create
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Create(RegisterViewModel registerModel)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    User user = new User
+                    {
+                        UserName = registerModel.FirstName,
+                        Email = registerModel.Email,
+                        IsActive = true
+                    };
+                    IdentityResult result
+                        = await _userManager.CreateAsync(user, registerModel.Password);
+
+                    if (result.Succeeded)
+                    {
+                        if ((await _singInManager.PasswordSignInAsync(user,
+                            registerModel.Password, false, false)).Succeeded)
+                        {
+                            return Redirect(registerModel?.ReturnUrl ?? "/");
+                        }
+                    }
+                    else
+                    {
+                        foreach (IdentityError error in result.Errors)
+                        {
+                            _logger.Log(LogLevel.Error, $"The following error occurred: {error.Description} @ {GetType().Name}");
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                    ViewBag.ErrorMessage = ex.Message;
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View(registerModel);
+        }
+
+        // GET: User/ChangePassword/{id}
         [HttpGet]
         public async Task<IActionResult> ChangePassword(string id)
         {
@@ -137,6 +184,7 @@ namespace Presentation.Controllers
             return View(editUser);
         }
 
+        // POST: User/ChangePassword/{id}
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -189,6 +237,7 @@ namespace Presentation.Controllers
             return View(model);
         }
 
+        // GET: User/Edit/{id}
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
@@ -197,6 +246,7 @@ namespace Presentation.Controllers
             {
                 EditUserViewModel editUser = new EditUserViewModel
                 {
+
                 };
 
                 return View(editUser);
@@ -207,100 +257,11 @@ namespace Presentation.Controllers
             }
         }
 
+        // POST: User/Edit/{id}
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, string email,
-            string password)
+        public async Task<IActionResult> Edit(EditUserViewModel model)
         {
-            User user = await _userManager.FindByIdAsync(id);
-            if (user != null)
-            {
-                user.Email = email;
-                IdentityResult validEmail
-                    = await _userValidator.ValidateAsync(_userManager, user);
-                if (!validEmail.Succeeded)
-                {
-                    AddErrorsFromResult(validEmail);
-                }
-
-                IdentityResult validPass = null;
-                if (!string.IsNullOrEmpty(password))
-                {
-                    validPass = await _passwordValidator.ValidateAsync(_userManager,
-                        user, password);
-                    if (validPass.Succeeded)
-                    {
-                        user.PasswordHash = _passwordHasher.HashPassword(user,
-                            password);
-                    }
-                    else
-                    {
-                        AddErrorsFromResult(validPass);
-                    }
-                }
-
-                if ((validEmail.Succeeded && validPass == null)
-                    || (validEmail.Succeeded
-                        && password != string.Empty && validPass.Succeeded))
-                {
-                    IdentityResult result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        AddErrorsFromResult(result);
-                    }
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("", "User Not Found");
-            }
-
-            return View(user);
-        }
-
-        // POST: User/Create
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Create(RegisterViewModel registerModel)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    User user = new User
-                    {
-                        UserName = registerModel.FirstName,
-                        Email = registerModel.Email,
-                        IsActive = true
-                    };
-                    IdentityResult result
-                        = await _userManager.CreateAsync(user, registerModel.Password);
-
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        foreach (IdentityError error in result.Errors)
-                        {
-                            ModelState.AddModelError("", error.Description);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
-                    ViewBag.ErrorMessage = ex.Message;
-
-                    return View("Index");
-                }
-            }
-
-            return View(registerModel);
+            return View(model);
         }
 
         public IActionResult Details(User model)

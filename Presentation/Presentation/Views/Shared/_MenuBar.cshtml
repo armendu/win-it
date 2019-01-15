@@ -1,4 +1,7 @@
-﻿<!-- Header Navbar: style can be found in header.less -->
+﻿<!-- jQuery 3 -->
+<script src="~/bower_components/jquery/dist/jquery.min.js"></script>
+
+<!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top">
     <!-- Sidebar toggle button-->
     <span class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -72,27 +75,30 @@
                         </li>
                     </ul>
                 </li>
-                <!-- User Account: style can be found in dropdown.less -->
-                <li class="dropdown user user-menu">
+                <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="hidden-xs"> @User.Identity.Name</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                            <p> @User.Identity.Name </p>
+                        <li class="header">You're logged in as <b>@User.Identity.Name</b></li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul class="menu">
+                                <li>
+                                    <!-- Task item -->
+                                    <a href="/Settings/Profile">
+                                        <h3>
+                                            Profile
+                                        </h3>
+                                    </a>
+                                </li>
+                                <!-- end task item -->
+                            </ul>
                         </li>
-                        <!-- Menu Body -->
-                        <!-- Menu Footer-->
-                        <li class="user-footer">
-                            <div class="pull-left">
-                                <a href="/Settings/Profile" class="btn btn-default btn-flat">Profile</a>
-                            </div>
-                            <div class="pull-right">
-                                <form asp-controller="User" asp-action="Logout" method="post" id="logoutForm">
-                                    <button type="submit" class="btn btn-danger btn-flat">Sign out</button>
-                                </form>
-                            </div>
+                        <li class="footer">
+                            <form asp-controller="User" asp-action="Logout" method="post" name="logout">
+                            </form>
+                            <a class="alert-danger" id="submit" href="#">Sign out</a>
                         </li>
                     </ul>
                 </li>
@@ -100,7 +106,7 @@
             else
             {
                 <li class="dropdown notifications-menu">
-                    <a asp-controller="User" asp-action="Login"
+                    <a asp-controller="User" asp-action="Login" asp-route-returnUrl="@Url.Action()"
                        class="btn btn-group" style="background: #333; color: white">
                         Log in &nbsp; <i class="fas fa-sign-out-alt"></i>
                     </a>
@@ -109,3 +115,12 @@
         </ul>
     </div>
 </nav>
+
+<script type="text/javascript">
+    $(function() {
+        $("#submit").click(function() {
+            document.forms['logout'].submit();
+            return false;
+        });
+    });
+</script>

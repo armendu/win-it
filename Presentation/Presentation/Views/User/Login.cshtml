@@ -17,14 +17,17 @@
         <form asp-action="Login" asp-controller="User" method="post" class="form-signin">
             <input type="hidden" asp-for="ReturnUrl" />
             <span id="reauth-email" class="reauth-email"></span>
-            <input asp-for="UserName" type="text" class="form-control" placeholder="UserName" required autofocus>
+
+            <input asp-for="UserName" type="text" class="form-control" placeholder="Username" required autofocus>
             <div>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
+
             <input asp-for="Password" type="password" class="form-control" placeholder="Password" required>
             <div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
+
             <div id="remember" class="checkbox">
                 <label>
                     <input type="checkbox" value="remember-me"> Remember me
