@@ -1,47 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataAccess.Repository
 {
     public class UserRepository : IUserRepository
     {
         private readonly EntityContext _entityContext;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _singInManager;
 
-        public UserRepository(EntityContext entityContext)
+        public UserRepository(EntityContext entityContext, UserManager<User> userManager,
+            SignInManager<User> singInManager)
         {
             _entityContext = entityContext;
+            _userManager = userManager;
+            _singInManager = singInManager;
         }
 
-        public User GetById(string id)
-        {
-            User profile = _entityContext.Users.FirstOrDefault(u => u.Id.ToString() == id);
-
-            if (profile == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            return profile;
-        }
-
-        public List<UserDetailsViewModel> List()
+        public async Task<User> FindById(string id)
         {
             try
             {
-                List<UserDetailsViewModel> allUsers = new List<UserDetailsViewModel>();
+                User profile = await _userManager.FindByIdAsync(id);
 
-                if (allUsers.Count == 0)
-                {
+                if (profile == null)
                     throw new NullReferenceException();
-                }
 
-                return allUsers;
+                return profile;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<User> List()
+        {
+            try
+            {
+                List<User> users = _userManager.Users.ToList();
+
+                if (!users.Any())
+                    throw new NullReferenceException();
+
+                return users;
             }
             catch
             {
@@ -49,12 +59,34 @@ namespace DataAccess.Repository
             }
         }
 
-        public void Create(RegisterViewModel entity)
+        public async Task<bool> Login(LoginViewModel loginModel)
+        {
+            try
+            {
+                User user =
+                    await _userManager.FindByNameAsync(loginModel.UserName);
+                if (user != null)
+                {
+                    await _singInManager.SignOutAsync();
+                    return (await _singInManager.PasswordSignInAsync(user,
+                        loginModel.Password, false, false)).Succeeded;
+                }
+
+                return false;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<RegisterResultViewModel> Create(RegisterViewModel registerModel)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())
             {
                 try
                 {
+                    // TODO: Remove hard coded data
                     Country country = new Country
                     {
                         Name = "Kosova",
@@ -84,10 +116,10 @@ namespace DataAccess.Repository
                         Address = address,
                         UpdateAt = DateTime.UtcNow,
                         CreatedAt = DateTime.UtcNow,
-                        FirstName = entity.FirstName,
-                        LastName = entity.LastName,
-                        Phone = entity.Phone,
-//                        Birthdate = entity.Birthdate
+                        FirstName = registerModel.FirstName,
+                        LastName = registerModel.LastName,
+                        Phone = registerModel.Phone,
+//                        Birthdate = registerModel.Birthdate
                     };
 
                     Player player = new Player
@@ -100,24 +132,33 @@ namespace DataAccess.Repository
                         CreatedAt = DateTime.UtcNow,
                     };
 
-                    Role role = new Role
-                    {
-                        Name = "Initial role",
-                        Description = "Entry role"
-                    };
-
                     User user = new User
                     {
-                        UserName = entity.Username,
+                        UserName = registerModel.Username,
+                        Email = registerModel.Email,
+                        IsActive = true,
                         UserInfo = userInfo,
-                        Email = entity.Email,
                         Player = player
                     };
 
-                    _entityContext.Add(user);
-                    _entityContext.SaveChanges();
+                    IdentityResult result
+                        = await _userManager.CreateAsync(user, registerModel.Password);
 
-                    transaction.Commit();
+                    if (!result.Succeeded)
+                    {
+                        transaction.Rollback();
+                    }
+                    else
+                    {
+                        transaction.Commit();
+                        await _userManager.AddToRoleAsync(user, "Default");
+                    }
+
+                    return new RegisterResultViewModel
+                    {
+                        Result = result,
+                        User = user
+                    };
                 }
                 catch (Exception)
                 {
@@ -127,22 +168,9 @@ namespace DataAccess.Repository
             }
         }
 
-        public bool Login()
+        public void Edit(UserDetailsViewModel entity)
         {
-            using (var transaction = _entityContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    _entityContext.Users.Find();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
-
-            return true;
+            throw new NotImplementedException();
         }
 
         public void Update(UserDetailsViewModel entity)
@@ -150,7 +178,7 @@ namespace DataAccess.Repository
             throw new NotImplementedException();
         }
 
-        public void Delete(UserDetailsViewModel entity)
+        public void Deactivate(string id)
         {
             throw new NotImplementedException();
         }

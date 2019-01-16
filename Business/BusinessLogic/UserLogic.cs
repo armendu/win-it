@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
+using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.User;
 using MySql.Data.MySqlClient;
@@ -18,33 +20,15 @@ namespace BusinessLogic
             _userRepository = userRepository;
         }
 
-        public UserDetailsViewModel GetUserById(int profileID)
-        {
-//            try
-//            {
-//                UserDetailsViewModel user = _userRepository.GetById(profileID);
-//
-//                return user;
-//            }
-//            catch (NullReferenceException)
-//            {
-//                throw
-//                    new NotFoundException("User was not found");
-//            }
-//            catch (MySqlException)
-//            {
-//                throw new ConnectionException();
-//            }
-            throw new NotImplementedException();
-        }
-
-        public List<UserDetailsViewModel> List()
+        public async Task<User> FindById(string id)
         {
             try
             {
-                List<UserDetailsViewModel> list = _userRepository.List();
-
-                return list;
+                return await _userRepository.FindById(id);
+            }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("User was not found");
             }
             catch (MySqlException)
             {
@@ -52,11 +36,11 @@ namespace BusinessLogic
             }
         }
 
-        public void Create(RegisterViewModel model)
+        public List<User> List()
         {
             try
             {
-                _userRepository.Create(model);
+               return _userRepository.List();
             }
             catch (MySqlException)
             {
@@ -64,9 +48,28 @@ namespace BusinessLogic
             }
         }
 
-        public bool Login()
+        public async Task<RegisterResultViewModel> Create(RegisterViewModel model)
         {
-            return false;
+            try
+            {
+                return await _userRepository.Create(model);
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
+        }
+
+        public async Task<bool> Login(LoginViewModel loginModel)
+        {
+            try
+            {
+                return await _userRepository.Login(loginModel);
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
         }
 //
 //        public void EditUser(EditUser model)

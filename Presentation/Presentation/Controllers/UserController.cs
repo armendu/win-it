@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Helpers.Exceptions;
+using Common.LogicInterfaces;
 using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.User;
@@ -13,6 +15,7 @@ namespace Presentation.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IUserLogic _userLogic;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _singInManager;
         private readonly IUserValidator<User> _userValidator;
@@ -30,11 +33,12 @@ namespace Presentation.Controllers
         /// <param name="passwordValidator">The passwordValidator to be injected.</param>
         /// <param name="passwordHasher">The passwordHasher to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
-        public UserController(UserManager<User> userManager,
+        public UserController(IUserLogic userLogic, UserManager<User> userManager,
             SignInManager<User> singInManager, IUserValidator<User> userValidator,
             IPasswordValidator<User> passwordValidator, IPasswordHasher<User> passwordHasher,
             ILogger<UserController> logger)
         {
+            _userLogic = userLogic;
             _userManager = userManager;
             _singInManager = singInManager;
             _userValidator = userValidator;
@@ -47,31 +51,61 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult Index(int page = 1)
         {
-            IndexUserViewModel model = new IndexUserViewModel
+            try
             {
-                Users = _userManager.Users
-                    .OrderBy(g => g.Id)
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
-                PagingInfo = new PagingInfo
+                IndexUserViewModel model = new IndexUserViewModel
                 {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = _userManager.Users.Count()
-                }
-            };
+                    Users = _userLogic.List()
+                        .OrderBy(g => g.Id)
+                        .Skip((page - 1) * PageSize)
+                        .Take(PageSize),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = _userManager.Users.Count()
+                    }
+                };
 
-            return View(model);
+                return View(model);
+            }
+            catch (ConnectionException ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"A general exception occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+            }
+
+            return View(null);
         }
 
         // GET: User/Login
         [AllowAnonymous]
         public ViewResult Login(string returnUrl)
         {
-            return View("Login", new LoginViewModel
+            try
             {
-                ReturnUrl = returnUrl
-            });
+                return View("Login", new LoginViewModel
+                {
+                    ReturnUrl = returnUrl
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+
+                return View("Index");
+            }
         }
 
         // POST: User/Login
@@ -82,20 +116,36 @@ namespace Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user =
-                    await _userManager.FindByNameAsync(loginModel.UserName);
-                if (user != null)
+                try
                 {
-                    await _singInManager.SignOutAsync();
-                    if ((await _singInManager.PasswordSignInAsync(user,
-                        loginModel.Password, false, false)).Succeeded)
+                    if (await _userLogic.Login(loginModel))
                     {
                         return Redirect(loginModel?.ReturnUrl ?? "/");
                     }
+
+                    _logger.Log(LogLevel.Error, "Invalid username or password");
+                    ViewBag.ErrorMessage = "Invalid username or password";
+
+                    return View(loginModel);
+                }
+                catch (ConnectionException ex)
+                {
+                    _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                    ViewBag.ErrorMessage = ex.Message;
+                }
+                catch (NullReferenceException ex)
+                {
+                    _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                    ViewBag.ErrorMessage = ex.Message;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log(LogLevel.Error, $"A general exception occurred: {ex.Message} @ {GetType().Name}");
+                    ViewBag.ErrorMessage = ex.Message;
                 }
             }
 
-            ModelState.AddModelError("", "Invalid name or password");
+            ModelState.AddModelError("", "Invalid username or password");
             return View(loginModel);
         }
 
@@ -128,38 +178,38 @@ namespace Presentation.Controllers
             {
                 try
                 {
-                    User user = new User
-                    {
-                        UserName = registerModel.FirstName,
-                        Email = registerModel.Email,
-                        IsActive = true
-                    };
-                    IdentityResult result
-                        = await _userManager.CreateAsync(user, registerModel.Password);
+                    RegisterResultViewModel registerResult = await _userLogic.Create(registerModel);
 
-                    if (result.Succeeded)
+                    if (registerResult != null)
                     {
-                        if ((await _singInManager.PasswordSignInAsync(user,
-                            registerModel.Password, false, false)).Succeeded)
+                        if (registerResult.Result.Succeeded)
                         {
-                            return Redirect(registerModel?.ReturnUrl ?? "/");
+                            if ((await _singInManager.PasswordSignInAsync(registerResult.User,
+                                registerModel.Password, false, false)).Succeeded)
+                            {
+                                return Redirect(registerModel?.ReturnUrl ?? "/");
+                            }
                         }
-                    }
-                    else
-                    {
-                        foreach (IdentityError error in result.Errors)
+                        else
                         {
-                            _logger.Log(LogLevel.Error, $"The following error occurred: {error.Description} @ {GetType().Name}");
-                            ModelState.AddModelError("", error.Description);
+                            foreach (IdentityError error in registerResult.Result.Errors)
+                            {
+                                _logger.Log(LogLevel.Error,
+                                    $"The following error occurred: {error.Description} @ {GetType().Name}");
+                                ModelState.AddModelError("", error.Description);
+                            }
                         }
                     }
                 }
+                catch (ConnectionException ex)
+                {
+                    _logger.Log(LogLevel.Error, $"The following connection error occurred: {ex.Message} @ {GetType().Name}");
+                    ModelState.AddModelError("", ex.Message);
+                }
                 catch (Exception ex)
                 {
-                    _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
-                    ViewBag.ErrorMessage = ex.Message;
-
-                    return RedirectToAction("Index");
+                    _logger.Log(LogLevel.Error, $"A general exception occurred: {ex.Message} @ {GetType().Name}");
+                    ModelState.AddModelError("", ex.Message);
                 }
             }
 
@@ -170,25 +220,42 @@ namespace Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> ChangePassword(string id)
         {
-            User user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
-                return RedirectToAction("NotFoundError", "Home");
-
-            ChangePasswordViewModel editUser = new ChangePasswordViewModel
+            try
             {
-                Id = user.Id,
-                Email = user.Email
-            };
+                User user = await _userLogic.FindById(id);
 
-            return View(editUser);
+                ChangePasswordViewModel editUser = new ChangePasswordViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email
+                };
+
+                return View(editUser);
+            }
+            catch (NotFoundException ex)
+            {
+                _logger.Log(LogLevel.Error, $"The requested resource was not found with the following message: {ex.Message} @ {GetType().Name}");
+                ModelState.AddModelError("", ex.Message);
+            }
+            catch (ConnectionException ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following connection error occurred: {ex.Message} @ {GetType().Name}");
+                ModelState.AddModelError("", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"A general exception occurred: {ex.Message} @ {GetType().Name}");
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return RedirectToAction("NotFoundError", "Home");
         }
 
         // POST: User/ChangePassword/{id}
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            User user = await _userManager.FindByIdAsync(model.Id.ToString());
+            User user = await _userLogic.FindById(model.Id.ToString());
             if (user != null)
             {
                 user.Email = model.Email;
@@ -246,7 +313,6 @@ namespace Presentation.Controllers
             {
                 EditUserViewModel editUser = new EditUserViewModel
                 {
-
                 };
 
                 return View(editUser);

@@ -9,7 +9,7 @@ namespace Entities.ViewModels.User
         public string Email { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$", ErrorMessage = "Characters are not allowed.")]
+        [RegularExpression(@"^(?!.*[-_]{2,})(?=^[^-_].*[^-_]$)[\w\s-]{3,15}$", ErrorMessage = "Please write a valid username between 3 and 15 characters.")]
         public string Username { get; set; }
 
         [Required]
@@ -21,11 +21,11 @@ namespace Entities.ViewModels.User
         public string ReTypePassword { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$")]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$")]
         public string FirstName { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$")]
+        [RegularExpression(@"^[a-zA-Z''-'\s]{1,50}$")]
         public string LastName { get; set; }
 
         public string Phone { get; set; }
