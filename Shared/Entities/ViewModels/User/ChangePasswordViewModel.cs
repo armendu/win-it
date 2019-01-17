@@ -14,6 +14,9 @@ namespace Entities.ViewModels.User
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
         public string ReTypePassword { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

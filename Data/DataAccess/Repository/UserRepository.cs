@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Helpers.Exceptions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
@@ -16,13 +17,18 @@ namespace DataAccess.Repository
         private readonly EntityContext _entityContext;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _singInManager;
+        private readonly IPasswordValidator<User> _passwordValidator;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
         public UserRepository(EntityContext entityContext, UserManager<User> userManager,
-            SignInManager<User> singInManager)
+            SignInManager<User> singInManager, IPasswordValidator<User> passwordValidator,
+            IPasswordHasher<User> passwordHasher)
         {
             _entityContext = entityContext;
             _userManager = userManager;
             _singInManager = singInManager;
+            _passwordValidator = passwordValidator;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<User> FindById(string id)
@@ -168,9 +174,60 @@ namespace DataAccess.Repository
             }
         }
 
-        public void Edit(UserDetailsViewModel entity)
+        public async Task<IdentityResult> ChangePassword(ChangePasswordViewModel model)
         {
-            throw new NotImplementedException();
+            using (var transaction = _entityContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    User user = await _userManager.FindByIdAsync(model.Id.ToString());
+
+                    if (user != null)
+                    {
+                        IdentityResult validPass = null;
+                        if (!string.IsNullOrEmpty(model.Password) && !string.IsNullOrEmpty(model.ReTypePassword) &&
+                            model.Password.Equals(model.ReTypePassword))
+                        {
+                            validPass = await _passwordValidator.ValidateAsync(_userManager,
+                                user, model.Password);
+                            if (validPass.Succeeded)
+                            {
+                                user.PasswordHash = _passwordHasher.HashPassword(user,
+                                    model.Password);
+                            }
+                            else
+                            {
+                                throw new ArgumentException("Please provide the correct password");
+                            }
+                        }
+                        else
+                        {
+                            throw new FormatException("Please provide the correct password");
+                        }
+
+                        if (string.IsNullOrEmpty(model.Password) && !validPass.Succeeded)
+                            throw new FormatException("The password provided is not valid");
+
+                        IdentityResult result = await _userManager.UpdateAsync(user);
+
+                        if (!result.Succeeded)
+                            transaction.Rollback();
+                        else
+                            transaction.Commit();
+
+                        return result;
+                    }
+                    else
+                    {
+                        throw new NullReferenceException();
+                    }
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         public void Update(UserDetailsViewModel entity)

@@ -2,7 +2,7 @@
 @model Entities.ViewModels.Role.EditRoleViewModel
 
 <div class="col-md-12">
-    <h3></h3>
+    <h3>Roles</h3>
 </div>
 <div class="col-md-12">
     <div class="box box-primary">
@@ -12,6 +12,13 @@
         <div class="box-body">
             @if (Model != null)
             {
+                if (ViewData["Message"] != null)
+                {
+                    <ul class="text-success">
+                        <li>@ViewData["Message"]</li>
+                    </ul>
+                }
+
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <form asp-action="Edit" method="post">
                     <input type="hidden" name="roleName" value="@Model.Role.Name"/>

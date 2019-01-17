@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entities.Models;
-using Entities.ViewModels;
 using Entities.ViewModels.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Common.RepositoryInterfaces
 {
@@ -12,7 +12,7 @@ namespace Common.RepositoryInterfaces
         List<User> List();
         Task<bool> Login(LoginViewModel loginModel);
         Task<RegisterResultViewModel> Create(RegisterViewModel registerModel);
-        void Edit(UserDetailsViewModel entity);
+        Task<IdentityResult> ChangePassword(ChangePasswordViewModel model);
         void Deactivate(string id);
     }
 }

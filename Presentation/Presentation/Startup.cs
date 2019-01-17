@@ -46,6 +46,8 @@ namespace Presentation
             // Do the dependency injection here
             services.AddTransient<IUserLogic, UserLogic>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRoleLogic, RoleLogic>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IGameLogic, GameLogic>();
             services.AddTransient<IGameRepository, GameRepository>();
             services.AddTransient<ITransactionLogic, TransactionLogic>();

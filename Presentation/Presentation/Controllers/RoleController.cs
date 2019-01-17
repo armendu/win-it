@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Helpers.Exceptions;
+using Common.LogicInterfaces;
 using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.Role;
@@ -14,7 +15,8 @@ namespace Presentation.Controllers
 {
     public class RoleController : Controller
     {
-        private readonly UserManager<User> _userManager;
+        private readonly IUserLogic _userLogic;
+        private readonly IRoleLogic _roleLogic;
         private readonly RoleManager<Role> _roleManager;
         private const int PageSize = 10;
         private readonly ILogger _logger;
@@ -22,13 +24,16 @@ namespace Presentation.Controllers
         /// <summary>
         /// Creates a new instance of the RoleController and injects the roleManager, and logger.
         /// </summary>
-        /// <param name="userManager">The user manager to be injected.</param>
+        /// <param name="userLogic">The user logic to be injected.</param>
+        /// <param name="roleLogic">The user logic to be injected.</param>
         /// <param name="roleManager">The role manager to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
-        public RoleController(UserManager<User> userManager, RoleManager<Role> roleManager,
+        public RoleController(IUserLogic userLogic, IRoleLogic roleLogic,
+            RoleManager<Role> roleManager,
             ILogger<RoleController> logger)
         {
-            _userManager = userManager;
+            _userLogic = userLogic;
+            _roleLogic = roleLogic;
             _roleManager = roleManager;
             _logger = logger;
         }
@@ -41,7 +46,7 @@ namespace Presentation.Controllers
             {
                 IndexRoleViewModel model = new IndexRoleViewModel
                 {
-                    RolesList = _roleManager.Roles
+                    RolesList = _roleLogic.List()
                         .OrderBy(r => r.Id)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
@@ -49,19 +54,29 @@ namespace Presentation.Controllers
                     {
                         CurrentPage = page,
                         ItemsPerPage = PageSize,
-                        TotalItems = _roleManager.Roles.Count()
+                        TotalItems = _roleLogic.List().Count
                     }
                 };
 
                 return View(model);
             }
-            catch (Exception ex)
+            catch (ConnectionException ex)
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
-
-                return View("Index");
             }
+            catch (NullReferenceException ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"A general exception occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+            }
+
+            return View(null);
         }
 
         // GET: Role/Create
@@ -88,97 +103,87 @@ namespace Presentation.Controllers
             if (ModelState.IsValid)
             {
                 IdentityResult result
-                    = await _roleManager.CreateAsync(new Role(name, description));
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
+                    = await _roleLogic.Create(name, description);
+
+                if (!result.Succeeded)
                     AddErrorsFromResult(result);
-                }
+
+                return RedirectToAction("Index");
             }
 
-            return View(name);
+            return View(name, description);
         }
 
-        // GET: Role/Edit
+        // GET: Role/Edit/{id}
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             try
             {
-                Role role = await _roleManager.FindByIdAsync(id);
-                List<User> members = new List<User>();
-                List<User> nonMembers = new List<User>();
-                foreach (User user in _userManager.Users)
-                {
-                    var list = await _userManager.IsInRoleAsync(user, role.Name) ? members : nonMembers;
-                    list.Add(user);
-                }
+                EditRoleViewModel model = await _roleLogic.FindMembers(id);
 
-                return View(new EditRoleViewModel
-                {
-                    Role = role,
-                    Members = members,
-                    NonMembers = nonMembers
-                });
+                if (model == null)
+                    return RedirectToAction("NotFoundError", "Home");
+
+                return View("Edit", model);
             }
             catch (FormatException ex)
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
-
-                return View(null);
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
-
-                return View(null);
             }
+
+            return View(null);
         }
 
-        // POST: Role/Edit
+        // POST: Role/Edit/{id}
         [HttpPost]
         public async Task<IActionResult> Edit(ModificationRoleViewModel model)
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result;
-                foreach (string userId in model.IdsToAdd ?? new string[] { })
+                try
                 {
-                    User user = await _userManager.FindByIdAsync(userId);
-                    if (user != null)
+                    IdentityResult changePasswordResult = await _roleLogic.Edit(model);
+
+                    if (changePasswordResult != null)
                     {
-                        result = await _userManager.AddToRoleAsync(user,
-                            model.RoleName);
-                        if (!result.Succeeded)
+                        if (!changePasswordResult.Succeeded)
                         {
-                            AddErrorsFromResult(result);
+                            AddErrorsFromResult(changePasswordResult);
                         }
+                        else
+                        {
+                            ViewBag.Message = "The user roles were successfully modified.";
+                        }
+
+                        return await Edit(model.RoleId);
                     }
                 }
-
-                foreach (string userId in model.IdsToDelete ?? new string[] { })
+                catch (NotFoundException ex)
                 {
-                    User user = await _userManager.FindByIdAsync(userId);
-                    if (user != null)
-                    {
-                        result = await _userManager.RemoveFromRoleAsync(user,
-                            model.RoleName);
-                        if (!result.Succeeded)
-                        {
-                            AddErrorsFromResult(result);
-                        }
-                    }
+                    _logger.Log(LogLevel.Error,
+                        $"The requested resource was not found with the following message: {ex.Message} @ {GetType().Name}");
                 }
-            }
-
-            if (ModelState.IsValid)
-            {
-                return RedirectToAction("Index");
+                catch (ArgumentException ex)
+                {
+                    _logger.Log(LogLevel.Error,
+                        $"The requested resource was not found with the following message: {ex.Message} @ {GetType().Name}");
+                }
+                catch (ConnectionException ex)
+                {
+                    _logger.Log(LogLevel.Error,
+                        $"The following connection error occurred: {ex.Message} @ {GetType().Name}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log(LogLevel.Error, $"A general exception occurred: {ex.Message} @ {GetType().Name}");
+                }
             }
 
             return await Edit(model.RoleId);
@@ -201,27 +206,32 @@ namespace Presentation.Controllers
 
         // POST: Role/Delete/id
         [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<RedirectToActionResult> Delete(string id)
         {
-            Role role = await _roleManager.FindByIdAsync(id);
-            if (role != null)
+            try
             {
-                IdentityResult result = await _roleManager.DeleteAsync(role);
-                if (result.Succeeded)
+                IdentityResult result = await _roleLogic.Delete(id);
+
+                if (!result.Succeeded)
                 {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    AddErrorsFromResult(result);
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        TempData["ErrorMessage"] += error.Description + "\n";
+                    }
                 }
             }
-            else
+            catch (InvalidOperationException ex)
             {
-                ModelState.AddModelError("", "No role found");
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                TempData["ErrorMessage"] = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                TempData["ErrorMessage"] = ex.Message;
             }
 
-            return View("Index", _roleManager.Roles);
+            return RedirectToAction("Index");
         }
 
         private void AddErrorsFromResult(IdentityResult result)

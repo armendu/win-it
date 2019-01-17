@@ -12,6 +12,12 @@
             <a class="btn btn-default btn-flat" asp-controller="Role" asp-action="Create"><i class="fa fa-plus-circle"></i>&nbsp; Create new Role</a>
         </div>
         <div class="box-body">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <ul class="text-danger">
+                    <li>The operation couldn't be completed because @TempData["ErrorMessage"]</li>
+                </ul>
+            }
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -48,7 +54,9 @@
                                 @Html.DisplayFor(modelItem => item.CreatedAt)
                             </td>
                             <td width="20%" identity-role="@item.Id"></td>
+
                             <td style="text-align: center">
+
                                 <a class="btn btn-sm btn-default btn-flat custom-btn"
                                    asp-action="Edit"
                                    asp-route-id="@item.Id">
@@ -59,6 +67,11 @@
                                         data-url="@Url.Action("Details", item)">
                                     <i class="fa fa-eye"></i>&nbsp; Details
                                 </button>
+                                <form asp-action="Delete" asp-route-id="@item.Id">
+                                    <button class="btn btn-sm btn-danger custom-btn" method="post">
+                                        <i class="fas fa-trash"></i>&nbsp; Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     }
