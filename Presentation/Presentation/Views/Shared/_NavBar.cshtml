@@ -28,9 +28,25 @@
 
         <ul class="sidebar-menu nav nav-pills nav-stacked" data-widget="tree">
             <li class="header"> Main Menu</li>
+            <li class="@(Html.IsMenuActive("") ? "active" : "")">
+                <a href="~/">
+                    <i class="fas fa-home"></i><span> Dashboard</span>
+                    <span class="pull-right-container">
+                        @*<small class="label pull-right bg-green">Hot</small>*@
+                    </span>
+                </a>
+            </li>
             <li class="@(Html.IsMenuActive("/Game") ? "active" : "")">
                 <a href="~/Game">
-                    <i class="fas fa-dice"></i> <span> Games</span>
+                    <i class="fas fa-dice"></i><span> Games</span>
+                    <span class="pull-right-container">
+                        @*<small class="label pull-right bg-green">Hot</small>*@
+                    </span>
+                </a>
+            </li>
+            <li class="@(Html.IsMenuActive("/Transaction") ? "active" : "")">
+                <a href="~/Report">
+                    <i class="far fa-calendar-check"></i><span> History</span>
                     <span class="pull-right-container">
                         @*<small class="label pull-right bg-green">Hot</small>*@
                     </span>
@@ -38,71 +54,72 @@
             </li>
             <li class="@(Html.IsMenuActive("/Transaction") ? "active" : "")">
                 <a href="~/Transaction">
-                    <i class="fas fa-chart-line"></i> <span> History</span>
-                    <span class="pull-right-container">
-                        @*<small class="label pull-right bg-green">Hot</small>*@
-                    </span>
-                </a>
-            </li>
-            <li class="@(Html.IsMenuActive("/Transaction") ? "active" : "")">
-                <a href="~/Reports">
-                    <i class="fas fa-chart-line"></i> <span> Transactions</span>
+                    <i class="fas fa-money-check-alt"></i><span> Transactions</span>
                     <span class="pull-right-container">
                         @*<small class="label pull-right bg-green">Hot</small>*@
                     </span>
                 </a>
             </li>
 
-            <li class="header"> Administration Menu</li>
-            <li class="@(Html.IsMenuActive("/User") ? "active" : "")">
-                <a href="~/User">
-                    <i class="fas fa-user-lock"></i> <span> Users</span>
-                    <span class="pull-right-container">
-                    </span>
-                </a>
-            </li>
-            <li class="@(Html.IsMenuActive("/Role") ? "active" : "")">
-                <a href="~/Role">
-                    <i class="fas fa-user-lock"></i> <span> Roles</span>
-                    <span class="pull-right-container">
-                    </span>
-                </a>
-            </li>
-            <li class="@(Html.IsMenuActive("/Report") ? "active" : "")">
-                <a href="~/Reports">
-                    <i class="fas fa-chart-line"></i> <span>Reports</span>
-                    <span class="pull-right-container">
-                        @*<small class="label pull-right bg-green">Hot</small>*@
-                    </span>
-                </a>
-            </li>
+            @if (true)
+            {
+                <li class="header"> Administration Menu</li>
 
-            <li class="treeview @((Html.IsMenuActive("/Settings") || Html.IsMenuActive("/GameSettings")) ? "active" : "")">
-                <a href="#">
-                    <i class="fas fa-cogs"></i>
-                    <span>Settings</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="@(Html.IsMenuActive("/Settings/Profile") ? "active" : "")">
-                        <a href="~/Settings/Profile"><i class="fa fa-user"></i> Profile</a>
-                    </li>
-                    <li class="@(Html.IsMenuActive("/Settings/Account") ? "active" : "")">
-                        <a href="~/Settings/Account"><i class="fa fa-lock"></i> Account</a>
-                    </li>
-                    <li class="@(Html.IsMenuActive("/Settings/Security") ? "active" : "")">
-                        <a href="~/Settings/Security"><i class="fa fa-user-secret"></i> Security</a>
-                    </li>
-                    <li class="@(Html.IsMenuActive("/Settings/History") ? "active" : "")">
-                        <a href="~/Settings/History"><i class="fa fa-history"></i> History</a>
-                    </li>
-                    <li class="@(Html.IsMenuActive("/GameSettings") ? "active" : "")">
-                        <a href="~/GameSettings"><i class="fas fa-ruler"></i> Game Settings</a>
-                    </li>
-                </ul>
-            </li>
+                <li class="@(Html.IsMenuActive("/User") ? "active" : "")">
+                    <a href="~/User">
+                        <i class="fas fa-user-lock"></i> <span> Users</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                <li class="@(Html.IsMenuActive("/Role") ? "active" : "")">
+                    <a href="~/Role">
+                        <i class="fas fa-sitemap"></i><span> Roles</span>
+                        <span class="pull-right-container">
+                        </span>
+                    </a>
+                </li>
+                <li class="@(Html.IsMenuActive("/Report") ? "active" : "")">
+                    <a href="~/Reports">
+                        <i class="fas fa-chart-line"></i><span> Reports</span>
+                        <span class="pull-right-container">
+                            @*<small class="label pull-right bg-green">Hot</small>*@
+                        </span>
+                    </a>
+                </li>
+                <li class="@(Html.IsMenuActive("/GameSettings") ? "active" : "")">
+                    <a href="~/GameSettings">
+                        <i class="fas fa-ruler"></i><span> Game Settings</span> 
+                        <span class="pull-right-container">
+                            @*<small class="label pull-right bg-green">Hot</small>*@
+                        </span>
+                    </a>
+                </li>
+
+                <li class="treeview @(Html.IsMenuActive("/Settings") ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-cogs"></i>
+                        <span>Settings</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@(Html.IsMenuActive("/Settings/Profile") ? "active" : "")">
+                            <a href="~/Settings/Profile"><i class="fa fa-user"></i> Profile</a>
+                        </li>
+                        <li class="@(Html.IsMenuActive("/Settings/Account") ? "active" : "")">
+                            <a href="~/Settings/Account"><i class="fa fa-lock"></i> Account</a>
+                        </li>
+                        <li class="@(Html.IsMenuActive("/Settings/Security") ? "active" : "")">
+                            <a href="~/Settings/Security"><i class="fa fa-user-secret"></i> Security</a>
+                        </li>
+                        <li class="@(Html.IsMenuActive("/Settings/History") ? "active" : "")">
+                            <a href="~/Settings/History"><i class="fa fa-history"></i> History</a>
+                        </li>
+                    </ul>
+                </li>
+            }
         </ul>
     </section>
     <!-- /.sidebar -->

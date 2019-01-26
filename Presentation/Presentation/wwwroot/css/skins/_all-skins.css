@@ -145,7 +145,7 @@
  * ----------
  */
 .skin-blue-light .main-header .navbar {
-  background-color: #3c8dbc;
+  background-color: #2C3A47;
 }
 .skin-blue-light .main-header .navbar .nav > li > a {
   color: #ffffff;
@@ -185,12 +185,12 @@
   }
 }
 .skin-blue-light .main-header .logo {
-  background-color: #3c8dbc;
+  background-color: #2C3A47;
   color: #ffffff;
   border-bottom: 0 solid transparent;
 }
 .skin-blue-light .main-header .logo:hover {
-  background-color: #3b8ab8;
+  background-color: #34495e;;
 }
 .skin-blue-light .main-header li.user-header {
   background-color: #3c8dbc;

@@ -7,34 +7,28 @@ using Common.LogicInterfaces;
 using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.Role;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
 {
+    [Authorize(Roles = "Admins")]
     public class RoleController : Controller
     {
-        private readonly IUserLogic _userLogic;
         private readonly IRoleLogic _roleLogic;
-        private readonly RoleManager<Role> _roleManager;
         private const int PageSize = 10;
         private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new instance of the RoleController and injects the roleManager, and logger.
         /// </summary>
-        /// <param name="userLogic">The user logic to be injected.</param>
         /// <param name="roleLogic">The user logic to be injected.</param>
-        /// <param name="roleManager">The role manager to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
-        public RoleController(IUserLogic userLogic, IRoleLogic roleLogic,
-            RoleManager<Role> roleManager,
-            ILogger<RoleController> logger)
+        public RoleController(IRoleLogic roleLogic, ILogger<RoleController> logger)
         {
-            _userLogic = userLogic;
             _roleLogic = roleLogic;
-            _roleManager = roleManager;
             _logger = logger;
         }
 
@@ -98,6 +92,7 @@ namespace Presentation.Controllers
 
         // POST: Role/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Required] string name, string description)
         {
             if (ModelState.IsValid)
@@ -143,6 +138,7 @@ namespace Presentation.Controllers
 
         // POST: Role/Edit/{id}
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ModificationRoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -206,6 +202,7 @@ namespace Presentation.Controllers
 
         // POST: Role/Delete/id
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<RedirectToActionResult> Delete(string id)
         {
             try

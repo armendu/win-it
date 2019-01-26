@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using Common.LogicInterfaces;
 using Entities.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,9 +8,29 @@ namespace Presentation.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IUserLogic _userLogic;
+
+        public HomeController(IUserLogic userLogic)
+        {
+            _userLogic = userLogic;
+        }
+
+        // GET: Index
         public IActionResult Index()
         {
-            return View();
+            try
+            {
+                int registeredUsers = _userLogic.List().Count;
+
+                return View(new DashboardViewModel
+                {
+                    RegisteredUsers = registeredUsers
+                });
+            }
+            catch (Exception)
+            {
+                return View();
+            }
         }
 
         public IActionResult About()

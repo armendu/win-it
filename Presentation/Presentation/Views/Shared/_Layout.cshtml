@@ -30,20 +30,19 @@
     <![endif]-->
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
-    <environment include="Development">
+    
+    <environment names="DEVELOPMENT">
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
-    <environment exclude="Development">
+    <environment names="Staging,Production">
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
+    </environment> 
 
 </head>
-<body class="sidebar-mini fixed sidebar-mini-expand-feature skin-black">
+<body class="sidebar-mini fixed sidebar-mini-expand-feature skin-blue-light">
 
 <!-- Site wrapper -->
 <div class="wrapper">
-
     @await Html.PartialAsync("_Header")
 
     <!-- Left side column. contains the sidebar -->
