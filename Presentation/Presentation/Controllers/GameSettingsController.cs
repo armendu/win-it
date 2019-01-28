@@ -119,7 +119,7 @@ namespace Presentation.Controllers
                 {
                     GameSettingId = gameSettings.GameSettingId,
                     GameLength = gameSettings.GameLength,
-                    UpdatedAt = gameSettings.UpdateAt
+                    UpdatedAt = gameSettings.UpdatedAt
                 };
 
                 return View("Edit", updateGameSetting);

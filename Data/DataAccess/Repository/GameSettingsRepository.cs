@@ -63,7 +63,7 @@ namespace DataAccess.Repository
                     {
                         GameLength = entity.GameLength,
                         CreatedAt = DateTime.UtcNow,
-                        UpdateAt = DateTime.UtcNow
+                        UpdatedAt = DateTime.UtcNow
                     };
 
                     _entityContext.GameSettings.Add(gameSettings);
@@ -90,7 +90,7 @@ namespace DataAccess.Repository
                     if (gameSetting != null)
                     {
                         gameSetting.GameLength = entity.GameLength;
-                        gameSetting.UpdateAt = DateTime.UtcNow;
+                        gameSetting.UpdatedAt = DateTime.UtcNow;
 
                         _entityContext.Update(gameSetting);
                         _entityContext.SaveChanges();

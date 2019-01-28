@@ -19,10 +19,10 @@ namespace DataAccess.Repository
         }
 
         /// <summary>
-        /// Get game by Id.
+        /// Get entity by Id.
         /// </summary>
-        /// <param name="id">The id of the game.</param>
-        /// <returns>The retrieved game.</returns>
+        /// <param name="id">The id of the entity.</param>
+        /// <returns>The retrieved entity.</returns>
         public Game GetById(int id)
         {
             try
@@ -30,7 +30,7 @@ namespace DataAccess.Repository
                 Game game = _entityContext.Games.FirstOrDefault(g => g.GameId == id);
 
                 if (game == null)
-                    throw new NotFoundException("No game found");
+                    throw new NotFoundException("No entity found");
 
                 return game;
             }
@@ -62,10 +62,10 @@ namespace DataAccess.Repository
         }
 
         /// <summary>
-        /// Persists a new game to the database.
+        /// Persists a new entity to the database.
         /// </summary>
-        /// <param name="gameLength">The length of the game; determines the endTime of the game.</param>
-        /// <param name="winningNumbers">The winning numbers of the game generated randomly.</param>
+        /// <param name="gameLength">The length of the entity; determines the endTime of the entity.</param>
+        /// <param name="winningNumbers">The winning numbers of the entity generated randomly.</param>
         /// <returns>The persisted object.</returns>
         public void Create(int gameLength, string winningNumbers)
         {
@@ -73,6 +73,16 @@ namespace DataAccess.Repository
             {
                 try
                 {
+                    List<Game> games = _entityContext.Games.Where(g => g.GameProcessed == false).ToList();
+
+                    foreach (var element in games)
+                    {
+                        if (!element.GameProcessed)
+                        {
+                            Update(element);
+                        }
+                    }
+
                     GameInfo gameInfo = new GameInfo
                     {
                         CreatedAt = DateTime.UtcNow,
@@ -84,7 +94,8 @@ namespace DataAccess.Repository
                     {
                         StartTime = DateTime.UtcNow,
                         EndTime = DateTime.UtcNow.AddMinutes(gameLength),
-                        GameInfo = gameInfo
+                        GameInfo = gameInfo,
+                        GameProcessed = false
                     };
 
                     _entityContext.Add(game);
@@ -100,9 +111,26 @@ namespace DataAccess.Repository
             }
         }
 
+        /// <summary>
+        /// Updates a running game.
+        /// </summary>
+        /// <param name="entity"></param>
         public void Update(Game entity)
         {
-            throw new System.NotImplementedException();
+            // TODO: THIS IS WHERE WE CHOOSE THE WINNERS.
+            Game game =
+                _entityContext.Games.FirstOrDefault(x => x.GameId == entity.GameId);
+
+            if (game != null)
+            {
+                game.GameProcessed = true;
+                game.GameInfo.UpdateAt = DateTime.UtcNow;
+
+                _entityContext.Update(game);
+                _entityContext.SaveChanges();
+            }
+            else
+                throw new NullReferenceException();
         }
 
         public void Delete(Game entity)

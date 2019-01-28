@@ -44,9 +44,9 @@
                     </span>
                 </a>
             </li>
-            <li class="@(Html.IsMenuActive("/Transaction") ? "active" : "")">
+            <li class="@(Html.IsMenuActive("/History") ? "active" : "")">
                 <a href="~/Report">
-                    <i class="far fa-calendar-check"></i><span> History</span>
+                    <i class="fas fa-history"></i><span> History</span>
                     <span class="pull-right-container">
                         @*<small class="label pull-right bg-green">Hot</small>*@
                     </span>
@@ -61,7 +61,7 @@
                 </a>
             </li>
 
-            @if (true)
+            @if (User.IsInRole("Admins"))
             {
                 <li class="header"> Administration Menu</li>
 
@@ -89,7 +89,7 @@
                 </li>
                 <li class="@(Html.IsMenuActive("/GameSettings") ? "active" : "")">
                     <a href="~/GameSettings">
-                        <i class="fas fa-ruler"></i><span> Game Settings</span> 
+                        <i class="fas fa-ruler"></i><span> Game Settings</span>
                         <span class="pull-right-container">
                             @*<small class="label pull-right bg-green">Hot</small>*@
                         </span>
@@ -111,8 +111,8 @@
                         <li class="@(Html.IsMenuActive("/Settings/Account") ? "active" : "")">
                             <a href="~/Settings/Account"><i class="fa fa-lock"></i> Account</a>
                         </li>
-                        <li class="@(Html.IsMenuActive("/Settings/Security") ? "active" : "")">
-                            <a href="~/Settings/Security"><i class="fa fa-user-secret"></i> Security</a>
+                        <li class="@(Html.IsMenuActive("/User/ChangePassword") ? "active" : "")">
+                            <a asp-controller="User" asp-action="ChangePassword" asp-route-id="@User.Identity"><i class="fa fa-user-secret"></i> Security</a>
                         </li>
                         <li class="@(Html.IsMenuActive("/Settings/History") ? "active" : "")">
                             <a href="~/Settings/History"><i class="fa fa-history"></i> History</a>

@@ -1,11 +1,22 @@
 ﻿@{
     ViewData["Title"] = "- Page not found";
 }
-
-<div class="col-md-12">
-    <div class="box box-primary">
-        <div class="box-body">
-            <h3>The requested page was not found.</h3>
+<section class="content-header">
+    <h1>
+        The requested page was not found.
+        <small>The page does not exist or has been moved.</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        </li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box box-danger">
+        <div class="box-header with-border">
+            <a class="btn btn-default btn-flat" onClick="history.back()"><i class="fa fa-arrow-left"></i>&nbsp; Go back</a>
+            <a class="btn btn-default btn-flat" href="~/"><i class="fa fa-home"></i>&nbsp; Home page</a>
         </div>
     </div>
-</div>
+</section>

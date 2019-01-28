@@ -20,7 +20,7 @@ namespace DataAccess.Mapping
 //
 //            entity.Property(e => e.Name).HasColumnType("varchar(50)");
 //
-//            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+//            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         }
     }
 }

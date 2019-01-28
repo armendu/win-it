@@ -31,7 +31,7 @@ namespace DataAccess.Database
                 {
                     GameSettingId = 1,
                     CreatedAt = DateTime.UtcNow,
-                    UpdateAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
                     GameLength = correctGameLength ? gameLength : 60,
                     WinningPot = correctWinningPot ? winningPot : 10
                 });

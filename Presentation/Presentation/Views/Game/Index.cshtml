@@ -32,6 +32,9 @@
                     <th width="20%">
                         @Html.DisplayName("Prize")
                     </th>
+                    <th width="20%">
+                        @Html.DisplayName("Status")
+                    </th>
                     <th style="text-align: center">
                         @Html.DisplayName("Actions")
                     </th>
@@ -42,15 +45,27 @@
                 {
                     foreach (var item in Model.GamesList)
                     {
+                        var startTime = item.StartTime.ToLocalTime();
+                        var endTime = item.EndTime.ToLocalTime();
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.StartTime)
+                                @Html.DisplayFor(modelItem => startTime)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.EndTime)
+                                @Html.DisplayFor(modelItem => endTime)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.GameInfo.WinningPot)
+                            </td>
+                            <td>
+                                @if (item.GameProcessed)
+                                {
+                                    <span class="label label-danger">Finished</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-success">Running</span>
+                                }
                             </td>
 
                             <td style="text-align: center">

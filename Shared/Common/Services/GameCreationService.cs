@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +18,6 @@ namespace Common.Services
         private readonly IGameSettingsLogic _gameSettingsLogic;
         private readonly ILogger _logger;
         private Timer _startGameTimer;
-        private Timer _endGameTimer;
         private static readonly Random random = new Random();
 
         public GameCreationService(IGameLogic gameLogic, IGameSettingsLogic gameSettingsLogic,
@@ -53,8 +53,6 @@ namespace Common.Services
 
             _startGameTimer = new Timer(StartGame, gameLength, TimeSpan.Zero,
                 TimeSpan.FromSeconds((gameLength + 60)));
-            
-            _endGameTimer = new Timer(EndGame, string.Empty, TimeSpan.FromSeconds(gameLength + 60), TimeSpan.FromSeconds(30));
 
             return Task.CompletedTask;
         }
@@ -65,48 +63,12 @@ namespace Common.Services
         /// <param name="state">The length of the game.</param>
         private void StartGame(object state)
         {
-            _logger.LogInformation($"Starting a game from the Hosted Service @ {DateTime.UtcNow}");
-
-            // TODO: Create method for generating random numbers.
             string winningNumbers = GenerateWinningNumbers();
 
             try
             {
                 _gameLogic.Create((int) state, winningNumbers);
-                _logger.LogInformation($"A new game was created with the following winning numbers: {winningNumbers}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"The following error occurred: {ex.Message} @ {GetType().Name}");
-            }
-        }
-
-        /// <summary>
-        /// Ends a running game, and chooses the winners.
-        /// </summary>
-        /// <param name="state"></param>
-        private void EndGame(object state)
-        {
-            var now = DateTime.UtcNow;
-            // Finish up a game and find the winners.
-            _logger.LogInformation($"The end timer did start @ {now}");
-
-            try
-            {
-                DateTime endTime = _gameLogic.List().LastOrDefault().EndTime;
-
-                if (endTime < now)
-                {
-                    _logger.LogInformation($"Game has finished");
-                }
-                else
-                {
-                    _logger.LogInformation($"Game has finished");
-                }
-            }
-            catch (NullReferenceException ex)
-            {
-                _logger.LogError($"Game was not found. Error message: {ex}");
+                _logger.LogInformation($"A new game was created with the following winning numbers: {winningNumbers} @ {DateTime.UtcNow}");
             }
             catch (Exception ex)
             {
@@ -116,7 +78,7 @@ namespace Common.Services
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Timed Background Service is stopping.");
+            _logger.LogWarning("Timed Background Service is stopping.");
 
             _startGameTimer?.Change(Timeout.Infinite, 0);
 
@@ -134,16 +96,17 @@ namespace Common.Services
         /// <returns>The winning numbers in JSON format.</returns>
         private string GenerateWinningNumbers()
         {
-            int[] winningNumbers = new[]
+            List<int> winningNumbers = new List<int>();
+
+            while (winningNumbers.Count < 7)
             {
-                random.Next(1, 39),
-                random.Next(1, 39),
-                random.Next(1, 39),
-                random.Next(1, 39),
-                random.Next(1, 39),
-                random.Next(1, 39),
-                random.Next(1, 39)
-            };
+                int generatedNumber = random.Next(1, 39);
+
+                if (winningNumbers.Contains(generatedNumber))
+                    continue;
+                
+                winningNumbers.Add(generatedNumber);
+            }
 
             return JsonConvert.SerializeObject(winningNumbers);
         }

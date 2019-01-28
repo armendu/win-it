@@ -30,7 +30,7 @@ namespace Presentation.Controllers
                 IndexGameViewModel model = new IndexGameViewModel
                 {
                     GamesList = _gameLogic.List()
-                        .OrderBy(g => g.GameId)
+                        .OrderByDescending(g => g.EndTime)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
                     PagingInfo = new PagingInfo

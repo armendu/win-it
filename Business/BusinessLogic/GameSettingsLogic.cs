@@ -51,7 +51,7 @@ namespace BusinessLogic
             }
             catch (Exception)
             {
-                throw new OperationException("An error occured during creating project!");
+                throw new OperationException("An error occured while creating new Game Settings!");
             }
         }
 
@@ -63,7 +63,7 @@ namespace BusinessLogic
             }
             catch (Exception)
             {
-                throw new OperationException("An error occured during creating project!");
+                throw new OperationException("An error occured while updating Game Settings!");
             }
         }
 
@@ -75,7 +75,7 @@ namespace BusinessLogic
             }
             catch (Exception)
             {
-                throw new OperationException("An error occured during creating project!");
+                throw new OperationException("An error occured while deleting Game Settings!");
             }
         }
     }

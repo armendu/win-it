@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models
 {
@@ -13,8 +14,13 @@ namespace Entities.Models
         }
 
         public int GameId { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:U}", ApplyFormatInEditMode = true)]
         public DateTime StartTime { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:U}", ApplyFormatInEditMode = true)]
         public DateTime EndTime { get; set; }
+
         public bool GameProcessed { get; set; }
         public int GameInfoId { get; set; }
 

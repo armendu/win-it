@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Common.LogicInterfaces;
 using Entities.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,12 @@ namespace Presentation.Controllers
     public class HomeController : Controller
     {
         private readonly IUserLogic _userLogic;
+        private readonly IGameLogic _gameLogic;
 
-        public HomeController(IUserLogic userLogic)
+        public HomeController(IUserLogic userLogic, IGameLogic gameLogic)
         {
             _userLogic = userLogic;
+            _gameLogic = gameLogic;
         }
 
         // GET: Index
@@ -21,10 +24,14 @@ namespace Presentation.Controllers
             try
             {
                 int registeredUsers = _userLogic.List().Count;
+                DateTime currentGameEndTime = _gameLogic.List().FirstOrDefault(g => g.GameProcessed == false)?.EndTime ?? DateTime.UtcNow;
+
+                int timeUntilNewGame = (int)(currentGameEndTime - DateTime.UtcNow).TotalMinutes;
 
                 return View(new DashboardViewModel
                 {
-                    RegisteredUsers = registeredUsers
+                    RegisteredUsers = registeredUsers,
+                    MinutesTillNextGame = timeUntilNewGame.ToString()
                 });
             }
             catch (Exception)

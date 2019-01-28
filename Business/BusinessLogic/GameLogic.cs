@@ -4,6 +4,7 @@ using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore.Design;
 using MySql.Data.MySqlClient;
 
 namespace BusinessLogic
@@ -24,7 +25,14 @@ namespace BusinessLogic
         /// <returns>The retrieved game.</returns>
         public Game GetGameById(int gameId)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return _gameRepository.GetById(gameId);
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
         }
 
         /// <summary>
@@ -37,7 +45,7 @@ namespace BusinessLogic
             {
                 return _gameRepository.List();
             }
-            catch (Exception)
+            catch (MySqlException)
             {
                 throw new ConnectionException();
             }
@@ -57,6 +65,22 @@ namespace BusinessLogic
             catch (MySqlException)
             {
                 throw new ConnectionException();
+            }
+        }
+
+        public void Update(Game entity)
+        {
+            try
+            {
+                _gameRepository.Update(entity);
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while updating Game!");
             }
         }
     }
