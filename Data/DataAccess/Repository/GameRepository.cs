@@ -77,7 +77,7 @@ namespace DataAccess.Repository
                     {
                         CreatedAt = DateTime.UtcNow,
                         UpdateAt = DateTime.UtcNow,
-                        WinningNumbers = winningNumbers // TODO: Get numbers from hosted service
+                        WinningNumbers = winningNumbers
                     };
 
                     Game game = new Game

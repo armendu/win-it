@@ -52,9 +52,9 @@ namespace Common.Services
             }
 
             _startGameTimer = new Timer(StartGame, gameLength, TimeSpan.Zero,
-                TimeSpan.FromSeconds((gameLength + 1) * 60));
+                TimeSpan.FromSeconds((gameLength + 60)));
             
-            _endGameTimer = new Timer(EndGame, string.Empty, TimeSpan.Zero, TimeSpan.FromSeconds(gameLength * 60));
+            _endGameTimer = new Timer(EndGame, string.Empty, TimeSpan.FromSeconds(gameLength + 60), TimeSpan.FromSeconds(30));
 
             return Task.CompletedTask;
         }
@@ -65,8 +65,7 @@ namespace Common.Services
         /// <param name="state">The length of the game.</param>
         private void StartGame(object state)
         {
-            _logger.LogInformation("Timed Background Service is working.");
-            _logger.LogTrace($"Starting a game from the Hosted Service @ {DateTime.UtcNow}");
+            _logger.LogInformation($"Starting a game from the Hosted Service @ {DateTime.UtcNow}");
 
             // TODO: Create method for generating random numbers.
             string winningNumbers = GenerateWinningNumbers();
@@ -88,8 +87,31 @@ namespace Common.Services
         /// <param name="state"></param>
         private void EndGame(object state)
         {
+            var now = DateTime.UtcNow;
             // Finish up a game and find the winners.
-            Console.WriteLine("The Elapsed event was raised at {0}");
+            _logger.LogInformation($"The end timer did start @ {now}");
+
+            try
+            {
+                DateTime endTime = _gameLogic.List().LastOrDefault().EndTime;
+
+                if (endTime < now)
+                {
+                    _logger.LogInformation($"Game has finished");
+                }
+                else
+                {
+                    _logger.LogInformation($"Game has finished");
+                }
+            }
+            catch (NullReferenceException ex)
+            {
+                _logger.LogError($"Game was not found. Error message: {ex}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"The following error occurred: {ex.Message} @ {GetType().Name}");
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
