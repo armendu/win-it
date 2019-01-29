@@ -17,81 +17,87 @@
 <section class="content">
     <div class="box box-danger">
         <div class="box-header with-border">
-            <a class="btn btn-default btn-flat" asp-controller="Game" asp-action="Create"><i class="fa fa-plus-circle"></i>&nbsp; Create new Game</a>
+            <a class="btn btn-default btn-flat" asp-controller="Game" asp-action="CreateGameBet"><i class="fa fa-plus-circle"></i>&nbsp; Create new Game</a>
         </div>
         <div class="box-body">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <ul class="text-danger">
+                    <li>The operation couldn't be completed because @TempData["ErrorMessage"]</li>
+                </ul>
+            }
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th width="20%">
-                        @Html.DisplayName("Start time")
-                    </th>
-                    <th width="20%">
-                        @Html.DisplayName("End time")
-                    </th>
-                    <th width="20%">
-                        @Html.DisplayName("Prize")
-                    </th>
-                    <th width="20%">
-                        @Html.DisplayName("Status")
-                    </th>
-                    <th style="text-align: center">
-                        @Html.DisplayName("Actions")
-                    </th>
-                </tr>
+                    <tr>
+                        <th width="20%">
+                            @Html.DisplayName("Start time")
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("End time")
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("Prize")
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("Status")
+                        </th>
+                        <th style="text-align: center">
+                            @Html.DisplayName("Actions")
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
-                @if (Model != null)
-                {
-                    foreach (var item in Model.GamesList)
+                    @if (Model != null)
                     {
-                        var startTime = item.StartTime.ToLocalTime();
-                        var endTime = item.EndTime.ToLocalTime();
+                        foreach (var item in Model.GamesList)
+                        {
+                            var startTime = item.StartTime.ToLocalTime();
+                            var endTime = item.EndTime.ToLocalTime();
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => startTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => endTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.GameInfo.WinningPot)
+                                </td>
+                                <td>
+                                    @if (item.GameProcessed)
+                                    {
+                                        <span class="label label-danger">Finished</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-success">Running</span>
+                                    }
+                                </td>
+
+                                <td style="text-align: center">
+                                    <a class="btn btn-sm btn-default btn-flat custom-btn"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.GameId">
+                                        <i class="fas fa-edit"></i>&nbsp; Edit
+                                    </a>
+                                    <button class="btn btn-sm btn-default btn-flat custom-btn"
+                                            data-toggle="modal" data-target="#exampleModalCenter"
+                                            data-url="@Url.Action("Details", item)">
+                                        <i class="fa fa-eye"></i>&nbsp; Details
+                                    </button>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => startTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => endTime)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.GameInfo.WinningPot)
-                            </td>
-                            <td>
-                                @if (item.GameProcessed)
-                                {
-                                    <span class="label label-danger">Finished</span>
-                                }
-                                else
-                                {
-                                    <span class="label label-success">Running</span>
-                                }
-                            </td>
-
-                            <td style="text-align: center">
-                                <a class="btn btn-sm btn-default btn-flat custom-btn"
-                                   asp-action="Edit"
-                                   asp-route-id="@item.GameId">
-                                    <i class="fas fa-edit"></i>&nbsp; Edit
-                                </a>
-                                <button class="btn btn-sm btn-default btn-flat custom-btn"
-                                        data-toggle="modal" data-target="#exampleModalCenter"
-                                        data-url="@Url.Action("Details", item)">
-                                    <i class="fa fa-eye"></i>&nbsp; Details
-                                </button>
-
+                            <td colspan="4" align="center" style="padding: 35px">
+                                <em>No games to display</em>
                             </td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="4" align="center" style="padding: 35px">
-                            <em>No games to display</em>
-                        </td>
-                    </tr>
-                }
                 </tbody>
             </table>
             @if (Model != null && Model.GamesList.Any())

@@ -97,13 +97,27 @@ namespace Presentation.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityResult result
-                    = await _roleLogic.Create(name, description);
+                try
+                {
+                    IdentityResult result
+                        = await _roleLogic.Create(name, description);
 
-                if (!result.Succeeded)
-                    AddErrorsFromResult(result);
+                    if (!result.Succeeded)
+                        AddErrorsFromResult(result);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                catch (ConnectionException ex)
+                {
+                    _logger.Log(LogLevel.Error,
+                        $"The following connection error occurred: {ex.Message} @ {GetType().Name}");
+                    ModelState.AddModelError("", ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log(LogLevel.Error, $"A general exception occurred: {ex.Message} @ {GetType().Name}");
+                    ModelState.AddModelError("", ex.Message);
+                }
             }
 
             return View(name, description);

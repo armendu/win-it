@@ -52,7 +52,7 @@ namespace Common.Services
             }
 
             _startGameTimer = new Timer(StartGame, gameLength, TimeSpan.Zero,
-                TimeSpan.FromSeconds((gameLength + 60)));
+                TimeSpan.FromSeconds((gameLength + 60) * 60));
 
             return Task.CompletedTask;
         }
@@ -68,7 +68,8 @@ namespace Common.Services
             try
             {
                 _gameLogic.Create((int) state, winningNumbers);
-                _logger.LogInformation($"A new game was created with the following winning numbers: {winningNumbers} @ {DateTime.UtcNow}");
+                _logger.LogInformation(
+                    $"A new game was created with the following winning numbers: {winningNumbers} @ {DateTime.UtcNow}");
             }
             catch (Exception ex)
             {
@@ -104,7 +105,7 @@ namespace Common.Services
 
                 if (winningNumbers.Contains(generatedNumber))
                     continue;
-                
+
                 winningNumbers.Add(generatedNumber);
             }
 

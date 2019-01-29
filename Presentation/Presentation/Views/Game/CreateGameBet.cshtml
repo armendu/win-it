@@ -1,0 +1,85 @@
+@model Entities.ViewModels.Game.GameBetViewModel
+@{
+    ViewData["Title"] = "- Create new game bet";
+}
+
+<section class="content-header">
+    <h1>
+        Game Bet
+        <small>Create new game bet</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        </li>
+        <li class="active">Games</li>
+        <li class="active">Create game bet</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="box box-danger">
+                <div class="box-body">
+                    <div class="form-horizontal">
+                        <div class="col-md-4">
+                            <form asp-action="CreateGameBet">
+                                <div class="form-group">
+                                    <label>Please write 7 numbers: </label>
+                                </div>
+                                <div asp-validation-summary="All" class="text-danger"></div>
+
+                                <div class="form-inline">
+                                    <div class="input-group input-group-lg">
+                                        <input asp-for="FirstNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                    </div>
+
+                                    <div class="input-group input-group-lg">
+                                        <input asp-for="SecondNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                    </div>
+
+                                    <div class="input-group input-group-lg">
+                                        <input asp-for="ThirdNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                    </div>
+
+                                    <div class="input-group input-group-lg">
+                                        <input asp-for="FourthNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                    </div>
+
+                                    <div class="input-group input-group-lg">
+                                        <input asp-for="FifthNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                    </div>
+
+                                    <div class="input-group input-group-lg">
+                                        <input asp-for="SixthNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                    </div>
+
+                                    <div class="input-group input-group-lg">
+                                        <input asp-for="SeventhNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Sum:</label>
+                                    <div class="input-group input-group-lg">
+                                        <input asp-for="Sum" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-flat" style="width: 48%; margin-right: 2%; background-color: #34495e">
+                                        <i class="fa fa-plus-circle"></i>&nbsp; Create
+                                    </button>
+                                    <a asp-action="Index" class="btn btn-default btn-flat" style="width: 48%;">
+                                        <i class="fa fa-arrow-left"></i> Go back to Index
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

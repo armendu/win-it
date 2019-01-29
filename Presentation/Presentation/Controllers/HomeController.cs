@@ -23,15 +23,17 @@ namespace Presentation.Controllers
         {
             try
             {
+                // Get the number of the registered users, the end time of the current running game.
                 int registeredUsers = _userLogic.List().Count;
                 DateTime currentGameEndTime = _gameLogic.List().FirstOrDefault(g => g.GameProcessed == false)?.EndTime ?? DateTime.UtcNow;
 
-                int timeUntilNewGame = (int)(currentGameEndTime - DateTime.UtcNow).TotalMinutes;
+                // Calculate the minutes til the next game starts.
+                int timeTillGameEnds = (int)(currentGameEndTime - DateTime.UtcNow).TotalMinutes;
 
                 return View(new DashboardViewModel
                 {
                     RegisteredUsers = registeredUsers,
-                    MinutesTillNextGame = timeUntilNewGame.ToString()
+                    MinutesTillNextGame = timeTillGameEnds.ToString()
                 });
             }
             catch (Exception)

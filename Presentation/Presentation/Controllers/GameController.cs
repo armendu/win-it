@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Entities.Models;
 using Entities.ViewModels;
 using Entities.ViewModels.Game;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -52,27 +54,35 @@ namespace Presentation.Controllers
             }
         }
 
-        // GET: Game/Create
+        // GET: Game/Create/
         [HttpGet]
-        public IActionResult Create()
+        [Authorize]
+        public IActionResult CreateGameBet(int id)
         {
             try
             {
-                return View("Create");
+                int gameId = _gameLogic.List().FirstOrDefault(g => g.GameProcessed == false)?.GameId ??
+                             throw new NotFoundException();
+
+                return View(new GameBetViewModel
+                {
+                    GameId = gameId
+                });
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
 
-                return View("Create");
+                return RedirectToAction("Index");
             }
         }
 
         // POST: Game/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Game model)
+        [Authorize]
+        public IActionResult CreateGameBet(Game model)
         {
             if (!ModelState.IsValid)
             {
@@ -90,10 +100,11 @@ namespace Presentation.Controllers
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
-
-                return View("Create", model);
             }
+
+            return View(model);
         }
+
 
         [HttpGet]
         public IActionResult Details(Game model)

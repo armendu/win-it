@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models
 {
@@ -15,7 +16,11 @@ namespace Entities.Models
         public string LastName { get; set; }
         public string Phone { get; set; }
         public DateTime? Birthdate { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:U}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:U}", ApplyFormatInEditMode = true)]
         public DateTime UpdateAt { get; set; }
         public int? AddressId { get; set; }
 
