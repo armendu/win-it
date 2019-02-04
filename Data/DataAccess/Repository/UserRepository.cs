@@ -91,27 +91,22 @@ namespace DataAccess.Repository
             {
                 try
                 {
-                    // TODO: Remove hard coded data
                     Country country = new Country
                     {
-                        Name = "Kosova",
-                        UpdateAt = DateTime.UtcNow,
-                        CreatedAt = DateTime.UtcNow
+                        Name = registerModel.Country
                     };
 
                     City city = new City
                     {
-                        Name = "Prishtina",
-                        Country = country,
-                        UpdateAt = DateTime.UtcNow,
-                        CreatedAt = DateTime.UtcNow
+                        Name = registerModel.City,
+                        Country = country
                     };
 
                     Address address = new Address
                     {
                         City = city,
-                        Street = "Test street",
-                        ZipCode = "10000",
+                        Street = registerModel.Street,
+                        ZipCode = registerModel.ZipCode,
                         UpdateAt = DateTime.UtcNow,
                         CreatedAt = DateTime.UtcNow
                     };
@@ -124,7 +119,7 @@ namespace DataAccess.Repository
                         FirstName = registerModel.FirstName,
                         LastName = registerModel.LastName,
                         Phone = registerModel.Phone,
-//                        Birthdate = registerModel.Birthdate
+                        Birthdate = DateTime.Parse(registerModel.Birthdate)
                     };
 
                     Player player = new Player
@@ -155,8 +150,8 @@ namespace DataAccess.Repository
                     }
                     else
                     {
-                        transaction.Commit();
                         await _userManager.AddToRoleAsync(user, "Default");
+                        transaction.Commit();
                     }
 
                     return new RegisterResultViewModel

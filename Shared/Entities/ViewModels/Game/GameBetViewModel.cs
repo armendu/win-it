@@ -8,6 +8,9 @@ namespace Entities.ViewModels.Game
         public int GameId { get; set; }
 
         [Required]
+        public int PlayerId { get; set; }
+
+        [Required]
         public decimal Sum { get; set; }
 
         [Required(ErrorMessage = "Please provide a number between 1 and 39.")]

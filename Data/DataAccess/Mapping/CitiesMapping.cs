@@ -19,11 +19,7 @@ namespace DataAccess.Mapping
 
             entity.Property(e => e.CountryId).HasColumnType("int(11)");
 
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-
             entity.Property(e => e.Name).HasColumnType("varchar(50)");
-
-            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Country)
                 .WithMany(p => p.Cities)

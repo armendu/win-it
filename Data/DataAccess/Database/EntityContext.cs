@@ -51,10 +51,6 @@ namespace DataAccess.Database
             modelBuilder.ApplyConfiguration(new IdentityUserRoleMapping());
             modelBuilder.ApplyConfiguration(new GameSettingsMapping());
 
-            // shadow properties
-//            modelBuilder.Entity<Role>().Property<DateTime>("CreateAt");
-//            modelBuilder.Entity<Role>().Property<DateTime>("UpdatedAt");
-
             base.OnModelCreating(modelBuilder);
         }
 
@@ -82,11 +78,7 @@ namespace DataAccess.Database
                 if (await roleManager.FindByNameAsync(role) == null)
                 {
                     await roleManager.CreateAsync(new Role(role, description));
-                    await roleManager.CreateAsync(new Role
-                    {
-                        Name = "Default",
-                        Description = "The default users of the application"
-                    });
+                    await roleManager.CreateAsync(new Role("Default", "The default users of the application"));
                 }
 
                 UserInfo userInfo = new UserInfo

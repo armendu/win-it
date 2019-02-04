@@ -39,11 +39,12 @@ namespace Presentation
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = false;
+                options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<EntityContext>()
             .AddDefaultTokenProviders();
 
-            // Do the dependency injection here
+            // Do the dependency injections here
             services.AddTransient<IUserLogic, UserLogic>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleLogic, RoleLogic>();

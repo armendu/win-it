@@ -5,6 +5,7 @@ using Common.Helpers.Exceptions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
+using Entities.ViewModels.Game;
 using MySql.Data.MySqlClient;
 
 namespace DataAccess.Repository
@@ -23,6 +24,7 @@ namespace DataAccess.Repository
         /// </summary>
         /// <param name="id">The id of the entity.</param>
         /// <returns>The retrieved entity.</returns>
+        /// <exception cref="NotFoundException">If the game is not found.</exception>
         public Game GetById(int id)
         {
             try
@@ -99,6 +101,32 @@ namespace DataAccess.Repository
                     };
 
                     _entityContext.Add(game);
+                    _entityContext.SaveChanges();
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Persists a new bet.
+        /// </summary>
+        /// <param name="entity">The length of the entity; determines the endTime of the entity.</param>
+        /// <returns>The persisted object.</returns>
+        public void CreateGameBet(GameBetViewModel entity)
+        {
+            using (var transaction = _entityContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    
+
+                    // _entityContext.Add();
                     _entityContext.SaveChanges();
 
                     transaction.Commit();

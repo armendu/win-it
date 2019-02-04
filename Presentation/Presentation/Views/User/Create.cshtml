@@ -6,12 +6,12 @@
 <head>
     <link href="~/plugins/bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="~/plugins/bootstrap-4.0.0/dist/js/bootstrap.min.js"></script>
-    <link href="~/css/custom/login.css" rel="stylesheet" />
+    <link href="~/css/custom/login.css" rel="stylesheet"/>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/bower_components/font-awesome/css/all.css">
-    
+
     <style>
-        .validation-summary-errors ul { 
+        .validation-summary-errors ul {
             list-style: none;
             margin-left: -40px;
             text-align: center;
@@ -25,7 +25,7 @@
         <h1 id="profile-name" class="profile-name-card">WinIt</h1>
 
         <form asp-action="Create" asp-controller="User" method="post" class="form-signin">
-            <input type="hidden" asp-for="ReturnUrl" />
+            <input type="hidden" asp-for="ReturnUrl"/>
             <span id="reauth-email" class="reauth-email"></span>
 
             <input asp-for="Email" type="email" class="form-control" placeholder="Email" required autofocus>
@@ -62,16 +62,31 @@
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
 
-            <input asp-for="Birthdate" type="date" data-date-format="yyyy-MM-dd" class="form-control" placeholder="Birthdate">
+            <input asp-for="Birthdate" placeholder="Birthdate" class="form-control" type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" style="margin-bottom: 10px" required>
             <div>
                 <span asp-validation-for="Birthdate" class="text-danger"></span>
             </div>
 
-            <input type="text" class="form-control" placeholder="Address">
+            <input asp-for="Country" type="text" class="form-control" placeholder="Country">
             <div>
-                <span asp-validation-for="Birthdate" class="text-danger"></span>
+                <span asp-validation-for="Country" class="text-danger"></span>
             </div>
 
+            <input asp-for="City" type="text" class="form-control" placeholder="City">
+            <div>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <input asp-for="Street" type="text" class="form-control" placeholder="Street">
+            <div>
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+
+            <input asp-for="ZipCode" type="text" class="form-control" placeholder="Zip Code">
+            <div>
+                <span asp-validation-for="ZipCode" class="text-danger"></span>
+            </div>
+            
             <button class="btn btn-lg btn-primary btn-block btn-signin" style="background-color: #2C3A47; color: white" type="submit">Sign up</button>
         </form>
 

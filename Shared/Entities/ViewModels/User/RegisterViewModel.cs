@@ -6,6 +6,7 @@ namespace Entities.ViewModels.User
     public class RegisterViewModel
     {
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -13,11 +14,14 @@ namespace Entities.ViewModels.User
         public string Username { get; set; }
 
         [Required]
+        [DataType(DataType.Password)]
         [UIHint("password")]
         public string Password { get; set; }
 
         [Required]
-        [UIHint("password")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ReTypePassword { get; set; }
 
         [Required]
@@ -31,8 +35,17 @@ namespace Entities.ViewModels.User
         public string Phone { get; set; }
 
         [Required]
-        public DateTime Birthdate { get; set; }
-        
+        [Display(Name = "Birth Date")]
+        public string Birthdate { get; set; }
+
+        public string Country { get; set; }
+
+        public string City { get; set; }
+        public string Street { get; set; }
+        public string ZipCode { get; set; }
+
         public string ReturnUrl { get; set; }
+
+        
     }
 }
