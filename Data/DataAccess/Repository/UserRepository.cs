@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
-using Entities.ViewModels;
 using Entities.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
 
@@ -28,6 +28,23 @@ namespace DataAccess.Repository
             _singInManager = singInManager;
             _passwordValidator = passwordValidator;
             _passwordHasher = passwordHasher;
+        }
+
+        public async Task<User> GetCurrentUser(ClaimsPrincipal user)
+        {
+            try
+            {
+                var profile = await _userManager.GetUserAsync(user);
+
+                if (profile == null)
+                    throw new NullReferenceException();
+
+                return profile;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<User> FindById(string id)
@@ -91,15 +108,9 @@ namespace DataAccess.Repository
             {
                 try
                 {
-                    Country country = new Country
-                    {
-                        Name = registerModel.Country
-                    };
-
                     City city = new City
                     {
-                        Name = registerModel.City,
-                        Country = country
+                        Name = registerModel.City
                     };
 
                     Address address = new Address
@@ -107,7 +118,7 @@ namespace DataAccess.Repository
                         City = city,
                         Street = registerModel.Street,
                         ZipCode = registerModel.ZipCode,
-                        UpdateAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
                         CreatedAt = DateTime.UtcNow
                     };
 
@@ -124,7 +135,7 @@ namespace DataAccess.Repository
 
                     Player player = new Player
                     {
-                        Balance = 0,
+                        Balance = 5,
                         NumberOfGamesPlayed = 0,
                         NumberOfGamesWon = 0,
                         TotalSpent = 0,
@@ -145,9 +156,7 @@ namespace DataAccess.Repository
                         = await _userManager.CreateAsync(user, registerModel.Password);
 
                     if (!result.Succeeded)
-                    {
                         transaction.Rollback();
-                    }
                     else
                     {
                         await _userManager.AddToRoleAsync(user, "Default");
@@ -184,15 +193,11 @@ namespace DataAccess.Repository
                         {
                             validPass = await _passwordValidator.ValidateAsync(_userManager,
                                 user, model.Password);
+
                             if (validPass.Succeeded)
-                            {
-                                user.PasswordHash = _passwordHasher.HashPassword(user,
-                                    model.Password);
-                            }
+                                user.PasswordHash = _passwordHasher.HashPassword(user, model.Password);
                             else
-                            {
                                 throw new ArgumentException("Please provide the correct password");
-                            }
                         }
                         else
                         {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entities.Models;
+using Entities.ViewModels.Transaction;
 
 namespace Common.LogicInterfaces
 {
@@ -9,6 +10,6 @@ namespace Common.LogicInterfaces
 
         List<Transaction> List();
 
-        void Create();
+        Transaction Create(CreateTransactionViewModel model);
     }
 }

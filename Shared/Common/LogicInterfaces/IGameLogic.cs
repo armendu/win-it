@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Entities.Models;
+using Entities.ViewModels.Game;
 
 namespace Common.LogicInterfaces
 {
@@ -11,5 +12,7 @@ namespace Common.LogicInterfaces
         List<Game> List();
 
         void Create(int gameLength, string winningNumbers);
+
+        void CreateGameBet(CreateGameBetViewModel entity);
     }
 }

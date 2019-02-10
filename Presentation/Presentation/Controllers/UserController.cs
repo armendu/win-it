@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Helpers.Exceptions;
@@ -9,6 +10,7 @@ using Entities.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
@@ -16,6 +18,7 @@ namespace Presentation.Controllers
     public class UserController : Controller
     {
         private readonly IUserLogic _userLogic;
+        private readonly ICitiesLogic _citiesLogic;
         private readonly SignInManager<User> _singInManager;
         private readonly ILogger _logger;
         private const int PageSize = 10;
@@ -24,11 +27,14 @@ namespace Presentation.Controllers
         /// Creates a new instance of the UserController and injects the userLogic, userManager, singInManager, and logger.
         /// </summary>
         /// <param name="userLogic">The user logic to be injected.</param>
+        /// <param name="citiesLogic">The cities logic to be injected.</param>
         /// <param name="singInManager">The sign in manager to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
-        public UserController(IUserLogic userLogic, SignInManager<User> singInManager, ILogger<UserController> logger)
+        public UserController(IUserLogic userLogic, ICitiesLogic citiesLogic, SignInManager<User> singInManager,
+            ILogger<UserController> logger)
         {
             _userLogic = userLogic;
+            _citiesLogic = citiesLogic;
             _singInManager = singInManager;
             _logger = logger;
         }
@@ -141,6 +147,8 @@ namespace Presentation.Controllers
         {
             try
             {
+                ViewBag.Countries = new SelectList(_citiesLogic.ListCountries());
+
                 return View(new RegisterViewModel
                 {
                     ReturnUrl = returnUrl
@@ -196,6 +204,16 @@ namespace Presentation.Controllers
             }
 
             return View(registerModel);
+        }
+
+        [HttpGet]
+        public IActionResult GetCitiesForCountry(string country)
+        {
+            if (string.IsNullOrWhiteSpace(country)) return null;
+
+            List<City> cities = _citiesLogic.List(country);
+            
+            return Json(cities);
         }
 
         // GET: User/ChangePassword/{id}
@@ -272,19 +290,24 @@ namespace Presentation.Controllers
                     _logger.Log(LogLevel.Error, $"A general exception occurred: {ex.Message} @ {GetType().Name}");
                 }
             }
-            
+
             return View("ChangePassword", model);
         }
 
         // GET: User/Edit/{id}
         [HttpGet]
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit()
         {
-            User user = await _userLogic.FindById(id);
+            User user = await _userLogic.GetCurrentUser(HttpContext.User);
             if (user != null)
             {
                 EditUserViewModel editUser = new EditUserViewModel
                 {
+                    Id = user.Id,
+                    Birthdate = user.UserInfo.Birthdate.ToString(),
+                    FirstName = user.UserInfo.FirstName,
+                    LastName = user.UserInfo.LastName,
+                    Phone = user.UserInfo.Phone
                 };
 
                 return View(editUser);

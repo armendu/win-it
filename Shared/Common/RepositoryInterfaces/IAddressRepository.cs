@@ -7,7 +7,6 @@ namespace Common.RepositoryInterfaces
     {
         Address GetById(int id);
         List<Address> List();
-        Address Create(Address entity);
         void Update(Address entity);
         void Delete(Address entity);
     }

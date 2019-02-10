@@ -23,7 +23,7 @@ namespace DataAccess.Mapping
 
                 entity.Property(e => e.Street).HasColumnType("varchar(100)");
 
-                entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+                entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.ZipCode).HasColumnType("varchar(15)");
 

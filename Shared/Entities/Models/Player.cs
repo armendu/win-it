@@ -14,12 +14,12 @@ namespace Entities.Models
         }
 
         public int PlayerId { get; set; }
-        public decimal? Balance { get; set; }
-        public decimal? TotalSpent { get; set; }
-        public int? NumberOfGamesPlayed { get; set; }
-        public int? NumberOfGamesWon { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdateAt { get; set; }
+        public decimal Balance { get; set; }
+        public decimal TotalSpent { get; set; }
+        public int NumberOfGamesPlayed { get; set; }
+        public int NumberOfGamesWon { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdateAt { get; set; }
 
         public virtual ICollection<GameBet> GameBets { get; set; }
         public virtual ICollection<GameWinner> GameWinners { get; set; }

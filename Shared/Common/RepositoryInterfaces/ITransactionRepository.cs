@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Entities.Models;
+using Entities.ViewModels.Transaction;
 
 namespace Common.RepositoryInterfaces
 {
@@ -7,8 +8,7 @@ namespace Common.RepositoryInterfaces
     {
         Transaction GetById(int id);
         List<Transaction> List();
-        Transaction Create(Transaction entity);
-        void Update(Transaction entity);
-        void Delete(Transaction entity);
+        Transaction Create(CreateTransactionViewModel model);
+        void Update(Transaction model);
     }
 }

@@ -25,45 +25,28 @@
                     <div class="form-horizontal">
                         <div class="col-md-4">
                             <form asp-action="CreateGameBet">
+
+                                <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group">
                                     <label>Please write 7 numbers: </label>
-                                </div>
-                                <div asp-validation-summary="All" class="text-danger"></div>
+                                    <div class="form-inline">
+                                        @if (Model.Numbers != null)
+                                        {
+                                            for (int i = 0; i < Model.Numbers.Count; i++)
+                                            {
+                                                <div class="input-group input-group-lg">
+                                                    <input asp-for="@Model.Numbers[i]" id="name" class="form-control form-control-lg" style="width: 80px; margin: 5px" type="number" value="1" min="1" max="39" />
+                                                </div>
+                                            }
+                                        }
 
-                                <div class="form-inline">
-                                    <div class="input-group input-group-lg">
-                                        <input asp-for="FirstNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
-                                    </div>
-
-                                    <div class="input-group input-group-lg">
-                                        <input asp-for="SecondNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
-                                    </div>
-
-                                    <div class="input-group input-group-lg">
-                                        <input asp-for="ThirdNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
-                                    </div>
-
-                                    <div class="input-group input-group-lg">
-                                        <input asp-for="FourthNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
-                                    </div>
-
-                                    <div class="input-group input-group-lg">
-                                        <input asp-for="FifthNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
-                                    </div>
-
-                                    <div class="input-group input-group-lg">
-                                        <input asp-for="SixthNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
-                                    </div>
-
-                                    <div class="input-group input-group-lg">
-                                        <input asp-for="SeventhNumber" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Sum:</label>
                                     <div class="input-group input-group-lg">
-                                        <input asp-for="Sum" id="name" class="form-control form-control-lg" style="width:80px; margin:5px" type="number" min="1" max="39" />
+                                        <input asp-for="Sum" id="name" class="form-control form-control-lg" style="width: 80px; margin: 5px" type="text" value="@Model.Sum" />
                                     </div>
                                 </div>
 

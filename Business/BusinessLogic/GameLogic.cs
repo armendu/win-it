@@ -4,6 +4,7 @@ using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.Models;
+using Entities.ViewModels.Game;
 using Microsoft.EntityFrameworkCore.Design;
 using MySql.Data.MySqlClient;
 
@@ -61,6 +62,18 @@ namespace BusinessLogic
             try
             {
                 _gameRepository.Create(gameLength, winningNumbers);
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
+        }
+
+        public void CreateGameBet(CreateGameBetViewModel entity)
+        {
+            try
+            {
+                _gameRepository.CreateGameBet(entity);
             }
             catch (MySqlException)
             {

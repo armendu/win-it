@@ -13,8 +13,8 @@ namespace Entities.Models
         public int AddressId { get; set; }
         public string Street { get; set; }
         public string ZipCode { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdateAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public int? CityId { get; set; }
 
         public virtual City City { get; set; }

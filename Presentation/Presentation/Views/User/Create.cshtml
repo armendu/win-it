@@ -6,7 +6,9 @@
 <head>
     <link href="~/plugins/bootstrap-4.0.0/dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="~/plugins/bootstrap-4.0.0/dist/js/bootstrap.min.js"></script>
-    <link href="~/css/custom/login.css" rel="stylesheet"/>
+    <link href="~/css/custom/login.css" rel="stylesheet" />
+    <!-- jQuery 3 -->
+    <script src="~/bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/bower_components/font-awesome/css/all.css">
 
@@ -20,84 +22,106 @@
 </head>
 
 <body>
-<div class="container">
-    <div class="card card-container">
-        <h1 id="profile-name" class="profile-name-card">WinIt</h1>
+    <div class="container">
+        <div class="card card-container">
+            <h1 id="profile-name" class="profile-name-card">WinIt</h1>
 
-        <form asp-action="Create" asp-controller="User" method="post" class="form-signin">
-            <input type="hidden" asp-for="ReturnUrl"/>
-            <span id="reauth-email" class="reauth-email"></span>
+            <form asp-action="Create" asp-controller="User" method="post" class="form-signin">
+                <input type="hidden" asp-for="ReturnUrl" />
+                <span id="reauth-email" class="reauth-email"></span>
 
-            <input asp-for="Email" type="email" class="form-control" placeholder="Email" required autofocus>
-            <div>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <input asp-for="Username" type="text" class="form-control" placeholder="Username" required>
-            <div>
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
+                <input asp-for="Email" type="email" class="form-control" placeholder="Email" required autofocus>
+                <div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <input asp-for="Username" type="text" class="form-control" placeholder="Username" required>
+                <div>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
 
-            <input asp-for="Password" type="password" class="form-control" placeholder="Password" required>
-            <div>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Password" required>
+                <div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
 
-            <input asp-for="ReTypePassword" type="password" class="form-control" placeholder="Re-type password" required>
-            <div>
-                <span asp-validation-for="ReTypePassword" class="text-danger"></span>
-            </div>
+                <input asp-for="ReTypePassword" type="password" class="form-control" placeholder="Re-type password" required>
+                <div>
+                    <span asp-validation-for="ReTypePassword" class="text-danger"></span>
+                </div>
 
-            <input asp-for="FirstName" type="text" class="form-control" placeholder="First name" required>
-            <div>
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
+                <input asp-for="FirstName" type="text" class="form-control" placeholder="First name" required>
+                <div>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
 
-            <input asp-for="LastName" type="text" class="form-control" placeholder="Last name" required>
-            <div>
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
+                <input asp-for="LastName" type="text" class="form-control" placeholder="Last name" required>
+                <div>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
 
-            <input asp-for="Phone" type="text" class="form-control" placeholder="Phone">
-            <div>
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
+                <input asp-for="Phone" type="text" class="form-control" placeholder="Phone">
+                <div>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
 
-            <input asp-for="Birthdate" placeholder="Birthdate" class="form-control" type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" style="margin-bottom: 10px" required>
-            <div>
-                <span asp-validation-for="Birthdate" class="text-danger"></span>
-            </div>
+                <input asp-for="Birthdate" placeholder="Birthdate" class="form-control" type="text" onfocus="(this.type = 'date')" onblur="(this.type = 'text')" style="margin-bottom: 10px" required>
+                <div>
+                    <span asp-validation-for="Birthdate" class="text-danger"></span>
+                </div>
 
-            <input asp-for="Country" type="text" class="form-control" placeholder="Country">
-            <div>
-                <span asp-validation-for="Country" class="text-danger"></span>
-            </div>
+                <select asp-for="Country" asp-items="@ViewBag.Countries" class="form-control" style="margin-bottom: 10px" id="countries" required>
+                    <option value="">Select Country</option>
+                </select>
+                <div>
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
 
-            <input asp-for="City" type="text" class="form-control" placeholder="City">
-            <div>
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
+                <select asp-for="City" asp-items="@ViewBag.Cities" class="form-control" style="margin-bottom: 10px" id="cities" required>
+                    <option value="">Select City</option>
+                </select>
+                <div>
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
 
-            <input asp-for="Street" type="text" class="form-control" placeholder="Street">
-            <div>
-                <span asp-validation-for="Street" class="text-danger"></span>
-            </div>
+                <input asp-for="Street" type="text" class="form-control" placeholder="Street">
+                <div>
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
 
-            <input asp-for="ZipCode" type="text" class="form-control" placeholder="Zip Code">
-            <div>
-                <span asp-validation-for="ZipCode" class="text-danger"></span>
-            </div>
-            
-            <button class="btn btn-lg btn-primary btn-block btn-signin" style="background-color: #2C3A47; color: white" type="submit">Sign up</button>
-        </form>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" style="background-color: #2C3A47; color: white" type="submit">Sign up</button>
+            </form>
 
-        <div asp-validation-summary="ModelOnly" class="text-danger profile-name-card"></div>
-        <a asp-action="Login" class="forgot-password form-control">
-            Already have an account? Sign in
-        </a>
-        <a href="~/" class="forgot-password form-control">
-            <i class="fas fa-home"></i>&nbsp; Go back to home page
-        </a>
-    </div><!-- /card-container -->
-</div>
+            <div asp-validation-summary="ModelOnly" class="text-danger profile-name-card"></div>
+            <a asp-action="Login" class="forgot-password form-control">
+                Already have an account? Sign in
+            </a>
+            <a href="~/" class="forgot-password form-control">
+                <i class="fas fa-home"></i>&nbsp; Go back to home page
+            </a>
+        </div><!-- /card-container -->
+    </div>
 </body>
+
 </html>
+<script type="text/javascript">
+    $('#countries').change(function () {
+        var selectedCountry = $("#countries").val();
+        var citiesSelect = $('#cities');
+        citiesSelect.empty();
+        if (selectedCountry != null && selectedCountry != '') {
+            
+            $.getJSON('@Url.Action("GetCitiesForCountry")', { country: selectedCountry }, function (cities) {
+                console.log(cities);
+                if (cities != null && !jQuery.isEmptyObject(cities))
+                {
+                    $.each(cities, function (index, city) {
+                        citiesSelect.append($('<option/>', {
+                            value: city.cityId,
+                            text: city.name
+                        }));
+                    });
+                };
+            });
+        }
+    });
+</script>

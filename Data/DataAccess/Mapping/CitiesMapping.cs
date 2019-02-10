@@ -11,21 +11,12 @@ namespace DataAccess.Mapping
             entity.HasKey(e => e.CityId);
 
             entity.ToTable("cities");
-
-            entity.HasIndex(e => e.CountryId)
-                .HasName("CountryId");
-
+            
             entity.Property(e => e.CityId).HasColumnType("int(11)");
 
-            entity.Property(e => e.CountryId).HasColumnType("int(11)");
+            entity.Property(e => e.Name).HasColumnType("varchar(100)");
 
-            entity.Property(e => e.Name).HasColumnType("varchar(50)");
-
-            entity.HasOne(d => d.Country)
-                .WithMany(p => p.Cities)
-                .HasForeignKey(d => d.CountryId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("cities_ibfk_1");
+            entity.Property(e => e.Country).HasColumnType("varchar(100)");
         }
     }
 }

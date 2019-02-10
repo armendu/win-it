@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
@@ -18,6 +19,22 @@ namespace BusinessLogic
         public UserLogic(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+        public async Task<User> GetCurrentUser(ClaimsPrincipal user)
+        {
+            try
+            {
+                return await _userRepository.GetCurrentUser(user);
+            }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("User was not found");
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
         }
 
         public async Task<User> FindById(string id)

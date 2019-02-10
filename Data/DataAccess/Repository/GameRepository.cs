@@ -2,28 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common.Helpers.Exceptions;
+using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
 using Entities.ViewModels.Game;
+using Entities.ViewModels.Transaction;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 
 namespace DataAccess.Repository
 {
     public class GameRepository : IGameRepository
     {
         private readonly EntityContext _entityContext;
+        private readonly ITransactionLogic _transactionLogic;
 
-        public GameRepository(EntityContext entityContext)
+        public GameRepository(EntityContext entityContext, ITransactionLogic transactionLogic)
         {
             _entityContext = entityContext;
+            _transactionLogic = transactionLogic;
         }
 
         /// <summary>
-        /// Get entity by Id.
+        /// Get model by Id.
         /// </summary>
-        /// <param name="id">The id of the entity.</param>
-        /// <returns>The retrieved entity.</returns>
+        /// <param name="id">The id of the model.</param>
+        /// <returns>The retrieved model.</returns>
         /// <exception cref="NotFoundException">If the game is not found.</exception>
         public Game GetById(int id)
         {
@@ -32,7 +37,7 @@ namespace DataAccess.Repository
                 Game game = _entityContext.Games.FirstOrDefault(g => g.GameId == id);
 
                 if (game == null)
-                    throw new NotFoundException("No entity found");
+                    throw new NotFoundException("No model found");
 
                 return game;
             }
@@ -64,10 +69,10 @@ namespace DataAccess.Repository
         }
 
         /// <summary>
-        /// Persists a new entity to the database.
+        /// Persists a new model to the database.
         /// </summary>
-        /// <param name="gameLength">The length of the entity; determines the endTime of the entity.</param>
-        /// <param name="winningNumbers">The winning numbers of the entity generated randomly.</param>
+        /// <param name="gameLength">The length of the model; determines the endTime of the model.</param>
+        /// <param name="winningNumbers">The winning numbers of the model generated randomly.</param>
         /// <returns>The persisted object.</returns>
         public void Create(int gameLength, string winningNumbers)
         {
@@ -116,17 +121,33 @@ namespace DataAccess.Repository
         /// <summary>
         /// Persists a new bet.
         /// </summary>
-        /// <param name="entity">The length of the entity; determines the endTime of the entity.</param>
+        /// <param name="model">The length of the model; determines the endTime of the model.</param>
         /// <returns>The persisted object.</returns>
-        public void CreateGameBet(GameBetViewModel entity)
+        public void CreateGameBet(CreateGameBetViewModel model)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())
             {
                 try
                 {
-                    
+                    CreateTransactionViewModel betTransaction = new CreateTransactionViewModel
+                    {
+                        GameId = model.GameId,
+                        PlayerId = model.PlayerId,
+                        Sum = model.Sum
+                    };
 
-                    // _entityContext.Add();
+                    var transactionModel = _transactionLogic.Create(betTransaction);
+
+                    GameBet bet = new GameBet
+                    {
+                        GameId = model.GameId,
+                        PlayerId = model.PlayerId,
+                        ChosenNumbers = JsonConvert.SerializeObject(model.Numbers),
+                        CreatedAt = DateTime.UtcNow,
+                        UpdateAt = DateTime.UtcNow
+                    };
+                    
+                    _entityContext.Add(bet);
                     _entityContext.SaveChanges();
 
                     transaction.Commit();

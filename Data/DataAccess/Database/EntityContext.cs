@@ -13,7 +13,6 @@ namespace DataAccess.Database
     {
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<City> Cities { get; set; }
-        public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<GameBet> GameBets { get; set; }
         public virtual DbSet<GameInfo> GameInfo { get; set; }
         public virtual DbSet<Game> Games { get; set; }
@@ -38,7 +37,6 @@ namespace DataAccess.Database
             // Do the mapping here
             modelBuilder.ApplyConfiguration(new AddressesMapping());
             modelBuilder.ApplyConfiguration(new CitiesMapping());
-            modelBuilder.ApplyConfiguration(new CountriesMapping());
             modelBuilder.ApplyConfiguration(new GameBetsMapping());
             modelBuilder.ApplyConfiguration(new GameInfoMapping());
             modelBuilder.ApplyConfiguration(new GamesMapping());
