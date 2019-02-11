@@ -25,7 +25,7 @@ namespace DataAccess.Mapping
 
             entity.Property(e => e.SumWon).HasColumnType("decimal(10,0)");
 
-            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Game)
                 .WithMany(p => p.GameWinners)

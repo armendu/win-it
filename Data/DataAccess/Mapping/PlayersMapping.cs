@@ -24,7 +24,7 @@ namespace DataAccess.Mapping
 
             entity.Property(e => e.TotalSpent).HasColumnType("decimal(10,0)");
 
-            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         }
     }
 }

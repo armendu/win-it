@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Helpers.Exceptions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
@@ -24,7 +23,7 @@ namespace DataAccess.Repository
                 List<City> cities = _entityContext.Cities.Where(c => c.Country == country).OrderBy(c => c.Name).ToList();
 
                 if (cities.Count == 0)
-                    throw new NotFoundException("There are cities to be shown!");
+                    throw new NullReferenceException();
 
                 return cities;
             }
@@ -41,7 +40,7 @@ namespace DataAccess.Repository
                 List<string> countries = _entityContext.Cities.GroupBy(c => c.Country).Select(x => x.FirstOrDefault().Country).ToList();
 
                 if (countries.Count == 0)
-                    throw new NotFoundException("There are no countries to be shown!");
+                    throw new NullReferenceException();
 
                 return countries;
             }

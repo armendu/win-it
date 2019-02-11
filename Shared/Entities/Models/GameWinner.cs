@@ -9,7 +9,7 @@ namespace Entities.Models
         public int? NumbersMatches { get; set; }
         public decimal? SumWon { get; set; }
         public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdateAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
         public virtual Game Game { get; set; }
         public virtual Player Player { get; set; }

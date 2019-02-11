@@ -7,6 +7,7 @@ using Common.RepositoryInterfaces;
 using Entities.Models;
 using Entities.ViewModels.Role;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Design;
 using MySql.Data.MySqlClient;
 
 namespace BusinessLogic
@@ -42,6 +43,10 @@ namespace BusinessLogic
             {
                 return _roleRepository.List();
             }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("Roles were not found!");
+            }
             catch (MySqlException)
             {
                 throw new ConnectionException();
@@ -58,6 +63,10 @@ namespace BusinessLogic
             {
                 throw new ConnectionException();
             }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while creating Role!");
+            }
         }
 
         public async Task<EditRoleViewModel> FindMembers(string id)
@@ -69,6 +78,10 @@ namespace BusinessLogic
             catch (MySqlException)
             {
                 throw new ConnectionException();
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while finding Roles!");
             }
         }
 
@@ -86,6 +99,10 @@ namespace BusinessLogic
             {
                 throw new ConnectionException();
             }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while updating Role!");
+            }
         }
 
         public async Task<IdentityResult> Delete(string id)
@@ -101,6 +118,10 @@ namespace BusinessLogic
             catch (MySqlException)
             {
                 throw new ConnectionException();
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while deleting Role!");
             }
         }
     }

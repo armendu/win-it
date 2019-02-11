@@ -13,7 +13,5 @@ namespace Common.LogicInterfaces
         void Create(CreateGameSetting entity);
 
         void Update(UpdateGameSetting entity);
-
-        void Delete(GameSettings entity);
     }
 }

@@ -19,7 +19,7 @@ namespace Entities.Models
         public int NumberOfGamesPlayed { get; set; }
         public int NumberOfGamesWon { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdateAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public virtual ICollection<GameBet> GameBets { get; set; }
         public virtual ICollection<GameWinner> GameWinners { get; set; }

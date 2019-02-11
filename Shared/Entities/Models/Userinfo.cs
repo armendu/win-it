@@ -21,7 +21,7 @@ namespace Entities.Models
         public DateTime CreatedAt { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:U}", ApplyFormatInEditMode = true)]
-        public DateTime UpdateAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public int? AddressId { get; set; }
 
         public virtual Address Address { get; set; }

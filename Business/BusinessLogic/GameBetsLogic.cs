@@ -1,12 +1,36 @@
-﻿using Common.LogicInterfaces;
+﻿using System;
+using Common.Helpers.Exceptions;
+using Common.LogicInterfaces;
+using Common.RepositoryInterfaces;
+using Entities.ViewModels.Game;
+using Microsoft.EntityFrameworkCore.Design;
+using MySql.Data.MySqlClient;
 
 namespace BusinessLogic
 {
     public class GameBetsLogic: IGameBetsLogic
     {
-        public void Create()
+        private readonly IGameBetsRepository _gameBetsRepository;
+
+        public GameBetsLogic(IGameBetsRepository gameBetsRepository)
         {
-            throw new System.NotImplementedException();
+            _gameBetsRepository = gameBetsRepository;
+        }
+
+        public void Create(CreateGameBetViewModel model)
+        {
+            try
+            {
+                _gameBetsRepository.Create(model);
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while creating new Game Settings!");
+            }
         }
     }
 }

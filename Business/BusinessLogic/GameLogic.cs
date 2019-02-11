@@ -30,6 +30,10 @@ namespace BusinessLogic
             {
                 return _gameRepository.GetById(gameId);
             }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("Game was not found!");
+            }
             catch (MySqlException)
             {
                 throw new ConnectionException();
@@ -45,6 +49,10 @@ namespace BusinessLogic
             try
             {
                 return _gameRepository.List();
+            }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("Games were not found!");
             }
             catch (MySqlException)
             {
@@ -67,6 +75,10 @@ namespace BusinessLogic
             {
                 throw new ConnectionException();
             }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while creating Game!");
+            }
         }
 
         public void CreateGameBet(CreateGameBetViewModel entity)
@@ -78,6 +90,10 @@ namespace BusinessLogic
             catch (MySqlException)
             {
                 throw new ConnectionException();
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while creating GameBet!");
             }
         }
 

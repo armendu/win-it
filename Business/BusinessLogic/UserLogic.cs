@@ -8,6 +8,7 @@ using Common.RepositoryInterfaces;
 using Entities.Models;
 using Entities.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Design;
 using MySql.Data.MySqlClient;
 
 namespace BusinessLogic
@@ -59,6 +60,10 @@ namespace BusinessLogic
             {
                return _userRepository.List();
             }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("Users were not found");
+            }
             catch (MySqlException)
             {
                 throw new ConnectionException();
@@ -67,6 +72,7 @@ namespace BusinessLogic
 
         public async Task<RegisterResultViewModel> Create(RegisterViewModel model)
         {
+            // TODO: Catch other exceptions, check for the messages
             try
             {
                 return await _userRepository.Create(model);
@@ -102,6 +108,10 @@ namespace BusinessLogic
             catch (MySqlException)
             {
                 throw new ConnectionException();
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while changing password for User!");
             }
         }
 //

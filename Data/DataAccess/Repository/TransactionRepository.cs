@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Helpers.Exceptions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
@@ -22,12 +21,12 @@ namespace DataAccess.Repository
         {
             try
             {
-                Transaction role = _entityContext.Transactions.FirstOrDefault(t => t.TransactionId == id);
+                Transaction transaction = _entityContext.Transactions.FirstOrDefault(t => t.TransactionId == id);
 
-                if (role == null)
+                if (transaction == null)
                     throw new NullReferenceException();
 
-                return role;
+                return transaction;
             }
             catch (Exception)
             {
@@ -42,7 +41,7 @@ namespace DataAccess.Repository
                 List<Transaction> transactions = _entityContext.Transactions.ToList();
 
                 if (transactions.Count == 0)
-                    throw new NotFoundException("There are cities to be shown!");
+                    throw new NullReferenceException();
 
                 return transactions;
             }
@@ -54,31 +53,22 @@ namespace DataAccess.Repository
 
         public Transaction Create(CreateTransactionViewModel model)
         {
-            using (var transaction = _entityContext.Database.BeginTransaction())
+            try
             {
-                try
+                // TODO: Check the balance before doing a transaction
+                Transaction transactionModel = new Transaction
                 {
-                    Transaction transactionModel = new Transaction
-                    {
-                        PlayerId = model.PlayerId,
-                        GameId = model.GameId,
-                        Sum = model.Sum,
-                        CreatedAt = DateTime.UtcNow,
-                        UpdateAt = DateTime.UtcNow
-                    };
+                    PlayerId = model.PlayerId,
+                    Sum = model.Sum,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
 
-                    _entityContext.Add(transactionModel);
-                    _entityContext.SaveChanges();
-
-                    transaction.Commit();
-
-                    return transactionModel;
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+                return transactionModel;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

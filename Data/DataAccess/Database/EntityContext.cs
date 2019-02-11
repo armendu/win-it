@@ -84,7 +84,7 @@ namespace DataAccess.Database
                     FirstName = "Admin",
                     LastName = "User",
                     Phone = string.Empty,
-                    UpdateAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
                     CreatedAt = DateTime.UtcNow,
                 };
 

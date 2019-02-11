@@ -12,7 +12,7 @@ namespace Presentation.Controllers
     {
         private readonly ITransactionLogic _transactionLogic;
         private readonly ILogger _logger;
-        private const int PageSize = 5;
+        private const int PageSize = 10;
 
         /// <summary>
         /// Creates a new instance of the TransactionController and injects the transactionLogic, and logger.
@@ -34,7 +34,7 @@ namespace Presentation.Controllers
                 IndexTransactionViewModel model = new IndexTransactionViewModel
                 {
                     Transactions = _transactionLogic.List()
-                        .OrderBy(g => g.GameId)
+                        .OrderBy(t => t.TransactionId)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
                     PagingInfo = new PagingInfo

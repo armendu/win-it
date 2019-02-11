@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.Models;
@@ -22,9 +24,13 @@ namespace BusinessLogic
                 List<City> cities = _citiesRepository.List(country);
                 return cities;
             }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("Cities were not found!");
+            }
             catch (MySqlException)
             {
-                throw;
+                throw new ConnectionException();
             }
         }
 
@@ -35,9 +41,13 @@ namespace BusinessLogic
                 List<string> countries = _citiesRepository.ListCountries();
                 return countries;
             }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("Countries were not found!");
+            }
             catch (MySqlException)
             {
-                throw;
+                throw new ConnectionException();
             }
         }
     }

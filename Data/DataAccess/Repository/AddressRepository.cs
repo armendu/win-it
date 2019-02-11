@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Common.Helpers.Exceptions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
-using MySql.Data.MySqlClient;
 
 namespace DataAccess.Repository
 {
@@ -28,7 +28,7 @@ namespace DataAccess.Repository
 
                 return address;
             }
-            catch (MySqlException)
+            catch (Exception)
             {
                 throw;
             }
@@ -45,7 +45,7 @@ namespace DataAccess.Repository
 
                 return addresses;
             }
-            catch (MySqlException)
+            catch (Exception)
             {
                 throw;
             }

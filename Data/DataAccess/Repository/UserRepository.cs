@@ -75,7 +75,7 @@ namespace DataAccess.Repository
 
                 return users;
             }
-            catch
+            catch (Exception)
             {
                 throw;
             }
@@ -96,7 +96,7 @@ namespace DataAccess.Repository
 
                 return false;
             }
-            catch
+            catch (Exception)
             {
                 throw;
             }
@@ -125,7 +125,7 @@ namespace DataAccess.Repository
                     UserInfo userInfo = new UserInfo
                     {
                         Address = address,
-                        UpdateAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
                         CreatedAt = DateTime.UtcNow,
                         FirstName = registerModel.FirstName,
                         LastName = registerModel.LastName,
@@ -139,7 +139,7 @@ namespace DataAccess.Repository
                         NumberOfGamesPlayed = 0,
                         NumberOfGamesWon = 0,
                         TotalSpent = 0,
-                        UpdateAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
                         CreatedAt = DateTime.UtcNow,
                     };
 
@@ -231,11 +231,13 @@ namespace DataAccess.Repository
 
         public void Update(UserDetailsViewModel entity)
         {
+            // TODO: Update profile
             throw new NotImplementedException();
         }
 
         public void Deactivate(string id)
         {
+            // TODO: Deactivate account
             throw new NotImplementedException();
         }
     }

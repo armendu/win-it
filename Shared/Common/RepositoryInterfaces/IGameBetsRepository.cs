@@ -1,7 +1,9 @@
-﻿namespace Common.RepositoryInterfaces
+﻿using Entities.ViewModels.Game;
+
+namespace Common.RepositoryInterfaces
 {
     public interface IGameBetsRepository
     {
-        void Create();
+        void Create(CreateGameBetViewModel model);
     }
 }

@@ -26,7 +26,7 @@ namespace DataAccess.Mapping
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
-            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Game)
                 .WithMany(p => p.GameBets)

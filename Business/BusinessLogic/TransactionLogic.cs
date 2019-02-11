@@ -5,6 +5,7 @@ using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.Models;
 using Entities.ViewModels.Transaction;
+using Microsoft.EntityFrameworkCore.Design;
 using MySql.Data.MySqlClient;
 
 namespace BusinessLogic
@@ -40,6 +41,10 @@ namespace BusinessLogic
             {
                 return _transactionRepository.List();
             }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("Transactions were not found");
+            }
             catch (MySqlException)
             {
                 throw new ConnectionException();
@@ -55,6 +60,10 @@ namespace BusinessLogic
             catch (MySqlException)
             {
                 throw new ConnectionException();
+            }
+            catch (Exception)
+            {
+                throw new OperationException("An error occured while creating Transaction!");
             }
         }
     }

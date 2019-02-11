@@ -7,6 +7,7 @@ using DataAccess.Database;
 using Entities.Models;
 using Entities.ViewModels.Role;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace DataAccess.Repository
 {
@@ -125,7 +126,7 @@ namespace DataAccess.Repository
 
                     if (result == null)
                     {
-                        throw new NullReferenceException();
+                        throw new OperationException("The result could not be completed");
                     }
 
                     if (!result.Succeeded)

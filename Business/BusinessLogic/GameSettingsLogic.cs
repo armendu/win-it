@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.Models;
@@ -24,9 +25,13 @@ namespace BusinessLogic
             {
                 return _gameSettingsRepository.GetById(settingId);
             }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("GameSettings was not found!");
+            }
             catch (MySqlException)
             {
-                throw;
+                throw new ConnectionException();
             }
         }
 
@@ -37,9 +42,13 @@ namespace BusinessLogic
                 List<GameSettings> gameSettings = _gameSettingsRepository.List();
                 return gameSettings;
             }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("GameSettings were not found!");
+            }
             catch (MySqlException)
             {
-                throw;
+                throw new ConnectionException();
             }
         }
 
@@ -48,6 +57,10 @@ namespace BusinessLogic
             try
             {
                 _gameSettingsRepository.Create(entity);
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
             }
             catch (Exception)
             {
@@ -61,21 +74,13 @@ namespace BusinessLogic
             {
                 _gameSettingsRepository.Update(entity);
             }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
             catch (Exception)
             {
                 throw new OperationException("An error occured while updating Game Settings!");
-            }
-        }
-
-        public void Delete(GameSettings entity)
-        {
-            try
-            {
-                _gameSettingsRepository.Delete(entity);
-            }
-            catch (Exception)
-            {
-                throw new OperationException("An error occured while deleting Game Settings!");
             }
         }
     }

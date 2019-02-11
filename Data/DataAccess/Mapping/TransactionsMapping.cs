@@ -12,9 +12,6 @@ namespace DataAccess.Mapping
 
             entity.ToTable("transactions");
 
-            entity.HasIndex(e => e.GameId)
-                .HasName("GameId");
-
             entity.HasIndex(e => e.PlayerId)
                 .HasName("PlayerId");
 
@@ -22,19 +19,11 @@ namespace DataAccess.Mapping
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
-            entity.Property(e => e.GameId).HasColumnType("int(11)");
-
             entity.Property(e => e.PlayerId).HasColumnType("int(11)");
 
             entity.Property(e => e.Sum).HasColumnType("decimal(10,0)");
 
-            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Game)
-                .WithMany(p => p.Transactions)
-                .HasForeignKey(d => d.GameId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("transactions_ibfk_2");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Player)
                 .WithMany(p => p.Transactions)

@@ -1,7 +1,9 @@
-﻿namespace Common.LogicInterfaces
+﻿using Entities.ViewModels.Game;
+
+namespace Common.LogicInterfaces
 {
     public interface IGameBetsLogic
     {
-        void Create();
+        void Create(CreateGameBetViewModel model);
     }
 }

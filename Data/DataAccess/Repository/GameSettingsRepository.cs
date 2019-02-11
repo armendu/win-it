@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Helpers.Exceptions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
 using Entities.ViewModels.GameSettings;
-using MySql.Data.MySqlClient;
 
 namespace DataAccess.Repository
 {
@@ -26,11 +24,11 @@ namespace DataAccess.Repository
                 GameSettings gameSetting = _entityContext.GameSettings.FirstOrDefault(g => g.GameSettingId == id);
 
                 if (gameSetting == null)
-                    throw new NotFoundException($"GameSetting with Id: {id} was not found!");
+                    throw new NullReferenceException();
 
                 return gameSetting;
             }
-            catch (MySqlException)
+            catch (Exception)
             {
                 throw;
             }
@@ -43,11 +41,11 @@ namespace DataAccess.Repository
                 List<GameSettings> gameSettings = _entityContext.GameSettings.ToList();
 
                 if (gameSettings.Count == 0)
-                    throw new NotFoundException("There are no Game Settings to be shown!");
+                    throw new NullReferenceException();
 
                 return gameSettings;
             }
-            catch (MySqlException)
+            catch (Exception)
             {
                 throw;
             }
@@ -93,32 +91,6 @@ namespace DataAccess.Repository
                         gameSetting.UpdatedAt = DateTime.UtcNow;
 
                         _entityContext.Update(gameSetting);
-                        _entityContext.SaveChanges();
-                        transaction.Commit();
-                    }
-                    else
-                        throw new NullReferenceException();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
-        }
-
-        public void Delete(GameSettings entity)
-        {
-            using (var transaction = _entityContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    GameSettings gameSettings =
-                        _entityContext.GameSettings.FirstOrDefault(x => x.GameSettingId == entity.GameSettingId);
-
-                    if (gameSettings != null)
-                    {
-                        _entityContext.Remove(gameSettings);
                         _entityContext.SaveChanges();
                         transaction.Commit();
                     }

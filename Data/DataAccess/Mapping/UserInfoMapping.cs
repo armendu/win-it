@@ -27,7 +27,7 @@ namespace DataAccess.Mapping
 
             entity.Property(e => e.Phone).HasColumnType("varchar(25)");
 
-            entity.Property(e => e.UpdateAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.Address)
                 .WithMany(p => p.UserInfo)

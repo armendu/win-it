@@ -9,8 +9,6 @@ namespace Common.RepositoryInterfaces
         Game GetById(int id);
         List<Game> List();
         void Create(int gameLength, string winningNumbers);
-        void CreateGameBet(CreateGameBetViewModel model);
         void Update(Game entity);
-        void Delete(Game entity);
     }
 }

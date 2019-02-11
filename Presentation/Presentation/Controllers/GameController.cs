@@ -16,13 +16,15 @@ namespace Presentation.Controllers
     public class GameController : Controller
     {
         private readonly IGameLogic _gameLogic;
+        private readonly IGameBetsLogic _gameBetsLogic;
         private readonly IUserLogic _userLogic;
         private readonly ILogger _logger;
         private const int PageSize = 10;
 
-        public GameController(IGameLogic gameLogic, IUserLogic userLogic, ILogger<GameController> logger)
+        public GameController(IGameLogic gameLogic, IGameBetsLogic gameBetsLogic, IUserLogic userLogic, ILogger<GameController> logger)
         {
             _gameLogic = gameLogic;
+            _gameBetsLogic = gameBetsLogic;
             _userLogic = userLogic;
             _logger = logger;
         }
@@ -116,7 +118,7 @@ namespace Presentation.Controllers
                         PlayerId = model.PlayerId
                     };
 
-                    _gameLogic.CreateGameBet(gameBet);
+                    _gameBetsLogic.Create(gameBet);
 
                     return
                         RedirectToAction("Index");

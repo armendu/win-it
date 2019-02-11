@@ -6,10 +6,7 @@ using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
-using Entities.ViewModels.Game;
-using Entities.ViewModels.Transaction;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace DataAccess.Repository
 {
@@ -17,11 +14,13 @@ namespace DataAccess.Repository
     {
         private readonly EntityContext _entityContext;
         private readonly ITransactionLogic _transactionLogic;
+        private readonly IPlayerLogic _playerLogic;
 
-        public GameRepository(EntityContext entityContext, ITransactionLogic transactionLogic)
+        public GameRepository(EntityContext entityContext, ITransactionLogic transactionLogic, IPlayerLogic playerLogic)
         {
             _entityContext = entityContext;
             _transactionLogic = transactionLogic;
+            _playerLogic = playerLogic;
         }
 
         /// <summary>
@@ -37,11 +36,11 @@ namespace DataAccess.Repository
                 Game game = _entityContext.Games.FirstOrDefault(g => g.GameId == id);
 
                 if (game == null)
-                    throw new NotFoundException("No model found");
+                    throw new NullReferenceException();
 
                 return game;
             }
-            catch (MySqlException)
+            catch (Exception)
             {
                 throw;
             }
@@ -58,11 +57,11 @@ namespace DataAccess.Repository
                 List<Game> games = _entityContext.Games.ToList();
 
                 if (!games.Any())
-                    throw new NotFoundException();
+                    throw new NullReferenceException();
 
                 return games;
             }
-            catch (MySqlException)
+            catch (Exception)
             {
                 throw;
             }
@@ -93,7 +92,7 @@ namespace DataAccess.Repository
                     GameInfo gameInfo = new GameInfo
                     {
                         CreatedAt = DateTime.UtcNow,
-                        UpdateAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow,
                         WinningNumbers = winningNumbers
                     };
 
@@ -119,72 +118,31 @@ namespace DataAccess.Repository
         }
 
         /// <summary>
-        /// Persists a new bet.
-        /// </summary>
-        /// <param name="model">The length of the model; determines the endTime of the model.</param>
-        /// <returns>The persisted object.</returns>
-        public void CreateGameBet(CreateGameBetViewModel model)
-        {
-            using (var transaction = _entityContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    CreateTransactionViewModel betTransaction = new CreateTransactionViewModel
-                    {
-                        GameId = model.GameId,
-                        PlayerId = model.PlayerId,
-                        Sum = model.Sum
-                    };
-
-                    var transactionModel = _transactionLogic.Create(betTransaction);
-
-                    GameBet bet = new GameBet
-                    {
-                        GameId = model.GameId,
-                        PlayerId = model.PlayerId,
-                        ChosenNumbers = JsonConvert.SerializeObject(model.Numbers),
-                        CreatedAt = DateTime.UtcNow,
-                        UpdateAt = DateTime.UtcNow
-                    };
-                    
-                    _entityContext.Add(bet);
-                    _entityContext.SaveChanges();
-
-                    transaction.Commit();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
-        }
-
-        /// <summary>
         /// Updates a running game.
         /// </summary>
         /// <param name="entity"></param>
         public void Update(Game entity)
         {
-            // TODO: THIS IS WHERE WE CHOOSE THE WINNERS.
-            Game game =
-                _entityContext.Games.FirstOrDefault(x => x.GameId == entity.GameId);
-
-            if (game != null)
+            try
             {
+                // TODO: THIS IS WHERE WE CHOOSE THE WINNERS.
+                Game game =
+                    _entityContext.Games.FirstOrDefault(x => x.GameId == entity.GameId);
+
+                if (game == null)
+                    throw new OperationException("Game not found!");
+
                 game.GameProcessed = true;
-                game.GameInfo.UpdateAt = DateTime.UtcNow;
+                game.GameInfo.UpdatedAt = DateTime.UtcNow;
 
                 _entityContext.Update(game);
                 _entityContext.SaveChanges();
+                    
             }
-            else
-                throw new NullReferenceException();
-        }
-
-        public void Delete(Game entity)
-        {
-            throw new System.NotImplementedException();
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

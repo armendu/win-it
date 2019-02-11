@@ -14,7 +14,7 @@ namespace Presentation.Controllers
     {
         private readonly IGameSettingsLogic _gameSettingsLogic;
         private readonly ILogger _logger;
-        private const int PageSize = 5;
+        private const int PageSize = 10;
 
         /// <summary>
         /// Creates a new instance of the GameSettingsController and injects the gameSettingsLogic and logger.
