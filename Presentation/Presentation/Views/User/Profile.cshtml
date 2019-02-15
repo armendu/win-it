@@ -1,0 +1,46 @@
+﻿@model Entities.ViewModels.User.EditUserViewModel
+<section class="content-header">
+    <h1>
+        User Profile
+        <small>Profile</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        </li>
+        <li class="active">User</li>
+        <li class="active">Profile</li>
+    </ol>
+</section>
+
+<div class="content">
+    <div class="box box-danger">
+        <div class="box-body">
+            @if (Model != null)
+            {
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" type="text" class="form-control" value="@Model.FirstName" disabled/>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" type="text" class="form-control" value="@Model.LastName" disabled/>
+                    </div>
+
+                    <input type="hidden" value="@Model.Id" asp-for="Id"/>
+                    <div class="form-group">
+                        <button class="btn btn-default btn-flat" onClick="history.back()">
+                            <i class="fa fa-arrow-left"> </i>&nbsp; Go back
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <label class="label-danger">User not found!</label>
+            }
+        </div>
+    </div>
+</div>

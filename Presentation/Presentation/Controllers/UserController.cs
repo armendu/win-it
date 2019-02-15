@@ -41,6 +41,7 @@ namespace Presentation.Controllers
 
         // GET: User/
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index(int page = 1)
         {
             try
@@ -66,7 +67,7 @@ namespace Presentation.Controllers
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
             }
-            catch (NullReferenceException ex)
+            catch (NotFoundException ex)
             {
                 _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
                 ViewBag.ErrorMessage = ex.Message;
@@ -143,6 +144,7 @@ namespace Presentation.Controllers
 
         // GET: User/Create
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Create(string returnUrl)
         {
             try
@@ -166,6 +168,7 @@ namespace Presentation.Controllers
         // POST: User/Create
         [HttpPost]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RegisterViewModel registerModel)
         {
             if (ModelState.IsValid)
@@ -207,6 +210,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetCitiesForCountry(string country)
         {
             if (string.IsNullOrWhiteSpace(country)) return null;
@@ -218,16 +222,20 @@ namespace Presentation.Controllers
 
         // GET: User/ChangePassword/{id}
         [HttpGet]
-        public async Task<IActionResult> ChangePassword(string id)
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(string username)
         {
             try
             {
-                User user = await _userLogic.FindById(id);
+                User currentUser = await _userLogic.GetCurrentUser(HttpContext.User);
+
+                if (username != currentUser.UserName)
+                    throw new Exception();
 
                 ChangePasswordViewModel editUser = new ChangePasswordViewModel
                 {
-                    Id = user.Id,
-                    Email = user.Email
+                    Id = currentUser.Id,
+                    Email = currentUser.Email
                 };
 
                 return View(editUser);
@@ -252,22 +260,27 @@ namespace Presentation.Controllers
 
         // POST: User/ChangePassword/{id}
         [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    IdentityResult changePasswordResult = await _userLogic.ChangePassword(model);
+                    User currentUser = await _userLogic.GetCurrentUser(HttpContext.User);
 
-                    if (changePasswordResult != null)
+                    if (currentUser.Id == model.Id)
                     {
-                        if (!changePasswordResult.Succeeded)
-                        {
-                            AddErrorsFromResult(changePasswordResult);
-                        }
+                        IdentityResult changePasswordResult = await _userLogic.ChangePassword(model);
 
-                        return Redirect(model?.ReturnUrl ?? "/");
+                        if (changePasswordResult != null)
+                        {
+                            if (!changePasswordResult.Succeeded)
+                                AddErrorsFromResult(changePasswordResult);
+
+                            return Redirect(model?.ReturnUrl ?? "/");
+                        }
                     }
                 }
                 catch (NotFoundException ex)
@@ -324,6 +337,7 @@ namespace Presentation.Controllers
         {
             try
             {
+
                 return View(model);
             }
             catch (Exception ex)
@@ -345,6 +359,40 @@ namespace Presentation.Controllers
                     throw new Exception("User not found!");
 
                 return PartialView("_PartialDetails", user);
+            }
+            catch (NotFoundException ex)
+            {
+                _logger.Log(LogLevel.Error,
+                    $"The requested resource was not found with the following message: {ex.Message} @ {GetType().Name}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                ViewBag.ErrorMessage = ex.Message;
+            }
+
+            return RedirectToAction("NotFoundError", "Home");
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            try
+            {
+                User user = await _userLogic.GetCurrentUser(HttpContext.User);
+
+                if (user == null)
+                    throw new Exception("User not found!");
+
+                EditUserViewModel userData = new EditUserViewModel
+                {
+                    Id = user.Id,
+                    Birthdate = user.UserInfo.Birthdate.ToString(),
+                    FirstName = user.UserInfo.FirstName,
+                    LastName = user.UserInfo.LastName,
+                    Phone = user.UserInfo.Phone
+                };
+
+                return View(userData);
             }
             catch (NotFoundException ex)
             {

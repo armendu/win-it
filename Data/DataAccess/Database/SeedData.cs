@@ -25,7 +25,7 @@ namespace DataAccess.Database
                 bool correctGameLength =
                     int.TryParse(configuration["InitialGameSettings:GameLength"], out int gameLength);
                 bool correctWinningPot =
-                    int.TryParse(configuration["InitialGameSettings:WinningPot"], out int winningPot);
+                    decimal.TryParse(configuration["InitialGameSettings:WinningPot"], out decimal winningPot);
 
                 context.GameSettings.Add(new GameSettings
                 {

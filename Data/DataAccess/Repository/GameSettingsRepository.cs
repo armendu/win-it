@@ -85,17 +85,16 @@ namespace DataAccess.Repository
                     GameSettings gameSetting =
                         _entityContext.GameSettings.FirstOrDefault(x => x.GameSettingId == entity.GameSettingId);
 
-                    if (gameSetting != null)
-                    {
-                        gameSetting.GameLength = entity.GameLength;
-                        gameSetting.UpdatedAt = DateTime.UtcNow;
-
-                        _entityContext.Update(gameSetting);
-                        _entityContext.SaveChanges();
-                        transaction.Commit();
-                    }
-                    else
+                    if (gameSetting == null)
                         throw new NullReferenceException();
+
+                    gameSetting.GameLength = entity.GameLength;
+                    gameSetting.UpdatedAt = DateTime.UtcNow;
+
+                    _entityContext.Update(gameSetting);
+                    _entityContext.SaveChanges();
+                    transaction.Commit();
+                        
                 }
                 catch (Exception)
                 {

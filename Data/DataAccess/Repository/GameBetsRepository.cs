@@ -27,6 +27,9 @@ namespace DataAccess.Repository
                 {
                     Player player = _playerLogic.GetById(model.PlayerId);
 
+                    if (player.Balance < model.Sum)
+                        throw new ArgumentException("The player's balance is smaller and the sum provided");
+
                     Transaction transactionModel = new Transaction
                     {
                         Sum = model.Sum,

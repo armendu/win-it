@@ -12,6 +12,8 @@ namespace DataAccess.Mapping
 
             entity.Property(e => e.GameLength).HasColumnType("int(11)");
 
+            entity.Property(e => e.WinningPot).HasColumnType("decimal");
+
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");

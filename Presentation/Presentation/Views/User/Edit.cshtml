@@ -1,19 +1,56 @@
 ﻿@model Entities.ViewModels.User.EditUserViewModel
-<div class="bg-primary m-1 p-1"><h4>Edit User</h4></div>
-<div asp-validation-summary="All" class="text-danger"></div>
-<form asp-action="Edit" method="post">
-    <div class="form-group">
-        <label asp-for="Id"></label>
-        <input asp-for="Id" class="form-control" disabled />
+<section class="content-header">
+    <h1>
+        User Profile
+        <small>Edit Profile</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        </li>
+        <li class="active">User</li>
+        <li class="active">Edit</li>
+    </ol>
+</section>
+
+<div class="content">
+    <div class="box box-danger">
+        <div class="box-body">
+            @if (Model != null)
+            {
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label asp-for="FirstName"></label>
+                            <input asp-for="FirstName" type="text" class="form-control" value="@Model.FirstName"/>
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="LastName"></label>
+                            <input asp-for="LastName" type="text" class="form-control" value="@Model.LastName"/>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <input type="hidden" value="@Model.Id" asp-for="Id"/>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-flat" style="width: 48%; margin-right: 2%; background-color: #34495e">
+                                <i class="fas fa-edit"></i>&nbsp; Save
+                            </button>
+                            <a class="btn btn-default btn-flat" style="width: 48%; float: right;"
+                               asp-action="Index">
+                                <i class="fa fa-arrow-left">
+                                </i>&nbsp; Cancel
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <label class="label-danger">User not found!</label>
+            }
+        </div>
     </div>
-    <div class="form-group">
-        @* <label asp-for="Email"></label> *@
-        @* <input asp-for="Email" class="form-control" /> *@
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input name="password" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+</div>

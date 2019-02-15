@@ -36,8 +36,8 @@
         <!-- small box -->
         <div class="small-box" style="background-color: #16a085; color: white">
             <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-                <p>Bounce Rate</p>
+                <h3>@Model.PlayersBalance</h3>
+                <p>Your balance</p>
             </div>
             <div class="icon">
                 <i class="ion ion-stats-bars"></i>
@@ -50,11 +50,11 @@
         <!-- small box -->
         <div class="small-box" style="background-color: #e84118; color: white">
             <div class="inner">
-                <h3>@Model.RegisteredUsers</h3>
-                <p>User Registrations</p>
+                <h3>@Model.CurrentPotOfGame.ToString("C")</h3>
+                <p>Prize to Win</p>
             </div>
             <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="fas fa-money-bill"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
@@ -64,11 +64,11 @@
         <!-- small box -->
         <div class="small-box" style="background-color: #7f8c8d; color: white">
             <div class="inner">
-                <h3>65</h3>
-                <p>Unique Visitors</p>
+                <h3>@Model.RegisteredUsers</h3>
+                <p>User Registrations</p>
             </div>
             <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="ion ion-person-add"></i>
             </div>
             <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
@@ -215,88 +215,129 @@
 </div>
 <!-- Custom tabs (Charts with tabs)-->
 <div class="nav-tabs-custom" style="cursor: move;">
-    <!-- Tabs within a box -->
-    <ul class="nav nav-tabs pull-right ui-sortable-handle">
-        <li class="active">
-            <a href="#revenue-chart" data-toggle="tab">Area</a>
-        </li>
-        <li>
-            <a href="#sales-chart" data-toggle="tab">Donut</a>
-        </li>
-        <li class="pull-left header"><i class="fa fa-inbox"></i> Sales</li>
-    </ul>
-    <div class="tab-content no-padding">
-        <!-- Morris chart - Sales -->
-        <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
-            <svg height="300" version="1.1" width="1035.15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; top: -0.633331px;">
-                <desc>Created with Raphaël 2.2.0</desc><defs></defs>
-                <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="261" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
-                    <tspan dy="4">0</tspan>
-                </text><path style="" fill="none" stroke="#aaaaaa" d="M66,261H1010.1500000000001" stroke-width="0.5"></path>
-                <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="202" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
-                    <tspan dy="4">7,500</tspan>
-                </text><path style="" fill="none" stroke="#aaaaaa" d="M66,202H1010.1500000000001" stroke-width="0.5"></path>
-                <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="143" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
-                    <tspan dy="4">15,000</tspan>
-                </text><path style="" fill="none" stroke="#aaaaaa" d="M66,143H1010.1500000000001" stroke-width="0.5"></path>
-                <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="84.00000000000003" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
-                    <tspan dy="4.000000000000028">22,500</tspan>
-                </text><path style="" fill="none" stroke="#aaaaaa" d="M66,84.00000000000003H1010.1500000000001" stroke-width="0.5"></path>
-                <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="25.00000000000003" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
-                    <tspan dy="4.000000000000028">30,000</tspan>
-                </text><path style="" fill="none" stroke="#aaaaaa" d="M66,25.00000000000003H1010.1500000000001" stroke-width="0.5"></path>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="974.5848336793075" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2013-05</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="872.5261910789328" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2013-02</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="766.9779555465547" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2012-11</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="661.3819173712724" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2012-08</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="555.8336818388943" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2012-05</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="452.6277758088198" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2012-02</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="347.0795402764417" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2011-11</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="241.48350210115944" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2011-08</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="135.93526656878134" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
-                    <tspan dy="4">2011-05</tspan>
-                </text><path style="fill-opacity: 1;" fill="#74a5c2" stroke="none" d="M66,219.05493333333334C92.37510822236848,219.56626666666668,145.12532466710547,222.6231049981125,171.50043288947396,221.10026666666667C197.8874917725685,219.57673833144582,250.66160953875755,209.1350666666667,277.0486684218521,206.86946666666668C303.1608621082477,204.6274666666667,355.38524948103895,204.88256480506598,381.4974431674346,203.06986666666666C407.5976861931042,201.2579981383993,459.7981722444433,194.91349669779092,485.89841527011293,192.3712C512.2735234924814,189.80213003112425,565.0237399372185,182.51724094375237,591.3988481595869,182.6244C617.7859070426814,182.73160761041905,670.5600248088705,204.17807818499128,696.947083691965,193.22866666666667C723.0592773783605,182.3933115183246,775.283664751152,101.94542370540854,801.3958584375475,95.48533333333336C827.2092856057922,89.09915703874188,878.8361399422815,135.13648756583467,904.6495671105262,141.8436C931.0246753328946,148.69665423250134,983.7748917776316,147.7554,1010.1500000000001,149.726L1010.1500000000001,261L66,261Z" fill-opacity="1"></path><path style="" fill="none" stroke="#3c8dbc" d="M66,219.05493333333334C92.37510822236848,219.56626666666668,145.12532466710547,222.6231049981125,171.50043288947396,221.10026666666667C197.8874917725685,219.57673833144582,250.66160953875755,209.1350666666667,277.0486684218521,206.86946666666668C303.1608621082477,204.6274666666667,355.38524948103895,204.88256480506598,381.4974431674346,203.06986666666666C407.5976861931042,201.2579981383993,459.7981722444433,194.91349669779092,485.89841527011293,192.3712C512.2735234924814,189.80213003112425,565.0237399372185,182.51724094375237,591.3988481595869,182.6244C617.7859070426814,182.73160761041905,670.5600248088705,204.17807818499128,696.947083691965,193.22866666666667C723.0592773783605,182.3933115183246,775.283664751152,101.94542370540854,801.3958584375475,95.48533333333336C827.2092856057922,89.09915703874188,878.8361399422815,135.13648756583467,904.6495671105262,141.8436C931.0246753328946,148.69665423250134,983.7748917776316,147.7554,1010.1500000000001,149.726" stroke-width="3"></path><circle cx="66" cy="219.05493333333334" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="171.50043288947396" cy="221.10026666666667" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="277.0486684218521" cy="206.86946666666668" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="381.4974431674346" cy="203.06986666666666" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="485.89841527011293" cy="192.3712" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="591.3988481595869" cy="182.6244" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="696.947083691965" cy="193.22866666666667" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="801.3958584375475" cy="95.48533333333336" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="904.6495671105262" cy="141.8436" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="1010.1500000000001" cy="149.726" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle><path style="fill-opacity: 1;" fill="#eaf3f6" stroke="none" d="M66,240.02746666666667C92.37510822236848,239.8072,145.12532466710547,241.35446642506605,171.50043288947396,239.1464C197.8874917725685,236.93733309173274,250.66160953875755,223.3365417102967,277.0486684218521,222.35893333333334C303.1608621082477,221.39150837696334,355.38524948103895,233.23306051728085,381.4974431674346,231.36626666666666C407.5976861931042,229.5003271839475,459.7981722444433,209.28948157595082,485.89841527011293,207.428C512.2735234924814,205.54691490928414,565.0237399372185,214.43960989052474,591.3988481595869,216.39600000000002C617.7859070426814,218.3532765571914,670.5600248088705,232.37735986038396,696.947083691965,223.08266666666668C723.0592773783605,213.8847931937173,775.283664751152,148.22814457230533,801.3958584375475,142.42573333333334C827.2092856057922,136.689711238972,878.8361399422815,170.46889944279064,904.6495671105262,176.92893333333336C931.0246753328946,183.529532776124,983.7748917776316,190.23343333333335,1010.1500000000001,194.66826666666668L1010.1500000000001,261L66,261Z" fill-opacity="1"></path><path style="" fill="none" stroke="#a0d0e0" d="M66,240.02746666666667C92.37510822236848,239.8072,145.12532466710547,241.35446642506605,171.50043288947396,239.1464C197.8874917725685,236.93733309173274,250.66160953875755,223.3365417102967,277.0486684218521,222.35893333333334C303.1608621082477,221.39150837696334,355.38524948103895,233.23306051728085,381.4974431674346,231.36626666666666C407.5976861931042,229.5003271839475,459.7981722444433,209.28948157595082,485.89841527011293,207.428C512.2735234924814,205.54691490928414,565.0237399372185,214.43960989052474,591.3988481595869,216.39600000000002C617.7859070426814,218.3532765571914,670.5600248088705,232.37735986038396,696.947083691965,223.08266666666668C723.0592773783605,213.8847931937173,775.283664751152,148.22814457230533,801.3958584375475,142.42573333333334C827.2092856057922,136.689711238972,878.8361399422815,170.46889944279064,904.6495671105262,176.92893333333336C931.0246753328946,183.529532776124,983.7748917776316,190.23343333333335,1010.1500000000001,194.66826666666668" stroke-width="3"></path><circle cx="66" cy="240.02746666666667" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="171.50043288947396" cy="239.1464" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="277.0486684218521" cy="222.35893333333334" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="381.4974431674346" cy="231.36626666666666" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="485.89841527011293" cy="207.428" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="591.3988481595869" cy="216.39600000000002" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="696.947083691965" cy="223.08266666666668" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="801.3958584375475" cy="142.42573333333334" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="904.6495671105262" cy="176.92893333333336" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle><circle cx="1010.1500000000001" cy="194.66826666666668" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
-            </svg>
-            <div class="morris-hover morris-default-style" style="left: 948.15px; top: 108px; display: none;">
-                <div class="morris-hover-row-label">2013 Q2</div>
-                <div class="morris-hover-point" style="color: #a0d0e0">
-                    Item 1:
-                    8,432
-                </div>
-                <div class="morris-hover-point" style="color: #3c8dbc">
-                    Item 2:
-                    5,713
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Number of games played</h3>
+            <ul class="nav nav-tabs pull-right ui-sortable-handle">
+                <li class="active">
+                    <a href="#revenue-chart" data-toggle="tab">Area</a>
+                </li>
+                <li>
+                    <a href="#sales-chart" data-toggle="tab">Donut</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content no-padding">
+            <!-- Morris chart - Sales -->
+            <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
+                <svg height="300" version="1.1" width="1035.15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; top: -0.633331px;">
+                    <desc>Created with Raphaël 2.2.0</desc>
+                    <defs></defs>
+                    <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="261" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
+                        <tspan dy="4">0</tspan>
+                    </text>
+                    <path style="" fill="none" stroke="#aaaaaa" d="M66,261H1010.1500000000001" stroke-width="0.5"></path>
+                    <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="202" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
+                        <tspan dy="4">7,500</tspan>
+                    </text>
+                    <path style="" fill="none" stroke="#aaaaaa" d="M66,202H1010.1500000000001" stroke-width="0.5"></path>
+                    <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="143" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
+                        <tspan dy="4">15,000</tspan>
+                    </text>
+                    <path style="" fill="none" stroke="#aaaaaa" d="M66,143H1010.1500000000001" stroke-width="0.5"></path>
+                    <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="84.00000000000003" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
+                        <tspan dy="4.000000000000028">22,500</tspan>
+                    </text>
+                    <path style="" fill="none" stroke="#aaaaaa" d="M66,84.00000000000003H1010.1500000000001" stroke-width="0.5"></path>
+                    <text style="text-anchor: end; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="53.5" y="25.00000000000003" text-anchor="end" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal">
+                        <tspan dy="4.000000000000028">30,000</tspan>
+                    </text>
+                    <path style="" fill="none" stroke="#aaaaaa" d="M66,25.00000000000003H1010.1500000000001" stroke-width="0.5"></path>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="974.5848336793075" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2013-05</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="872.5261910789328" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2013-02</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="766.9779555465547" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2012-11</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="661.3819173712724" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2012-08</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="555.8336818388943" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2012-05</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="452.6277758088198" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2012-02</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="347.0795402764417" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2011-11</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="241.48350210115944" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2011-08</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: sans-serif; font-size: 12px; font-weight: normal;" x="135.93526656878134" y="273.5" text-anchor="middle" font-family="sans-serif" font-size="12px" stroke="none" fill="#888888" font-weight="normal" transform="matrix(1,0,0,1,0,7)">
+                        <tspan dy="4">2011-05</tspan>
+                    </text>
+                    <path style="fill-opacity: 1;" fill="#74a5c2" stroke="none" d="M66,219.05493333333334C92.37510822236848,219.56626666666668,145.12532466710547,222.6231049981125,171.50043288947396,221.10026666666667C197.8874917725685,219.57673833144582,250.66160953875755,209.1350666666667,277.0486684218521,206.86946666666668C303.1608621082477,204.6274666666667,355.38524948103895,204.88256480506598,381.4974431674346,203.06986666666666C407.5976861931042,201.2579981383993,459.7981722444433,194.91349669779092,485.89841527011293,192.3712C512.2735234924814,189.80213003112425,565.0237399372185,182.51724094375237,591.3988481595869,182.6244C617.7859070426814,182.73160761041905,670.5600248088705,204.17807818499128,696.947083691965,193.22866666666667C723.0592773783605,182.3933115183246,775.283664751152,101.94542370540854,801.3958584375475,95.48533333333336C827.2092856057922,89.09915703874188,878.8361399422815,135.13648756583467,904.6495671105262,141.8436C931.0246753328946,148.69665423250134,983.7748917776316,147.7554,1010.1500000000001,149.726L1010.1500000000001,261L66,261Z" fill-opacity="1"></path>
+                    <path style="" fill="none" stroke="#3c8dbc" d="M66,219.05493333333334C92.37510822236848,219.56626666666668,145.12532466710547,222.6231049981125,171.50043288947396,221.10026666666667C197.8874917725685,219.57673833144582,250.66160953875755,209.1350666666667,277.0486684218521,206.86946666666668C303.1608621082477,204.6274666666667,355.38524948103895,204.88256480506598,381.4974431674346,203.06986666666666C407.5976861931042,201.2579981383993,459.7981722444433,194.91349669779092,485.89841527011293,192.3712C512.2735234924814,189.80213003112425,565.0237399372185,182.51724094375237,591.3988481595869,182.6244C617.7859070426814,182.73160761041905,670.5600248088705,204.17807818499128,696.947083691965,193.22866666666667C723.0592773783605,182.3933115183246,775.283664751152,101.94542370540854,801.3958584375475,95.48533333333336C827.2092856057922,89.09915703874188,878.8361399422815,135.13648756583467,904.6495671105262,141.8436C931.0246753328946,148.69665423250134,983.7748917776316,147.7554,1010.1500000000001,149.726" stroke-width="3"></path>
+                    <circle cx="66" cy="219.05493333333334" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="171.50043288947396" cy="221.10026666666667" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="277.0486684218521" cy="206.86946666666668" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="381.4974431674346" cy="203.06986666666666" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="485.89841527011293" cy="192.3712" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="591.3988481595869" cy="182.6244" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="696.947083691965" cy="193.22866666666667" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="801.3958584375475" cy="95.48533333333336" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="904.6495671105262" cy="141.8436" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="1010.1500000000001" cy="149.726" r="4" fill="#3c8dbc" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <path style="fill-opacity: 1;" fill="#eaf3f6" stroke="none" d="M66,240.02746666666667C92.37510822236848,239.8072,145.12532466710547,241.35446642506605,171.50043288947396,239.1464C197.8874917725685,236.93733309173274,250.66160953875755,223.3365417102967,277.0486684218521,222.35893333333334C303.1608621082477,221.39150837696334,355.38524948103895,233.23306051728085,381.4974431674346,231.36626666666666C407.5976861931042,229.5003271839475,459.7981722444433,209.28948157595082,485.89841527011293,207.428C512.2735234924814,205.54691490928414,565.0237399372185,214.43960989052474,591.3988481595869,216.39600000000002C617.7859070426814,218.3532765571914,670.5600248088705,232.37735986038396,696.947083691965,223.08266666666668C723.0592773783605,213.8847931937173,775.283664751152,148.22814457230533,801.3958584375475,142.42573333333334C827.2092856057922,136.689711238972,878.8361399422815,170.46889944279064,904.6495671105262,176.92893333333336C931.0246753328946,183.529532776124,983.7748917776316,190.23343333333335,1010.1500000000001,194.66826666666668L1010.1500000000001,261L66,261Z" fill-opacity="1"></path>
+                    <path style="" fill="none" stroke="#a0d0e0" d="M66,240.02746666666667C92.37510822236848,239.8072,145.12532466710547,241.35446642506605,171.50043288947396,239.1464C197.8874917725685,236.93733309173274,250.66160953875755,223.3365417102967,277.0486684218521,222.35893333333334C303.1608621082477,221.39150837696334,355.38524948103895,233.23306051728085,381.4974431674346,231.36626666666666C407.5976861931042,229.5003271839475,459.7981722444433,209.28948157595082,485.89841527011293,207.428C512.2735234924814,205.54691490928414,565.0237399372185,214.43960989052474,591.3988481595869,216.39600000000002C617.7859070426814,218.3532765571914,670.5600248088705,232.37735986038396,696.947083691965,223.08266666666668C723.0592773783605,213.8847931937173,775.283664751152,148.22814457230533,801.3958584375475,142.42573333333334C827.2092856057922,136.689711238972,878.8361399422815,170.46889944279064,904.6495671105262,176.92893333333336C931.0246753328946,183.529532776124,983.7748917776316,190.23343333333335,1010.1500000000001,194.66826666666668" stroke-width="3"></path>
+                    <circle cx="66" cy="240.02746666666667" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="171.50043288947396" cy="239.1464" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="277.0486684218521" cy="222.35893333333334" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="381.4974431674346" cy="231.36626666666666" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="485.89841527011293" cy="207.428" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="591.3988481595869" cy="216.39600000000002" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="696.947083691965" cy="223.08266666666668" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="801.3958584375475" cy="142.42573333333334" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="904.6495671105262" cy="176.92893333333336" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                    <circle cx="1010.1500000000001" cy="194.66826666666668" r="4" fill="#a0d0e0" stroke="#ffffff" style="" stroke-width="1"></circle>
+                </svg>
+                <div class="morris-hover morris-default-style" style="left: 948.15px; top: 108px; display: none;">
+                    <div class="morris-hover-row-label">2013 Q2</div>
+                    <div class="morris-hover-point" style="color: #a0d0e0">
+                        Item 1:
+                        8,432
+                    </div>
+                    <div class="morris-hover-point" style="color: #3c8dbc">
+                        Item 2:
+                        5,713
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-            <svg height="300" version="1.1" width="1065.15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative;">
-                <desc>Created with Raphaël 2.2.0</desc><defs></defs><path style="opacity: 0;" fill="none" stroke="#3c8dbc" d="M532.575,243.33333333333331A93.33333333333333,93.33333333333333,0,0,0,620.8027551949771,180.44625304313007" stroke-width="2" opacity="0"></path><path style="" fill="#3c8dbc" stroke="#ffffff" d="M532.575,246.33333333333331A96.33333333333333,96.33333333333333,0,0,0,623.6386473262443,181.4248826052307L660.1901459070205,194.03833029452744A135,135,0,0,1,532.575,285Z" stroke-width="3"></path><path style="opacity: 1;" fill="none" stroke="#f56954" d="M620.8027551949771,180.44625304313007A93.33333333333333,93.33333333333333,0,0,0,448.8598462783142,108.73398312817662" stroke-width="2" opacity="1"></path><path style="" fill="#f56954" stroke="#ffffff" d="M623.6386473262443,181.4248826052307A96.33333333333333,96.33333333333333,0,0,0,446.1690020515457,107.40757544301087L407.0022694174712,88.10097469226493A140,140,0,0,1,664.9166327924656,195.6693795646951Z" stroke-width="3"></path><path style="opacity: 0;" fill="none" stroke="#00a65a" d="M448.8598462783142,108.73398312817662A93.33333333333333,93.33333333333333,0,0,0,532.5456784690489,243.333328727518" stroke-width="2" opacity="0"></path><path style="" fill="#00a65a" stroke="#ffffff" d="M446.1690020515457,107.40757544301087A96.33333333333333,96.33333333333333,0,0,0,532.5447359912683,246.3333285794739L532.5325884998742,284.9999933380171A135,135,0,0,1,411.48700979541866,90.31165416754118Z" stroke-width="3"></path>
-                <text style="text-anchor: middle; font-family: &quot;Arial&quot;; font-size: 15px; font-weight: 800;" x="532.575" y="140" text-anchor="middle" font-family="&quot;Arial&quot;" font-size="15px" stroke="none" fill="#000000" font-weight="800" transform="matrix(1,0,0,1,0,0)">
-                    <tspan dy="140">In-Store Sales</tspan>
-                </text>
-                <text style="text-anchor: middle; font-family: &quot;Arial&quot;; font-size: 14px;" x="532.575" y="160" text-anchor="middle" font-family="&quot;Arial&quot;" font-size="14px" stroke="none" fill="#000000" transform="matrix(1,0,0,1,0,0)">
-                    <tspan dy="160">30</tspan>
-                </text>
-            </svg>
+            <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
+                <svg height="300" version="1.1" width="1065.15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative;">
+                    <desc>Created with Raphaël 2.2.0</desc>
+                    <defs></defs>
+                    <path style="opacity: 0;" fill="none" stroke="#3c8dbc" d="M532.575,243.33333333333331A93.33333333333333,93.33333333333333,0,0,0,620.8027551949771,180.44625304313007" stroke-width="2" opacity="0"></path>
+                    <path style="" fill="#3c8dbc" stroke="#ffffff" d="M532.575,246.33333333333331A96.33333333333333,96.33333333333333,0,0,0,623.6386473262443,181.4248826052307L660.1901459070205,194.03833029452744A135,135,0,0,1,532.575,285Z" stroke-width="3"></path>
+                    <path style="opacity: 1;" fill="none" stroke="#f56954" d="M620.8027551949771,180.44625304313007A93.33333333333333,93.33333333333333,0,0,0,448.8598462783142,108.73398312817662" stroke-width="2" opacity="1"></path>
+                    <path style="" fill="#f56954" stroke="#ffffff" d="M623.6386473262443,181.4248826052307A96.33333333333333,96.33333333333333,0,0,0,446.1690020515457,107.40757544301087L407.0022694174712,88.10097469226493A140,140,0,0,1,664.9166327924656,195.6693795646951Z" stroke-width="3"></path>
+                    <path style="opacity: 0;" fill="none" stroke="#00a65a" d="M448.8598462783142,108.73398312817662A93.33333333333333,93.33333333333333,0,0,0,532.5456784690489,243.333328727518" stroke-width="2" opacity="0"></path>
+                    <path style="" fill="#00a65a" stroke="#ffffff" d="M446.1690020515457,107.40757544301087A96.33333333333333,96.33333333333333,0,0,0,532.5447359912683,246.3333285794739L532.5325884998742,284.9999933380171A135,135,0,0,1,411.48700979541866,90.31165416754118Z" stroke-width="3"></path>
+                    <text style="text-anchor: middle; font-family: &quot;Arial&quot;; font-size: 15px; font-weight: 800;" x="532.575" y="140" text-anchor="middle" font-family="&quot;Arial&quot;" font-size="15px" stroke="none" fill="#000000" font-weight="800" transform="matrix(1,0,0,1,0,0)">
+                        <tspan dy="140">In-Store Sales</tspan>
+                    </text>
+                    <text style="text-anchor: middle; font-family: &quot;Arial&quot;; font-size: 14px;" x="532.575" y="160" text-anchor="middle" font-family="&quot;Arial&quot;" font-size="14px" stroke="none" fill="#000000" transform="matrix(1,0,0,1,0,0)">
+                        <tspan dy="160">30</tspan>
+                    </text>
+                </svg>
+            </div>
         </div>
     </div>
+    
 </div>
 <!-- /.nav-tabs-custom -->
 

@@ -23,6 +23,23 @@ namespace DataAccess.Repository
             _playerLogic = playerLogic;
         }
 
+        public Game GetRunningGame()
+        {
+            try
+            {
+                Game game = _entityContext.Games.FirstOrDefault(g => g.GameProcessed == false);
+
+                if (game == null)
+                    throw new NullReferenceException();
+
+                return game;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         /// <summary>
         /// Get model by Id.
         /// </summary>
@@ -73,7 +90,7 @@ namespace DataAccess.Repository
         /// <param name="gameLength">The length of the model; determines the endTime of the model.</param>
         /// <param name="winningNumbers">The winning numbers of the model generated randomly.</param>
         /// <returns>The persisted object.</returns>
-        public void Create(int gameLength, string winningNumbers)
+        public void Create(int gameLength, string winningNumbers, decimal winningPot)
         {
             using (var transaction = _entityContext.Database.BeginTransaction())
             {
@@ -91,6 +108,7 @@ namespace DataAccess.Repository
 
                     GameInfo gameInfo = new GameInfo
                     {
+                        WinningPot = winningPot,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
                         WinningNumbers = winningNumbers
@@ -120,14 +138,14 @@ namespace DataAccess.Repository
         /// <summary>
         /// Updates a running game.
         /// </summary>
-        /// <param name="entity"></param>
-        public void Update(Game entity)
+        /// <param name="model"></param>
+        public void Update(Game model)
         {
             try
             {
                 // TODO: THIS IS WHERE WE CHOOSE THE WINNERS.
                 Game game =
-                    _entityContext.Games.FirstOrDefault(x => x.GameId == entity.GameId);
+                    _entityContext.Games.FirstOrDefault(x => x.GameId == model.GameId);
 
                 if (game == null)
                     throw new OperationException("Game not found!");
@@ -142,6 +160,34 @@ namespace DataAccess.Repository
             catch (Exception)
             {
                 throw;
+            }
+        }
+
+        public void UpdatePot(Game model, decimal sum, ref decimal totalPot)
+        {
+            using (var transaction = _entityContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    Game game = _entityContext.Games.FirstOrDefault(g => g.GameId == model.GameId);
+
+                    if (game == null)
+                        throw new NullReferenceException();
+
+                    game.GameInfo.WinningPot += sum;
+                    game.GameInfo.UpdatedAt = DateTime.UtcNow;
+                    totalPot = game.GameInfo.WinningPot ?? 0;
+
+                    _entityContext.Update(game);
+                    _entityContext.SaveChanges();
+                    transaction.Commit();
+                        
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
     }

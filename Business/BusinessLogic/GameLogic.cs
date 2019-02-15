@@ -4,7 +4,6 @@ using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using Entities.Models;
-using Entities.ViewModels.Game;
 using Microsoft.EntityFrameworkCore.Design;
 using MySql.Data.MySqlClient;
 
@@ -17,6 +16,22 @@ namespace BusinessLogic
         public GameLogic(IGameRepository gameRepository)
         {
             _gameRepository = gameRepository;
+        }
+
+        public Game GetRunningGame()
+        {
+            try
+            {
+                return _gameRepository.GetRunningGame();
+            }
+            catch (NullReferenceException)
+            {
+                throw new NotFoundException("Game was not found!");
+            }
+            catch (MySqlException)
+            {
+                throw new ConnectionException();
+            }
         }
 
         /// <summary>
@@ -65,11 +80,12 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="gameLength">The length of the game.</param>
         /// <param name="winningNumbers">The winning numbers of the game.</param>
-        public void Create(int gameLength, string winningNumbers)
+        /// <param name="winningPot">The winning numbers of the game.</param>
+        public void Create(int gameLength, string winningNumbers, decimal winningPot)
         {
             try
             {
-                _gameRepository.Create(gameLength, winningNumbers);
+                _gameRepository.Create(gameLength, winningNumbers, winningPot);
             }
             catch (MySqlException)
             {
@@ -81,27 +97,11 @@ namespace BusinessLogic
             }
         }
 
-        public void CreateGameBet(CreateGameBetViewModel entity)
+        public void UpdatePot(Game model, decimal sum, ref decimal totalPot)
         {
             try
             {
-                _gameRepository.CreateGameBet(entity);
-            }
-            catch (MySqlException)
-            {
-                throw new ConnectionException();
-            }
-            catch (Exception)
-            {
-                throw new OperationException("An error occured while creating GameBet!");
-            }
-        }
-
-        public void Update(Game entity)
-        {
-            try
-            {
-                _gameRepository.Update(entity);
+                _gameRepository.UpdatePot(model, sum, ref totalPot);
             }
             catch (MySqlException)
             {

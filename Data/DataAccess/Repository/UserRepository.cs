@@ -231,8 +231,23 @@ namespace DataAccess.Repository
 
         public void Update(UserDetailsViewModel entity)
         {
-            // TODO: Update profile
-            throw new NotImplementedException();
+            using (var transaction = _entityContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    
+
+//                    _entityContext.Update(gameSetting);
+                    _entityContext.SaveChanges();
+                    transaction.Commit();
+
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         public void Deactivate(string id)

@@ -6,6 +6,7 @@ namespace Entities.ViewModels
     {
         public string MinutesTillNextGame { get; set; }
         public int RegisteredUsers { get; set; }
-        public int UniqueVisitors { get; set; }
+        public decimal CurrentPotOfGame { get; set; }
+        public string PlayersBalance { get; set; }
     }
 }

@@ -106,6 +106,8 @@ namespace Presentation.Controllers
             {
                 try
                 {
+                    Game currentGame = _gameLogic.GetGameById(model.GameId);
+
                     // Check if there are duplicate numbers; throw if there are any
                     if (model.Numbers.Distinct().Count() != model.Numbers.Count)
                         throw new FormatException("The numbers can't be the same");
@@ -119,6 +121,11 @@ namespace Presentation.Controllers
                     };
 
                     _gameBetsLogic.Create(gameBet);
+
+                    decimal totalPot = 0;
+                    _gameLogic.UpdatePot(currentGame, model.Sum, ref totalPot);
+
+                    _logger.Log(LogLevel.Information, $"The pot has been risen to {totalPot}");
 
                     return
                         RedirectToAction("Index");

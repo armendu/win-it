@@ -34,13 +34,22 @@ namespace Common.Services
 
             // Set the default gameLength
             int gameLength = 60;
+            decimal winningPot = 5;
+
+            (int, decimal) gameInformation = (gameLength, winningPot);
 
             try
             {
                 GameSettings gameSettings = _gameSettingsLogic.List().FirstOrDefault();
 
-                if (gameSettings != null && gameSettings.GameLength > 0)
-                    gameLength = gameSettings.GameLength;
+                if (gameSettings != null)
+                {
+                    if (gameSettings.GameLength > 0 && Math.Abs(gameSettings.WinningPot) > 0)
+                        gameInformation.Item1 = gameSettings.GameLength;
+
+                    if (Math.Abs(gameSettings.WinningPot) > 0)
+                        gameInformation.Item2 = gameSettings.WinningPot;
+                }
             }
             catch (NotFoundException ex)
             {
@@ -51,7 +60,7 @@ namespace Common.Services
                 _logger.LogError($"The following error occurred: {ex.Message} @ {GetType().Name}");
             }
 
-            _startGameTimer = new Timer(StartGame, gameLength, TimeSpan.Zero,
+            _startGameTimer = new Timer(StartGame, gameInformation, TimeSpan.Zero,
                 TimeSpan.FromSeconds((gameLength + 60) * 60));
 
             return Task.CompletedTask;
@@ -67,7 +76,10 @@ namespace Common.Services
 
             try
             {
-                _gameLogic.Create((int) state, winningNumbers);
+                var gameInformationTuple = ((int, decimal)) state;
+
+                _gameLogic.Create(gameInformationTuple.Item1, winningNumbers, gameInformationTuple.Item2);
+
                 _logger.LogInformation(
                     $"A new game was created with the following winning numbers: {winningNumbers} @ {DateTime.UtcNow}");
             }
