@@ -1,24 +1,21 @@
-﻿@model Entities.ViewModels.Transaction.IndexTransactionViewModel
+@model Entities.ViewModels.Transaction.IndexTransactionViewModel
 @{
-    ViewData["Title"] = "- Transactions";
+    ViewData["Title"] = "- Reports";
 }
 <section class="content-header">
     <h1>
-        Transactions
-        <small>All your registered transactions</small>
+        Reports
+        <small>All the registered reports</small>
     </h1>
     <ol class="breadcrumb">
         <li>
             <a href="#"><i class="fa fa-dashboard"></i> Home</a>
         </li>
-        <li class="active">Transactions</li>
+        <li class="active">Reports</li>
     </ol>
 </section>
 <section class="content">
     <div class="box box-danger">
-        <div class="box-header with-border">
-            <a class="btn btn-default btn-flat" asp-controller="Transaction" asp-action="Create"><i class="fa fa-plus-circle"></i>&nbsp; Create new Game</a>
-        </div>
         <div class="box-body">
             @if (TempData["ErrorMessage"] != null)
             {
@@ -36,10 +33,10 @@
                             @Html.DisplayName("Sum")
                         </th>
                         <th width="20%">
-                            @Html.DisplayName("Created at")
+                            @Html.DisplayName("For game that started on")
                         </th>
                         <th width="20%">
-                            @Html.DisplayName("For game that started on")
+                            @Html.DisplayName("Created at")
                         </th>
                         <th style="text-align: center">
                             @Html.DisplayName("Actions")
@@ -60,10 +57,10 @@
                                     @Html.DisplayFor(modelItem => item.Sum)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => updatedAt)
+                                    @Html.DisplayFor(modelItem => item.Game.GameInfo.CreatedAt)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Game.GameInfo.CreatedAt)
+                                    @Html.DisplayFor(modelItem => updatedAt)
                                 </td>
 
                                 <td style="text-align: center">

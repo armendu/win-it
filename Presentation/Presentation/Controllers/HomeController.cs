@@ -37,7 +37,7 @@ namespace Presentation.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, $"The following error occurred: {ex.Message} @ {GetType().Name}");
+                _logger.Log(LogLevel.Warning, $"The {ex.Message} @ {GetType().Name}");
             }
 
             try

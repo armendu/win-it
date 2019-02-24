@@ -41,7 +41,7 @@ namespace Presentation.Controllers
 
         // GET: User/
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admins")]
         public IActionResult Index(int page = 1)
         {
             try
@@ -223,22 +223,19 @@ namespace Presentation.Controllers
         // GET: User/ChangePassword/{id}
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> ChangePassword(string username)
+        public async Task<IActionResult> ChangePassword()
         {
             try
             {
                 User currentUser = await _userLogic.GetCurrentUser(HttpContext.User);
 
-                if (username != currentUser.UserName)
-                    throw new Exception();
-
-                ChangePasswordViewModel editUser = new ChangePasswordViewModel
+                ChangePasswordViewModel changePasswordViewModel = new ChangePasswordViewModel
                 {
                     Id = currentUser.Id,
                     Email = currentUser.Email
                 };
 
-                return View(editUser);
+                return View(changePasswordViewModel);
             }
             catch (NotFoundException ex)
             {
@@ -314,7 +311,7 @@ namespace Presentation.Controllers
             User user = await _userLogic.GetCurrentUser(HttpContext.User);
             if (user != null)
             {
-                EditUserViewModel editUser = new EditUserViewModel
+                EditUserViewModel changePasswordViewModel = new EditUserViewModel
                 {
                     Id = user.Id,
                     Birthdate = user.UserInfo.Birthdate.ToString(),
@@ -323,7 +320,7 @@ namespace Presentation.Controllers
                     Phone = user.UserInfo.Phone
                 };
 
-                return View(editUser);
+                return View(changePasswordViewModel);
             }
             else
             {

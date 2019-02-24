@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
 {
+    [Authorize(Roles = "Admins")]
     public class GameSettingsController : Controller
     {
         private readonly IGameSettingsLogic _gameSettingsLogic;
@@ -29,7 +30,6 @@ namespace Presentation.Controllers
 
         // GET: GameSettings/
         [HttpGet]
-        [Authorize(Roles = "Admins")]
         public IActionResult Index(int page = 1)
         {
             try
@@ -109,6 +109,7 @@ namespace Presentation.Controllers
 
         // GET: GameSettings/Edit/{id}
         [HttpGet]
+        
         public IActionResult Edit(int id)
         {
             try

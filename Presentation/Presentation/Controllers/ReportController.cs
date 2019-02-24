@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.LogicInterfaces;
@@ -11,8 +11,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Presentation.Controllers
 {
-    [Authorize]
-    public class TransactionController : Controller
+    [Authorize(Roles = "Admins")]
+    public class ReportController : Controller
     {
         private readonly ITransactionLogic _transactionLogic;
         private readonly IUserLogic _userLogic;
@@ -25,7 +25,7 @@ namespace Presentation.Controllers
         /// <param name="transactionLogic">The transaction logic to be injected.</param>
         /// <param name="userLogic">The user logic to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
-        public TransactionController(ITransactionLogic transactionLogic, IUserLogic userLogic, ILogger<GameController> logger)
+        public ReportController(ITransactionLogic transactionLogic, IUserLogic userLogic, ILogger<GameController> logger)
         {
             _transactionLogic = transactionLogic;
             _userLogic = userLogic;
@@ -34,17 +34,13 @@ namespace Presentation.Controllers
 
         // GET: Transaction/
         [HttpGet]
-        public async Task<IActionResult> Index(int page = 1)
+        public IActionResult Index(int page = 1)
         {
             try
             {
-                // Get the current user to show his/her transactions
-                User currentUser = await _userLogic.GetCurrentUser(HttpContext.User);
-
                 IndexTransactionViewModel model = new IndexTransactionViewModel
                 {
                     Transactions = _transactionLogic.List()
-                        .Where(t => t.PlayerId == currentUser.PlayerId)
                         .OrderBy(t => t.TransactionId)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),

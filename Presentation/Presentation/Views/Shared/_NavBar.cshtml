@@ -22,7 +22,7 @@
                 </a>
             </li>
             <li class="@(Html.IsMenuActive("/History") ? "active" : "")">
-                <a href="~/Report">
+                <a href="~/History">
                     <i class="fas fa-history"></i><span> History</span>
                     <span class="pull-right-container">
                         @*<small class="label pull-right bg-green">Hot</small>*@
@@ -56,8 +56,8 @@
                     </a>
                 </li>
                 <li class="@(Html.IsMenuActive("/Report") ? "active" : "")">
-                    <a href="~/Reports">
-                        <i class="fas fa-chart-line"></i><span> Reports</span>
+                    <a href="~/Report">
+                        <i class="fas fa-chart-line"></i><span> Report</span>
                         <span class="pull-right-container">
                             @*<small class="label pull-right bg-green">Hot</small>*@
                         </span>
@@ -72,7 +72,7 @@
                     </a>
                 </li>
             }
-            <li class="treeview @(Html.IsMenuActive("/User") ? "active" : "")">
+            <li class="treeview @((Html.IsMenuActive("/User/Profile") || Html.IsMenuActive("/User/Edit") || Html.IsMenuActive("/User/ChangePassword")) ? "active" : "")">
                 <a href="#">
                     <i class="fas fa-cogs"></i>
                     <span>User Settings</span>

@@ -45,22 +45,22 @@ namespace Presentation
             .AddDefaultTokenProviders();
 
             // Do the dependency injections here
-            services.AddTransient<IUserLogic, UserLogic>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IRoleLogic, RoleLogic>();
-            services.AddTransient<IRoleRepository, RoleRepository>();
-            services.AddTransient<IGameLogic, GameLogic>();
-            services.AddTransient<IGameRepository, GameRepository>();
-            services.AddTransient<ITransactionLogic, TransactionLogic>();
-            services.AddTransient<ITransactionRepository, TransactionRepository>();
-            services.AddTransient<IGameSettingsLogic, GameSettingsLogic>();
-            services.AddTransient<IGameSettingsRepository, GameSettingsRepository>();
-            services.AddTransient<ICitiesLogic, CitiesLogic>();
-            services.AddTransient<ICitiesRepository, CitiesRepository>();
-            services.AddTransient<IPlayerLogic, PlayerLogic>();
-            services.AddTransient<IPlayerRepository, PlayerRepository>();
-            services.AddTransient<IGameBetsLogic, GameBetsLogic>();
-            services.AddTransient<IGameBetsRepository, GameBetsRepository>();
+            services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleLogic, RoleLogic>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IGameLogic, GameLogic>();
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<ITransactionLogic, TransactionLogic>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IGameSettingsLogic, GameSettingsLogic>();
+            services.AddScoped<IGameSettingsRepository, GameSettingsRepository>();
+            services.AddScoped<ICitiesLogic, CitiesLogic>();
+            services.AddScoped<ICitiesRepository, CitiesRepository>();
+            services.AddScoped<IPlayerLogic, PlayerLogic>();
+            services.AddScoped<IPlayerRepository, PlayerRepository>();
+            services.AddScoped<IGameBetsLogic, GameBetsLogic>();
+            services.AddScoped<IGameBetsRepository, GameBetsRepository>();
             services.AddHostedService<GameCreationService>();
             
             services.Configure<CookiePolicyOptions>(options =>

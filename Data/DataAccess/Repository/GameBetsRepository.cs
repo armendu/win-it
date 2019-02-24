@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
@@ -8,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace DataAccess.Repository
 {
-    public class GameBetsRepository: IGameBetsRepository
+    public class GameBetsRepository : IGameBetsRepository
     {
         private readonly EntityContext _entityContext;
         private readonly IPlayerLogic _playerLogic;
@@ -17,6 +19,23 @@ namespace DataAccess.Repository
         {
             _entityContext = entityContext;
             _playerLogic = playerLogic;
+        }
+
+        public List<GameBet> GetGameBetsForPlayer(int playerId)
+        {
+            try
+            {
+                List<GameBet> gameBets = _entityContext.GameBets.Where(g => g.PlayerId == playerId).ToList();
+
+                if (gameBets.Count == 0)
+                    throw new NullReferenceException();
+
+                return gameBets;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public void Create(CreateGameBetViewModel model)
