@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Common.LogicInterfaces;
 using Entities.Models;
 using Entities.ViewModels;
+using Entities.ViewModels.Game;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -55,8 +56,14 @@ namespace Presentation.Controllers
                 // Get the pot of the running game.
                 decimal currentPot = _gameLogic.GetRunningGame()?.GameInfo?.WinningPot ?? 0;
 
+                // TODO: Fix later
+                var gamesList = _gameLogic.List()
+                        .OrderByDescending(g => g.EndTime)
+                        .Take(5);
+                
                 return View(new DashboardViewModel
                 {
+                    GamesList = gamesList,
                     RegisteredUsers = registeredUsers,
                     MinutesTillNextGame = timeTillGameEnds.ToString(),
                     PlayersBalance = playersBalance > 0 ? playersBalance.ToString("C") : "Login to see balance",
