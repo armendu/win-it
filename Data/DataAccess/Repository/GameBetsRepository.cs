@@ -49,6 +49,10 @@ namespace DataAccess.Repository
                     if (player.Balance < model.Sum)
                         throw new ArgumentException("The player's balance is smaller and the sum provided");
 
+                    player.Balance -= model.Sum;
+                    player.NumberOfGamesPlayed += 1;
+                    player.TotalSpent += model.Sum;
+
                     Transaction transactionModel = new Transaction
                     {
                         Sum = model.Sum,
@@ -67,6 +71,7 @@ namespace DataAccess.Repository
                         Transaction = transactionModel
                     };
 
+                    _entityContext.Update(player);
                     _entityContext.Add(bet);
                     _entityContext.SaveChanges();
 

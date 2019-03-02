@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Common.LogicInterfaces;
 using Entities.Models;
 using Entities.ViewModels;
-using Entities.ViewModels.Game;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

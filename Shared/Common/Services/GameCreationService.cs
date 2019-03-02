@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace Common.Services
 {
-    public class GameCreationService : IHostedService, IDisposable
+    public class GameCreationService : AutomaticService, IHostedService, IDisposable
     {
         private readonly IGameLogic _gameLogic;
         private readonly IGameSettingsLogic _gameSettingsLogic;
@@ -28,7 +28,7 @@ namespace Common.Services
             _logger = logger;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public override Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Timed Background Service is starting.");
 
@@ -70,7 +70,7 @@ namespace Common.Services
         /// Starts a new game.
         /// </summary>
         /// <param name="state">The length of the game.</param>
-        private void StartGame(object state)
+        protected void StartGame(object state)
         {
             string winningNumbers = GenerateWinningNumbers();
 
@@ -89,7 +89,7 @@ namespace Common.Services
             }
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public override Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogWarning("Timed Background Service is stopping.");
 
@@ -107,7 +107,7 @@ namespace Common.Services
         /// Generates the winning numbers.
         /// </summary>
         /// <returns>The winning numbers in JSON format.</returns>
-        private string GenerateWinningNumbers()
+        protected virtual string GenerateWinningNumbers()
         {
             List<int> winningNumbers = new List<int>();
 

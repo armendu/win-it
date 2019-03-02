@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Extensions;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
-using Microsoft.EntityFrameworkCore.Design;
+using Entities.ViewModels;
+using Newtonsoft.Json;
 
 namespace DataAccess.Repository
 {
@@ -143,21 +145,51 @@ namespace DataAccess.Repository
         {
             try
             {
-                // TODO: THIS IS WHERE WE CHOOSE THE WINNERS.
-                Game game =
-                    _entityContext.Games.FirstOrDefault(x => x.GameId == model.GameId);
+                // Get all game bets of the running game.
+                List<GameBet> gameBetsForGame = _entityContext.GameBets.Where(g => g.GameId == model.GameId).ToList();
+                List<GameWinner> winners = new List<GameWinner>();
+                List<Player> playersThatWon = new List<Player>();
+                decimal sumToBeAddedToBalance = 0;
 
-                if (game == null)
-                    throw new OperationException("Game not found!");
+                if (gameBetsForGame.Any())
+                {
+                    // Get the winners of the game.
+                    List<WinnerInformation> listOfWinners = FindWinners(model, gameBetsForGame);
 
-                game.GameProcessed = true;
-                game.GameInfo.UpdatedAt = DateTime.UtcNow;
+                    if (listOfWinners.Any())
+                    {
+                        // Check the sum that was invested and confirm wins.
+                        sumToBeAddedToBalance = ConfirmWinners(listOfWinners.OrderBy(o => o.SumInvested).ToList(),
+                            model.GameInfo.WinningPot ?? 0);
 
-                _entityContext.Update(game);
-                _entityContext.SaveChanges();
+                        foreach (var winner in listOfWinners)
+                        {
+                            winners.Add(winner.GameWinnerInformation);
+                            playersThatWon.Add(_entityContext.Players.FirstOrDefault(p =>
+                                p.PlayerId == winner.GameWinnerInformation.PlayerId));
+                        }
+                    }
+                }
+
+                if (winners.Any())
+                {
+                    foreach (var player in playersThatWon)
+                    {
+                        player.NumberOfGamesWon += 1;
+                        player.Balance += sumToBeAddedToBalance;
+                    }
                     
+                    _entityContext.UpdateRange(playersThatWon);
+                    _entityContext.AddRange(winners);
+                }
+
+                model.GameProcessed = true;
+                model.GameInfo.UpdatedAt = DateTime.UtcNow;
+
+                _entityContext.Update(model);
+                _entityContext.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -181,7 +213,6 @@ namespace DataAccess.Repository
                     _entityContext.Update(game);
                     _entityContext.SaveChanges();
                     transaction.Commit();
-                        
                 }
                 catch (Exception)
                 {
@@ -189,6 +220,58 @@ namespace DataAccess.Repository
                     throw;
                 }
             }
+        }
+
+        private List<WinnerInformation> FindWinners(Game game, List<GameBet> gameBets)
+        {
+            // COMMENT
+            List<int> winningNumbers = JsonConvert.DeserializeObject<List<int>>(game.GameInfo.WinningNumbers);
+            List<WinnerInformation> winners = new List<WinnerInformation>();
+            List<int> gameBetNumbers = new List<int>(7);
+
+            foreach (var bet in gameBets)
+            {
+                gameBetNumbers = JsonConvert.DeserializeObject<List<int>>(bet.ChosenNumbers);
+
+                // Check how many numbers
+                if (winningNumbers.ArePermutations(gameBetNumbers))
+                {
+                    winners.Add(new WinnerInformation
+                    {
+                        GameWinnerInformation = new GameWinner
+                        {
+                            GameId = game.GameId,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow,
+                            PlayerId = bet.PlayerId,
+                            Player = bet.Player,
+                            Game = game,
+                            NumbersMatches = 7
+                        },
+                        SumInvested = bet.Transaction.Sum
+                    });
+                }
+            }
+
+            return winners;
+        }
+
+        private decimal ConfirmWinners(List<WinnerInformation> listOfWinners, decimal winningPot)
+        {
+            if (winningPot > 0)
+            {
+                // Set aside 10% for the house
+                decimal sumToBeGiven = (winningPot - (winningPot * (decimal) 0.10)) / listOfWinners.Count;
+
+                foreach (var winner in listOfWinners)
+                {
+                    winner.GameWinnerInformation.SumWon = sumToBeGiven;
+                }
+
+                return sumToBeGiven;
+            }
+
+            return 0;
         }
     }
 }
