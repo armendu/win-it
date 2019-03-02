@@ -1,4 +1,5 @@
 ﻿using System;
+using Entities.ViewModels;
 
 namespace Entities.Models
 {
@@ -10,6 +11,7 @@ namespace Entities.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public string ChosenNumbers { get; set; }
+        public BetStatus? BetStatus { get; set; }
 
         public virtual Game Game { get; set; }
         public virtual Player Player { get; set; }

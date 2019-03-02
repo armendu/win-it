@@ -5,6 +5,7 @@ using Common.LogicInterfaces;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
+using Entities.ViewModels;
 using Entities.ViewModels.Game;
 using Newtonsoft.Json;
 
@@ -66,6 +67,7 @@ namespace DataAccess.Repository
                         GameId = model.GameId,
                         PlayerId = model.PlayerId,
                         ChosenNumbers = JsonConvert.SerializeObject(model.Numbers),
+                        BetStatus = BetStatus.InProgress,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow,
                         Transaction = transactionModel

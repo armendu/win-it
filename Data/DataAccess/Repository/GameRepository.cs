@@ -169,6 +169,16 @@ namespace DataAccess.Repository
                                 p.PlayerId == winner.GameWinnerInformation.PlayerId));
                         }
                     }
+
+                    foreach (var gameBet in gameBetsForGame)
+                    {
+                        gameBet.BetStatus =
+                            listOfWinners.FirstOrDefault(w =>
+                                w.GameWinnerInformation.GameId == gameBet.GameId &&
+                                w.GameWinnerInformation.PlayerId == gameBet.PlayerId) != null
+                                ? BetStatus.Won
+                                : BetStatus.Lost;
+                    }
                 }
 
                 if (winners.Any())
@@ -178,7 +188,9 @@ namespace DataAccess.Repository
                         player.NumberOfGamesWon += 1;
                         player.Balance += sumToBeAddedToBalance;
                     }
-                    
+
+                    _entityContext.UpdateRange(gameBetsForGame);
+
                     _entityContext.UpdateRange(playersThatWon);
                     _entityContext.AddRange(winners);
                 }
@@ -189,7 +201,7 @@ namespace DataAccess.Repository
                 _entityContext.Update(model);
                 _entityContext.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

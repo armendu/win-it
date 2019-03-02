@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Common.Extensions;
 using Common.RepositoryInterfaces;
 using DataAccess.Database;
 using Entities.Models;
@@ -131,7 +132,7 @@ namespace DataAccess.Repository
                         LastName = registerModel.LastName,
                         Phone = registerModel.Phone,
                         Birthdate = DateTime.Parse(registerModel.Birthdate)
-                    };
+                };
 
                     Player player = new Player
                     {

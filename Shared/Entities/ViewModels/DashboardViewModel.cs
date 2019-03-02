@@ -10,5 +10,6 @@ namespace Entities.ViewModels
         public int RegisteredUsers { get; set; }
         public decimal CurrentPotOfGame { get; set; }
         public string PlayersBalance { get; set; }
+        public int NumberOfBetsInProgress { get; set; }
     }
 }

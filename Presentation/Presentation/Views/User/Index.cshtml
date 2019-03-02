@@ -50,11 +50,6 @@
                                 @Html.DisplayFor(modelItem => item.UserInfo.CreatedAt)
                             </td>
                             <td style="text-align: center">
-                                <a class="btn btn-sm btn-default btn-flat custom-btn"
-                                   asp-action="Edit"
-                                   asp-route-id="@item.Id">
-                                    <i class="fas fa-edit"></i>&nbsp; Edit
-                                </a>
                                 <button class="btn btn-sm btn-default btn-flat custom-btn"
                                         data-toggle="modal" data-target="#exampleModalCenter"
                                         data-url="@Url.Action("Details", item)">

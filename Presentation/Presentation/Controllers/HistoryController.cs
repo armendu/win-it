@@ -46,12 +46,12 @@ namespace Presentation.Controllers
 
                 IndexHistoryViewModel model = new IndexHistoryViewModel
                 {
-                    Transactions = _transactionLogic.List()
+                    GameBets = _gameBetsLogic.GetGameBetsForPlayer(currentUser.PlayerId ?? 0)
+                        .OrderByDescending(b => b.GameId)
                         .Where(t => t.PlayerId == currentUser.PlayerId)
                         .OrderBy(t => t.TransactionId)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
-                    GameBets = _gameBetsLogic.GetGameBetsForPlayer(currentUser.PlayerId ?? 0),
                     PagingInfo = new PagingInfo
                     {
                         CurrentPage = page,

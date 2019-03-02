@@ -1,0 +1,99 @@
+﻿@using Entities.ViewModels
+@model Entities.ViewModels.History.IndexHistoryViewModel
+@{
+    ViewData["Title"] = "- History";
+}
+<section class="content-header">
+    <h1>
+        History
+        <small>All your registered transactions</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        </li>
+        <li class="active">History</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="box box-danger">
+        <div class="box-body">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <ul class="text-danger">
+                    <li>The operation couldn't be completed because @TempData["ErrorMessage"]</li>
+                </ul>
+            }
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="20%">
+                            @Html.DisplayName("Chosen numbers")
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("Created at")
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("For game that started on")
+                        </th>
+                        <th width="20%">
+                            @Html.DisplayName("Bet status")
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model.GameBets)
+                    {
+                        var createdAt = item.CreatedAt.ToLocalTime();
+                        var updatedAt = item.UpdatedAt.ToLocalTime();
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ChosenNumbers)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => createdAt)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Game.GameInfo.CreatedAt)
+                        </td>
+                        <td>
+                            @if (item.BetStatus == BetStatus.InProgress)
+                            {
+                                <span class="label label-info">In Progress</span>
+                            }
+                            else if (item.BetStatus == BetStatus.Lost)
+                            {
+                                <span class="label label-danger">Lost</span>
+                            }
+                            else if (item.BetStatus == BetStatus.Won)
+                            {
+                                <span class="label label-success">Won</span>
+                            }
+                        </td>
+                    </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" align="center" style="padding: 35px">
+                            <em>No history to display</em>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            @if (Model != null && Model.GameBets.Any())
+            {
+                <div page-model="@Model.PagingInfo" page-action="" page-classes-enabled="true"
+                     page-class="btn" page-class-normal="btn-default"
+                     page-class-selected="btn-danger" class="btn-group pull-right m-1 pagination">
+                </div>
+            }
+            <!-- Modal placeholder -->
+            <div id="modal-placeholder"></div>
+        </div>
+    </div>
+</section>

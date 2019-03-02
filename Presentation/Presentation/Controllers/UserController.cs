@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
 using Common.Helpers.Exceptions;
 using Common.LogicInterfaces;
 using Entities.Models;
@@ -175,6 +176,11 @@ namespace Presentation.Controllers
             {
                 try
                 {
+                    var birthdate = DateTime.Parse(registerModel.Birthdate);
+
+                    if (birthdate.Age() < 18)
+                        throw new Exception("You have to be at least 18 years old to register");
+
                     RegisterResultViewModel registerResult = await _userLogic.Create(registerModel);
 
                     if (registerResult != null)
@@ -205,6 +211,7 @@ namespace Presentation.Controllers
                     ModelState.AddModelError("", ex.Message);
                 }
             }
+            ViewBag.Countries = new SelectList(_citiesLogic.ListCountries());
 
             return View(registerModel);
         }

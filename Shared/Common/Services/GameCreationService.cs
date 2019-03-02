@@ -113,7 +113,7 @@ namespace Common.Services
 
             while (winningNumbers.Count < 7)
             {
-                int generatedNumber = random.Next(1, 39);
+                int generatedNumber = random.Next(1, 40);
 
                 if (winningNumbers.Contains(generatedNumber))
                     continue;

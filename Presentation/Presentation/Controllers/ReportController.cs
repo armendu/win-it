@@ -15,7 +15,6 @@ namespace Presentation.Controllers
     public class ReportController : Controller
     {
         private readonly ITransactionLogic _transactionLogic;
-        private readonly IUserLogic _userLogic;
         private readonly ILogger _logger;
         private const int PageSize = 10;
 
@@ -25,10 +24,9 @@ namespace Presentation.Controllers
         /// <param name="transactionLogic">The transaction logic to be injected.</param>
         /// <param name="userLogic">The user logic to be injected.</param>
         /// <param name="logger">The logger to be injected.</param>
-        public ReportController(ITransactionLogic transactionLogic, IUserLogic userLogic, ILogger<GameController> logger)
+        public ReportController(ITransactionLogic transactionLogic, ILogger<GameController> logger)
         {
             _transactionLogic = transactionLogic;
-            _userLogic = userLogic;
             _logger = logger;
         }
 
@@ -41,7 +39,7 @@ namespace Presentation.Controllers
                 IndexTransactionViewModel model = new IndexTransactionViewModel
                 {
                     Transactions = _transactionLogic.List()
-                        .OrderBy(t => t.TransactionId)
+                        .OrderByDescending(t => t.TransactionId)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
                     PagingInfo = new PagingInfo

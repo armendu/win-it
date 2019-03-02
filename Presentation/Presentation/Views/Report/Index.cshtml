@@ -25,68 +25,58 @@
             }
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th width="20%">
-                            @Html.DisplayName("PlayerId")
-                        </th>
-                        <th width="20%">
-                            @Html.DisplayName("Sum")
-                        </th>
-                        <th width="20%">
-                            @Html.DisplayName("For game that started on")
-                        </th>
-                        <th width="20%">
-                            @Html.DisplayName("Created at")
-                        </th>
-                        <th style="text-align: center">
-                            @Html.DisplayName("Actions")
-                        </th>
-                    </tr>
+                <tr>
+                    <th width="20%">
+                        @Html.DisplayName("PlayerId")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Transaction Id")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Sum")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Created at")
+                    </th>
+                    <th width="20%">
+                        @Html.DisplayName("Last updated at")
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null)
+                @if (Model != null)
+                {
+                    foreach (var item in Model.Transactions)
                     {
-                        foreach (var item in Model.Transactions)
-                        {
-                            var updatedAt = item.UpdatedAt.ToLocalTime();
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.PlayerId)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Sum)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Game.GameInfo.CreatedAt)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => updatedAt)
-                                </td>
-
-                                <td style="text-align: center">
-                                    <a class="btn btn-sm btn-default btn-flat custom-btn"
-                                       asp-action="Edit"
-                                       asp-route-id="@item.TransactionId">
-                                        <i class="fas fa-edit"></i>&nbsp; Edit
-                                    </a>
-                                    <button class="btn btn-sm btn-default btn-flat custom-btn"
-                                            data-toggle="modal" data-target="#exampleModalCenter"
-                                            data-url="@Url.Action("Details", item)">
-                                        <i class="fa fa-eye"></i>&nbsp; Details
-                                    </button>
-
-                                </td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
+                        var updatedAt = item.UpdatedAt.ToLocalTime();
+                        var createdAt = item.CreatedAt.ToLocalTime();
                         <tr>
-                            <td colspan="5" align="center" style="padding: 35px">
-                                <em>No transactions to display</em>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PlayerId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TransactionId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Sum)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => createdAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => updatedAt)
                             </td>
                         </tr>
                     }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" align="center" style="padding: 35px">
+                            <em>No transactions to display</em>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
             @if (Model != null && Model.Transactions.Any())

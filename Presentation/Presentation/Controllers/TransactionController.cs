@@ -45,7 +45,7 @@ namespace Presentation.Controllers
                 {
                     Transactions = _transactionLogic.List()
                         .Where(t => t.PlayerId == currentUser.PlayerId)
-                        .OrderBy(t => t.TransactionId)
+                        .OrderByDescending(t => t.TransactionId)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
                     PagingInfo = new PagingInfo

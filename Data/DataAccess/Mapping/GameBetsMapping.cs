@@ -28,6 +28,8 @@ namespace DataAccess.Mapping
 
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
+            entity.Property(e => e.BetStatus).HasColumnType("varchar(10)");
+
             entity.HasOne(d => d.Game)
                 .WithMany(p => p.GameBets)
                 .HasForeignKey(d => d.GameId)

@@ -14,15 +14,15 @@ namespace Presentation.Controllers
     {
         private readonly IUserLogic _userLogic;
         private readonly IGameLogic _gameLogic;
-        private readonly IGameSettingsLogic _gameSettingsLogic;
+        private readonly IGameBetsLogic _gameBetsLogic;
         private readonly IPlayerLogic _playerLogic;
         private readonly ILogger _logger;
 
-        public HomeController(IUserLogic userLogic, IGameLogic gameLogic, IGameSettingsLogic gameSettingsLogic, IPlayerLogic playerLogic, ILogger<HomeController> logger)
+        public HomeController(IUserLogic userLogic, IGameLogic gameLogic, IGameBetsLogic gameBetsLogic, IPlayerLogic playerLogic, ILogger<HomeController> logger)
         {
             _userLogic = userLogic;
             _gameLogic = gameLogic;
-            _gameSettingsLogic = gameSettingsLogic;
+            _gameBetsLogic = gameBetsLogic;
             _playerLogic = playerLogic;
             _logger = logger;
         }
